@@ -3,7 +3,7 @@ package pl.lotto.numberreceiver;
 import java.time.LocalDateTime;
 import java.util.*;
 
-class UserToken {
+class UserCoupon {
 
     private final UUID uuid;
     private final LocalDateTime tokenCreationDate;
@@ -12,7 +12,7 @@ class UserToken {
     private final LocalDateTime tokenExpirationDate;
     private final List<Integer> typedNumbers;
 
-    UserToken(LocalDateTime tokenCreationTime, LocalDateTime resultsDrawDate, List<Integer> typedNumbers) {
+    UserCoupon(LocalDateTime tokenCreationTime, LocalDateTime resultsDrawDate, List<Integer> typedNumbers) {
         this.tokenCreationDate = tokenCreationTime;
         this.resultsDrawDate = resultsDrawDate;
         this.typedNumbers = typedNumbers;
@@ -48,7 +48,7 @@ class UserToken {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserToken userToken)) return false;
+        if (!(o instanceof UserCoupon userToken)) return false;
         return uuid.equals(userToken.uuid);
     }
 

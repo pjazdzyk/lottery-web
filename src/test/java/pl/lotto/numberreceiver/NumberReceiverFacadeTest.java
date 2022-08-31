@@ -14,7 +14,8 @@ class NumberReceiverFacadeTest {
     @DisplayName("input user numbers and returns dto with correct user numbers")
     public void inputNumbers_givenInputNumbers_returnsResultDTOWithUserNumbers() {
         // given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade();
+        NumberReceiverRepository receiverRepository = new NumberReceiverRepositoryTestImpl();
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(receiverRepository);
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
 
         // when

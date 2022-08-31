@@ -1,21 +1,43 @@
 package pl.lotto.drawdategenerator;
 
-import java.time.*;
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
 
 class DrawDateGenerator {
 
-    private DayOfWeek drawDayOfWeek;
-    private LocalTime drawTime;
-    private LocalDateTime drawDate;
+    private final DayOfWeek drawDayOfWeek;
+    private final LocalTime drawTime;
+    private final LocalDateTime drawDate;
 
     DrawDateGenerator(DayOfWeek drawDayOfWeek, LocalTime drawTime) {
         this.drawDayOfWeek = drawDayOfWeek;
         this.drawTime = drawTime;
     }
 
-    private LocalDateTime generateDrawDate() {
-        LocalDateTime currentDateTime = CurrentTimeGenerator.getCurrentDateAndTime();
+    void setNewDrawDateAndTime(DayOfWeek drawDayOfWeek, LocalTime drawTime) {
+        return new DrawDateGenerator(drawDayOfWeek, drawTime, generateDrawDate(drawTime));
+
+//
+//        this.drawDayOfWeek = drawDayOfWeek;
+//        this.drawTime = drawTime;
+//        this.drawDate = generateDrawDate(this.drawDate));
+        //TODO later: token database must be updated
+        //TODO: should never be set to earlier date than previous date
+    }
+
+    LocalDateTime getDrawDate(LocalDateTime currentDateTime) {
+        if (checkIfDrawDateIsValid()) {
+            return drawDate;
+        }
+        this.drawDate = generateDrawDate(currentDateTime);
+        return drawDate;
+    }
+
+    private LocalDateTime generateDrawDate(LocalDateTime currentDateTime, LocalTime drawTime) {
         LocalTime currentTime = currentDateTime.toLocalTime();
         LocalDate currentDate = currentDateTime.toLocalDate();
         DayOfWeek currentDayOfWeek = currentDateTime.getDayOfWeek();
@@ -42,22 +64,6 @@ class DrawDateGenerator {
         return Duration.ofDays(dayDifference);
     }
 
-    void setNewDrawDateAndTime(DayOfWeek drawDayOfWeek, LocalTime drawTime) {
-        this.drawDayOfWeek = drawDayOfWeek;
-        this.drawTime = drawTime;
-        this.drawDate = generateDrawDate();
-        //TODO later: token database must be updated
-        //TODO: should never be set to earlier date than previous date
-    }
-
-    LocalDateTime getDrawDate() {
-        if (checkIfDrawDateIsValid()) {
-            return drawDate;
-        }
-        this.drawDate = generateDrawDate();
-        return drawDate;
-    }
-
     private boolean checkIfDrawDateIsValid() {
         if (Objects.isNull(drawDate)) {
             return false;
@@ -65,5 +71,4 @@ class DrawDateGenerator {
         LocalDateTime currentDateTime = CurrentTimeGenerator.getCurrentDateAndTime();
         return currentDateTime.isBefore(drawDate);
     }
-
 }
