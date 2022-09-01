@@ -1,12 +1,12 @@
-package pl.lotto.drawdategenerator;
+package pl.lotto.temporalgenerator;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-class CurrentTimeGenerator {
+class CurrentDateTimeGenerator {
     Clock clock;
 
-    CurrentTimeGenerator(Clock clock) {
+    CurrentDateTimeGenerator(Clock clock) {
         this.clock = clock;
     }
 

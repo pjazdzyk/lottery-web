@@ -4,24 +4,18 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 class UserCoupon {
-
     private final UUID uuid;
     private final LocalDateTime tokenCreationDate;
     private final LocalDateTime resultsDrawDate;
-    private final int expirationLengthInYears = 2;
     private final LocalDateTime tokenExpirationDate;
     private final List<Integer> typedNumbers;
 
-    UserCoupon(LocalDateTime tokenCreationTime, LocalDateTime resultsDrawDate, List<Integer> typedNumbers) {
-        this.tokenCreationDate = tokenCreationTime;
+    UserCoupon(UUID uuid, LocalDateTime tokenCreationDate, LocalDateTime resultsDrawDate, LocalDateTime tokenExpirationDate, List<Integer> typedNumbers) {
+        this.uuid = uuid;
+        this.tokenCreationDate = tokenCreationDate;
         this.resultsDrawDate = resultsDrawDate;
+        this.tokenExpirationDate = tokenExpirationDate;
         this.typedNumbers = typedNumbers;
-        this.tokenExpirationDate = createExpirationDate();
-        this.uuid = UUID.randomUUID();
-    }
-
-    LocalDateTime createExpirationDate() {
-        return resultsDrawDate.plusYears(expirationLengthInYears);
     }
 
     boolean checkIfTokenIsValid() {
@@ -64,4 +58,6 @@ class UserCoupon {
                 ", typedNumbers=" + typedNumbers +
                 '}';
     }
+
+
 }

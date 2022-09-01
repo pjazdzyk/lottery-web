@@ -1,31 +1,29 @@
 package pl.lotto.numberreceiver;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import pl.lotto.drawdategenerator.DrawDateGeneratorFacade;
-import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
+
+import pl.lotto.numberreceiver.dto.UserCouponDTO;
 
 public class NumberReceiverFacade {
 
-    private final DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorFacade();
-    private final NumberReceiverRepository receiverRepository;
+    private final UserCouponRepository userCouponRepository;
+    final private UserCouponGenerator userCouponGenerator;
 
-    public NumberReceiverFacade(NumberReceiverRepository receiverRepository) {
-        this.receiverRepository = receiverRepository;
+    public NumberReceiverFacade(UserCouponRepository numberReceiverRepository, UserCouponGenerator userCouponGenerator) {
+        this.userCouponRepository = numberReceiverRepository;
+        this.userCouponGenerator = userCouponGenerator;
     }
 
-    public NumberReceiverResultDto inputNumbers(List<Integer> numbersFromUser) {
-        LocalDateTime creationTIme = drawDateGeneratorFacade.getCurrentDateAndTime();
-        LocalDateTime drawTime = drawDateGeneratorFacade.getDrawDate();
-        UserCoupon userCoupon = new UserCoupon(creationTIme, drawTime, numbersFromUser);
-        //TODO add userToken to database
-        UserCoupon save = receiverRepository.save(userCoupon);
-        return mapUserTokenToDTO(save);
+    public UserCouponDTO inputNumbers(List<Integer> numbersFromUser) {
+        UserCoupon userCoupon = userCouponGenerator.generateUserCoupon(numbersFromUser);
+        UserCouponDTO userCouponDTO = mapUserCouponToDTO(userCoupon);
+        userCouponRepository.save(userCouponDTO);
+        return userCouponDTO;
     }
 
-    private NumberReceiverResultDto mapUserTokenToDTO(UserCoupon userToken) {
-        return new NumberReceiverResultDto(userToken.getUuid(), userToken.getTokenCreationDate(), userToken.getResultsDrawDate(),
-                userToken.getResultsDrawDate(), userToken.getTypedNumbers());
+    private UserCouponDTO mapUserCouponToDTO(UserCoupon userCoupon) {
+        return new UserCouponDTO(userCoupon.getUuid(), userCoupon.getTokenCreationDate(), userCoupon.getResultsDrawDate(),
+                userCoupon.getResultsDrawDate(), userCoupon.getTypedNumbers());
     }
 
 }
