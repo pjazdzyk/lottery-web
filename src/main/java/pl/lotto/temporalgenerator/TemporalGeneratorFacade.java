@@ -18,7 +18,7 @@ public class TemporalGeneratorFacade {
         return temporalGenerator.getCurrentDateAndTime();
     }
 
-    public LocalDateTime getExpirationDateAndTime(){
+    public LocalDateTime getExpirationDateAndTime() {
         return temporalGenerator.getExpirationDateTime();
     }
 
