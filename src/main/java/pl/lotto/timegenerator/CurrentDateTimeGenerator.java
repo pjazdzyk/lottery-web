@@ -1,4 +1,4 @@
-package pl.lotto.temporalgenerator;
+package pl.lotto.timegenerator;
 
 import java.time.Clock;
 import java.time.LocalDateTime;

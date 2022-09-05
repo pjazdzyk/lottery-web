@@ -1,29 +1,46 @@
 package pl.lotto.numberreceiver;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-import pl.lotto.numberreceiver.dto.UserCouponDTO;
+import pl.lotto.numberreceiver.dto.CouponDTO;
+import pl.lotto.timegenerator.TimeGeneratorFacade;
 
 public class NumberReceiverFacade {
 
-    private final UserCouponRepository userCouponRepository;
-    final private UserCouponGenerator userCouponGenerator;
+    private final Repository userCouponRepository;
+    private final UserCouponGenerator userCouponGenerator;
+    private final TimeGeneratorFacade timeGeneratorFacade;
 
-    public NumberReceiverFacade(UserCouponRepository numberReceiverRepository, UserCouponGenerator userCouponGenerator) {
-        this.userCouponRepository = numberReceiverRepository;
+    public NumberReceiverFacade(Repository numberReceiverRepositoryRepository, UserCouponGenerator userCouponGenerator, TimeGeneratorFacade timeGeneratorFacade) {
+        this.userCouponRepository = numberReceiverRepositoryRepository;
         this.userCouponGenerator = userCouponGenerator;
+        this.timeGeneratorFacade = timeGeneratorFacade;
     }
 
-    public UserCouponDTO inputNumbers(List<Integer> numbersFromUser) {
-        UserCoupon userCoupon = userCouponGenerator.generateUserCoupon(numbersFromUser);
-        UserCouponDTO userCouponDTO = mapUserCouponToDTO(userCoupon);
-        userCouponRepository.save(userCouponDTO);
-        return userCouponDTO;
+    public CouponDTO inputNumbers(List<Integer> numbersFromUser) {
+        CouponDTO couponDTO = userCouponGenerator.generateUserCoupon(numbersFromUser);
+        return userCouponRepository.save(couponDTO);
     }
 
-    private UserCouponDTO mapUserCouponToDTO(UserCoupon userCoupon) {
-        return new UserCouponDTO(userCoupon.getUuid(), userCoupon.getTokenCreationDate(), userCoupon.getResultsDrawDate(),
-                userCoupon.getResultsDrawDate(), userCoupon.getTypedNumbers());
+    public List<CouponDTO> getUserCouponListForDrawDate(LocalDateTime drawDate) {
+        return userCouponRepository.getUserCouponListForDrawDate(drawDate);
+    }
+
+    Optional<CouponDTO> getUserCouponByUUID(UUID uuid) {
+        return userCouponRepository.getUserCouponByUUID(uuid);
+    }
+
+    Optional<CouponDTO> deleteUserCouponByUUID(UUID uuid) {
+        return userCouponRepository.deleteCouponByUUID(uuid);
+    }
+
+    List<CouponDTO> deleteAllExpiredCoupons() {
+        //TODO to implement schedules for automatic db cleaning every next draw date
+        LocalDateTime currentTime = timeGeneratorFacade.getCurrentDateAndTime();
+        return userCouponRepository.deleteAllExpiredCoupons(currentTime);
     }
 
 }

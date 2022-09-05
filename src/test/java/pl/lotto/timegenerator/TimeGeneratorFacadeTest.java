@@ -1,4 +1,4 @@
-package pl.lotto.temporalgenerator;
+package pl.lotto.timegenerator;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,17 +11,17 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TemporalGeneratorFacadeTest implements SampleClock {
+class TimeGeneratorFacadeTest implements SampleClock {
 
-    private final TemporalGeneratorConfiguration temporalGeneratorConfig = new TemporalGeneratorConfiguration();
+    private final TimeGeneratorConfiguration timeGeneratorConfiguration = new TimeGeneratorConfiguration();
     private final DayOfWeek expectedDrawDayOfWeek = DayOfWeek.FRIDAY;
     private final LocalTime expectedDrawTime = LocalTime.of(12, 10);
     private final Duration expirationDays = Duration.ofDays(365 * 2);
     private final LocalDate sampleDateTests = LocalDate.of(2022, 8, 12);
     private final LocalTime sampleTimeTests = LocalTime.of(12, 11);
     private final LocalDateTime expectedCurrentTime = LocalDateTime.of(sampleDateTests, sampleTimeTests);
-    private final Clock sampleClockTests = sampleClock(sampleDateTests, sampleTimeTests);
-    private final TemporalGeneratorFacade defaultTemporalFacadeTests = temporalGeneratorConfig.createForTest(expectedDrawDayOfWeek, expectedDrawTime, expirationDays, sampleClockTests);
+    private final Clock sampleClockForTests = sampleClock(sampleDateTests, sampleTimeTests);
+    private final TimeGeneratorFacade timeGeneratorFacadeForTests = timeGeneratorConfiguration.createForTest(expectedDrawDayOfWeek, expectedDrawTime, expirationDays, sampleClockForTests);
 
 
     static Stream<Arguments> inputDatesExpectedDraws() {
@@ -41,10 +41,10 @@ class TemporalGeneratorFacadeTest implements SampleClock {
         // given
         LocalTime sampleTime = LocalTime.of(8, 0);
         Clock clockForTest = sampleClock(sampleDate, sampleTime);
-        TemporalGeneratorFacade temporalGeneratorFacade = temporalGeneratorConfig.createForTest(expectedDrawDayOfWeek, expectedDrawTime, expirationDays, clockForTest);
+        TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfiguration.createForTest(expectedDrawDayOfWeek, expectedDrawTime, expirationDays, clockForTest);
 
         // when
-        LocalDateTime actualDrawDateTime = temporalGeneratorFacade.getDrawDateAndTime();
+        LocalDateTime actualDrawDateTime = timeGeneratorFacade.getDrawDateAndTime();
         LocalDate actualDrawDate = actualDrawDateTime.toLocalDate();
 
         // then
@@ -59,7 +59,7 @@ class TemporalGeneratorFacadeTest implements SampleClock {
         LocalDateTime expectedDrawDateTime = LocalDateTime.of(expectedDrawDate, expectedDrawTime);
 
         // when
-        LocalDateTime actualDrawTime = defaultTemporalFacadeTests.getDrawDateAndTime();
+        LocalDateTime actualDrawTime = timeGeneratorFacadeForTests.getDrawDateAndTime();
 
         // then
         assertThat(expectedDrawDateTime).isEqualTo(actualDrawTime);
@@ -70,7 +70,7 @@ class TemporalGeneratorFacadeTest implements SampleClock {
     @DisplayName("gets current time as specified in sample time")
     void getCurrentDateAndTime_givenSampleTime_returnsDateEqualsSampleTime() {
         // when
-        LocalDateTime actualCurrentTime = defaultTemporalFacadeTests.getCurrentDateAndTime();
+        LocalDateTime actualCurrentTime = timeGeneratorFacadeForTests.getCurrentDateAndTime();
 
         // then
         assertThat(actualCurrentTime).isEqualTo(expectedCurrentTime);
@@ -81,17 +81,16 @@ class TemporalGeneratorFacadeTest implements SampleClock {
     @DisplayName("gets correct expiration date based on duration and draw date")
     void getExpirationDateAndTime_givenDrawDateAndExpiration_returnsExpirationDate() {
         // given
-        LocalDateTime drawDateTime = defaultTemporalFacadeTests.getDrawDateAndTime();
+        LocalDateTime drawDateTime = timeGeneratorFacadeForTests.getDrawDateAndTime();
         LocalDateTime expectedExpirationDateTime = drawDateTime.plusDays(expirationDays.toDays());
 
         // when
-        LocalDateTime actualExpirationDateTime = defaultTemporalFacadeTests.getExpirationDateAndTime();
+        LocalDateTime actualExpirationDateTime = timeGeneratorFacadeForTests.getExpirationDateAndTime();
 
         // then
         assertThat(actualExpirationDateTime).isEqualTo(expectedExpirationDateTime);
 
     }
-
 
 }
 

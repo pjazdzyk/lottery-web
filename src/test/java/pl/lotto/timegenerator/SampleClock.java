@@ -1,4 +1,4 @@
-package pl.lotto.temporalgenerator;
+package pl.lotto.timegenerator;
 
 import java.time.*;
 
@@ -9,4 +9,5 @@ public interface SampleClock {
                 time.getHour(), time.getMinute(), time.getSecond(), time.getNano(), ZoneId.systemDefault());
         return Clock.fixed(zoneDateTime.toInstant(), ZoneId.systemDefault());
     }
+
 }

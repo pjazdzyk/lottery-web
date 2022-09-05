@@ -1,6 +1,7 @@
 package pl.lotto.numberreceiver;
 
-import pl.lotto.temporalgenerator.TemporalGeneratorFacade;
+import pl.lotto.numberreceiver.dto.CouponDTO;
+import pl.lotto.timegenerator.TimeGeneratorFacade;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,19 +10,19 @@ import java.util.UUID;
 class UserCouponGenerator {
 
     private final UUIDGenerator uuidGenerator;
-    private final TemporalGeneratorFacade temporalGeneratorFacade;
+    private final TimeGeneratorFacade timeGeneratorFacade;
 
-    UserCouponGenerator(UUIDGenerator uuidGenerator, TemporalGeneratorFacade temporalGeneratorFacade) {
+    UserCouponGenerator(UUIDGenerator uuidGenerator, TimeGeneratorFacade timeGeneratorFacade) {
         this.uuidGenerator = uuidGenerator;
-        this.temporalGeneratorFacade = temporalGeneratorFacade;
+        this.timeGeneratorFacade = timeGeneratorFacade;
     }
 
-    UserCoupon generateUserCoupon(List<Integer> userTypedNumbers) {
+    CouponDTO generateUserCoupon(List<Integer> userTypedNumbers) {
         UUID uuid = uuidGenerator.generateRandomUUID();
-        LocalDateTime creationTime = temporalGeneratorFacade.getCurrentDateAndTime();
-        LocalDateTime drawTime = temporalGeneratorFacade.getDrawDateAndTime();
-        LocalDateTime expirationDate = temporalGeneratorFacade.getExpirationDateAndTime();
-        return new UserCoupon(uuid, creationTime, drawTime, expirationDate, userTypedNumbers);
+        LocalDateTime creationTime = timeGeneratorFacade.getCurrentDateAndTime();
+        LocalDateTime drawTime = timeGeneratorFacade.getDrawDateAndTime();
+        LocalDateTime expirationDate = timeGeneratorFacade.getExpirationDateAndTime();
+        return new CouponDTO(uuid, creationTime, drawTime, expirationDate, userTypedNumbers);
     }
 
 }

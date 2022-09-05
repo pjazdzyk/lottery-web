@@ -1,8 +1,8 @@
-package pl.lotto.temporalgenerator;
+package pl.lotto.timegenerator;
 
 import java.time.LocalDateTime;
 
-class TemporalGenerator {
+class TimeGenerator {
 
     private final CurrentDateTimeGenerator currentDateTimeGenerator;
     private final DrawDateTimeGenerator drawDateTimeGenerator;
@@ -10,7 +10,7 @@ class TemporalGenerator {
     private final ExpirationDateTimeGenerator expirationDateTimeGenerator;
     private LocalDateTime drawDate;
 
-    TemporalGenerator(CurrentDateTimeGenerator currentDateTimeGenerator, DrawDateTimeGenerator drawDateTimeGenerator, ExpirationDateTimeGenerator expirationDateTimeGenerator) {
+    TimeGenerator(CurrentDateTimeGenerator currentDateTimeGenerator, DrawDateTimeGenerator drawDateTimeGenerator, ExpirationDateTimeGenerator expirationDateTimeGenerator) {
         this.currentDateTimeGenerator = currentDateTimeGenerator;
         this.drawDateTimeGenerator = drawDateTimeGenerator;
         this.expirationDateTimeGenerator = expirationDateTimeGenerator;
