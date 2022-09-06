@@ -21,11 +21,8 @@ class NumberReceiverFacadeTest implements SampleClock {
     final private TimeGeneratorConfiguration timeGeneratorConfig = new TimeGeneratorConfiguration();
     final private NumberReceiverConfiguration numberReceiverConfig = new NumberReceiverConfiguration();
     private final UUIDGenerator uuidGenerator = new UUIDGenerator();
-    private final DayOfWeek dayOfWeek = DayOfWeek.SATURDAY;
-    private final LocalTime drawTime = LocalTime.of(20, 15);
-    private final Duration couponExpirationInDays = Duration.ofDays(365 * 2);
     private final Clock defaultClockForTests = sampleClock(LocalDate.of(2022, 8, 10), LocalTime.of(8, 0));
-    private final TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfig.createForTest(dayOfWeek, drawTime, couponExpirationInDays, defaultClockForTests);
+    private final TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfig.createForTest(defaultClockForTests);
     private Repository receiverRepository = new NumberReceiverRepositoryRepository();
     private final NumberReceiverFacade numberReceiverFacade = numberReceiverConfig.createForTests(uuidGenerator, receiverRepository, timeGeneratorFacade);
     private final UUID uuidForMocks = UUID.fromString("ef241277-64a2-457a-beea-a4c589803a26");
@@ -56,7 +53,7 @@ class NumberReceiverFacadeTest implements SampleClock {
         seedSomeCouponsToTestDB(10);
         // Advancing in time from 08.10 to 08.13
         Clock clock3DaysLater = sampleClock(LocalDate.of(2022, 8, 14), LocalTime.of(8, 0));
-        TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfig.createForTest(dayOfWeek, drawTime, couponExpirationInDays, clock3DaysLater);
+        TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfig.createForTest(clock3DaysLater);
         NumberReceiverFacade numberReceiverFacade = numberReceiverConfig.createForTests(uuidGenerator, receiverRepository, timeGeneratorFacade);
         LocalDateTime laterDrawDate = timeGeneratorFacade.getDrawDateAndTime();
         CouponDTO expectedCoupon = numberReceiverFacade.inputNumbers(List.of(13, 14, 15, 16, 17, 18));
@@ -107,7 +104,8 @@ class NumberReceiverFacadeTest implements SampleClock {
         // given
         CouponDTO expectedExpiredCoupon1 = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
         CouponDTO expectedExpiredCoupon2 = numberReceiverFacade.inputNumbers(List.of(7, 8, 9, 10, 11, 12));
-        LocalDateTime timeAfterExpirationDuration = timeGeneratorFacade.getDrawDateAndTime().plusDays(couponExpirationInDays.toDays() + 1);
+        Duration expirationInDays = Duration.ofDays(365 * 2);
+        LocalDateTime timeAfterExpirationDuration = timeGeneratorFacade.getDrawDateAndTime().plusDays(expirationInDays.toDays() + 1);
         Clock clockAfterExpiration = sampleClock(timeAfterExpirationDuration.toLocalDate(), timeAfterExpirationDuration.toLocalTime());
         NumberReceiverFacade numberReceiverFacade = getNumberReceiverFacadeWithClock(clockAfterExpiration);
         seedSomeCouponsToTestDB(2);
@@ -127,7 +125,7 @@ class NumberReceiverFacadeTest implements SampleClock {
     }
 
     private NumberReceiverFacade getNumberReceiverFacadeWithClock(Clock clock) {
-        TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfig.createForTest(dayOfWeek, drawTime, couponExpirationInDays, clock);
+        TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfig.createForTest(clock);
         return numberReceiverConfig.createForTests(uuidGenerator, receiverRepository, timeGeneratorFacade);
     }
 
