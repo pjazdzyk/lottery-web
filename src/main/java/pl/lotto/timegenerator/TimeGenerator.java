@@ -8,7 +8,7 @@ class TimeGenerator {
     private final DrawDateTimeGenerator drawDateTimeGenerator;
 
     private final ExpirationDateTimeGenerator expirationDateTimeGenerator;
-    private LocalDateTime drawDate;
+    private LocalDateTime drawDate; //TODO cant set as final, as once a week this will change
 
     TimeGenerator(CurrentDateTimeGenerator currentDateTimeGenerator, DrawDateTimeGenerator drawDateTimeGenerator, ExpirationDateTimeGenerator expirationDateTimeGenerator) {
         this.currentDateTimeGenerator = currentDateTimeGenerator;

@@ -11,9 +11,9 @@ public class TimeGeneratorConfiguration {
         DayOfWeek drawDayOfWeek = DayOfWeek.FRIDAY;
         LocalTime drawTime = LocalTime.of(12, 10);
         Duration expirationInDays = Duration.ofDays(365 * 2);
+        ExpirationDateTimeGenerator expirationDateTimeGenerator = new ExpirationDateTimeGenerator(expirationInDays);
         CurrentDateTimeGenerator currentDateTimeGenerator = new CurrentDateTimeGenerator(clockForTest);
         DrawDateTimeGenerator drawDateTimeGenerator = new DrawDateTimeGenerator(drawDayOfWeek, drawTime);
-        ExpirationDateTimeGenerator expirationDateTimeGenerator = new ExpirationDateTimeGenerator(expirationInDays);
         TimeGenerator timeGenerator = new TimeGenerator(currentDateTimeGenerator, drawDateTimeGenerator, expirationDateTimeGenerator);
         return new TimeGeneratorFacade(timeGenerator);
     }
@@ -29,6 +29,5 @@ public class TimeGeneratorConfiguration {
         TimeGenerator timeGenerator = new TimeGenerator(currentDateTimeGenerator, drawDateTimeGenerator, expirationDateTimeGenerator);
         return new TimeGeneratorFacade(timeGenerator);
     }
-
 
 }

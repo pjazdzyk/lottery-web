@@ -4,7 +4,7 @@ import org.mockito.Mockito;
 
 import java.util.UUID;
 
-public interface MockedUUIDGenerator {
+interface MockedUUIDGenerator {
 
     default UUIDGenerator getMockedUUIDGenerator(UUID uuid) {
         UUIDGenerator mockedUuidGenerator = Mockito.mock(UUIDGenerator.class);

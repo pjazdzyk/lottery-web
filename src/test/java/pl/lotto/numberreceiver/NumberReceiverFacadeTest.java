@@ -3,7 +3,6 @@ package pl.lotto.numberreceiver;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import pl.lotto.numberreceiver.dto.CouponDTO;
 import pl.lotto.timegenerator.SampleClock;
 import pl.lotto.timegenerator.TimeGeneratorConfiguration;
@@ -33,7 +32,7 @@ class NumberReceiverFacadeTest implements SampleClock, MockedUUIDGenerator {
     }
 
     @Test
-    @DisplayName("input user numbers and returns dto with correct user numbers")
+    @DisplayName("should save coupon when user numbers are provided")
     void inputNumbers_givenInputNumbers_returnsResultDTOWithUserNumbers() {
         // given
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
@@ -49,7 +48,7 @@ class NumberReceiverFacadeTest implements SampleClock, MockedUUIDGenerator {
     }
 
     @Test
-    @DisplayName("returns list of all coupons for provided draw date time")
+    @DisplayName("should return list of coupons when draw date is provided")
     void getUserCouponsListForDrawDate_givenDrawDate_returnsUserCouponForExpectedDrawDate() {
         // given
         seedSomeCouponsToTestDB(10);
@@ -69,7 +68,7 @@ class NumberReceiverFacadeTest implements SampleClock, MockedUUIDGenerator {
     }
 
     @Test
-    @DisplayName("returns expected user coupon when its UUID is provided")
+    @DisplayName("should return coupon when coupon UUID is provided")
     void getUserCouponByUUID_givenUUID_returnsUserCouponForExpectedUUID() {
         // given
         NumberReceiverFacade numberReceiverFacade = getNumberReceiverFacadeWithMockedUUID(uuidForMocks);
@@ -84,7 +83,7 @@ class NumberReceiverFacadeTest implements SampleClock, MockedUUIDGenerator {
     }
 
     @Test
-    @DisplayName("deletes expected user coupon when its UUID is provided")
+    @DisplayName("should delete coupon when coupon UUID is provided")
     void deleteUserCouponByUUID_givenUUID_returnDeletedCouponForExpectedUUID() {
         // given
         NumberReceiverFacade numberReceiverFacade = getNumberReceiverFacadeWithMockedUUID(uuidForMocks);
@@ -101,7 +100,7 @@ class NumberReceiverFacadeTest implements SampleClock, MockedUUIDGenerator {
     }
 
     @Test
-    @DisplayName("deletes all expired coupons from repository")
+    @DisplayName("should delete all expired coupons")
     void deleteAllExpiredCoupons_givenCurrentTime_allExpiredCouponsAreRemoved() {
         // given
         CouponDTO expectedExpiredCoupon1 = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));

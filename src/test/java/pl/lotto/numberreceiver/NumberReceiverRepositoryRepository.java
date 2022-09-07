@@ -3,14 +3,11 @@ package pl.lotto.numberreceiver;
 import pl.lotto.numberreceiver.dto.CouponDTO;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class NumberReceiverRepositoryRepository implements Repository {
+class NumberReceiverRepositoryRepository implements Repository {
 
     private final Map<UUID, CouponDTO> databaseInMemory = new ConcurrentHashMap<>();
 
@@ -40,12 +37,12 @@ public class NumberReceiverRepositoryRepository implements Repository {
 
     @Override
     public List<CouponDTO> deleteAllExpiredCoupons(LocalDateTime currentDateTime) {
-       List<CouponDTO> toBeRemoved = databaseInMemory.values()
-               .stream()
-               .filter(coupon -> currentDateTime.isAfter(coupon.expirationDate()))
-               .toList();
-       toBeRemoved.forEach(coupon -> databaseInMemory.remove(coupon.uuid()));
-       return toBeRemoved;
+        List<CouponDTO> toBeRemoved = databaseInMemory.values()
+                .stream()
+                .filter(coupon -> currentDateTime.isAfter(coupon.expirationDate()))
+                .toList();
+        toBeRemoved.forEach(coupon -> databaseInMemory.remove(coupon.uuid()));
+        return toBeRemoved;
     }
 
 
