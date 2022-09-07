@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-class UserCouponGenerator {
+class CouponGenerator {
 
     private final UUIDGenerator uuidGenerator;
     private final TimeGeneratorFacade timeGeneratorFacade;
 
-    UserCouponGenerator(UUIDGenerator uuidGenerator, TimeGeneratorFacade timeGeneratorFacade) {
+    CouponGenerator(UUIDGenerator uuidGenerator, TimeGeneratorFacade timeGeneratorFacade) {
         this.uuidGenerator = uuidGenerator;
         this.timeGeneratorFacade = timeGeneratorFacade;
     }

@@ -11,17 +11,17 @@ import pl.lotto.timegenerator.TimeGeneratorFacade;
 public class NumberReceiverFacade {
 
     private final Repository userCouponRepository;
-    private final UserCouponGenerator userCouponGenerator;
+    private final CouponGenerator couponGenerator;
     private final TimeGeneratorFacade timeGeneratorFacade;
 
-    public NumberReceiverFacade(Repository numberReceiverRepositoryRepository, UserCouponGenerator userCouponGenerator, TimeGeneratorFacade timeGeneratorFacade) {
+    public NumberReceiverFacade(Repository numberReceiverRepositoryRepository, CouponGenerator couponGenerator, TimeGeneratorFacade timeGeneratorFacade) {
         this.userCouponRepository = numberReceiverRepositoryRepository;
-        this.userCouponGenerator = userCouponGenerator;
+        this.couponGenerator = couponGenerator;
         this.timeGeneratorFacade = timeGeneratorFacade;
     }
 
     public CouponDTO inputNumbers(List<Integer> numbersFromUser) {
-        CouponDTO couponDTO = userCouponGenerator.generateUserCoupon(numbersFromUser);
+        CouponDTO couponDTO = couponGenerator.generateUserCoupon(numbersFromUser);
         return userCouponRepository.save(couponDTO);
     }
 

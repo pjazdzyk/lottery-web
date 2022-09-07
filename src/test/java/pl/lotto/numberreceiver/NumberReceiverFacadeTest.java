@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class NumberReceiverFacadeTest implements SampleClock {
+class NumberReceiverFacadeTest implements SampleClock, MockedUUIDGenerator {
 
     final private TimeGeneratorConfiguration timeGeneratorConfig = new TimeGeneratorConfiguration();
     final private NumberReceiverConfiguration numberReceiverConfig = new NumberReceiverConfiguration();
@@ -39,11 +39,13 @@ class NumberReceiverFacadeTest implements SampleClock {
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
 
         // when
-        CouponDTO result = numberReceiverFacade.inputNumbers(numbersFromUser);
-        List<Integer> actualUserNumbers = result.typedNumbers();
+        CouponDTO couponToBeAddedToRep = numberReceiverFacade.inputNumbers(numbersFromUser);
+        UUID actualUUID = couponToBeAddedToRep.uuid();
+        Optional<CouponDTO> actualCouponOptional = receiverRepository.getUserCouponByUUID(actualUUID);
+        CouponDTO actualCoupon = actualCouponOptional.orElse(null);
 
         // then
-        assertThat(actualUserNumbers).isEqualTo(numbersFromUser);
+        assertThat(actualCoupon).isEqualTo(couponToBeAddedToRep);
     }
 
     @Test
@@ -107,11 +109,12 @@ class NumberReceiverFacadeTest implements SampleClock {
         Duration expirationInDays = Duration.ofDays(365 * 2);
         LocalDateTime timeAfterExpirationDuration = timeGeneratorFacade.getDrawDateAndTime().plusDays(expirationInDays.toDays() + 1);
         Clock clockAfterExpiration = sampleClock(timeAfterExpirationDuration.toLocalDate(), timeAfterExpirationDuration.toLocalTime());
-        NumberReceiverFacade numberReceiverFacade = getNumberReceiverFacadeWithClock(clockAfterExpiration);
+        TimeGeneratorFacade timeGeneratorFacadeAfter = timeGeneratorConfig.createForTest(clockAfterExpiration);
+        NumberReceiverFacade numberReceiverFacadeAfter = numberReceiverConfig.createForTests(uuidGenerator, receiverRepository, timeGeneratorFacadeAfter);
         seedSomeCouponsToTestDB(2);
 
         // when
-        List<CouponDTO> deletedCoupons = numberReceiverFacade.deleteAllExpiredCoupons();
+        List<CouponDTO> deletedCoupons = numberReceiverFacadeAfter.deleteAllExpiredCoupons();
 
         // then
         assertThat(deletedCoupons).contains(expectedExpiredCoupon1, expectedExpiredCoupon2);
@@ -124,20 +127,10 @@ class NumberReceiverFacadeTest implements SampleClock {
         }
     }
 
-    private NumberReceiverFacade getNumberReceiverFacadeWithClock(Clock clock) {
-        TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfig.createForTest(clock);
-        return numberReceiverConfig.createForTests(uuidGenerator, receiverRepository, timeGeneratorFacade);
-    }
-
     private NumberReceiverFacade getNumberReceiverFacadeWithMockedUUID(UUID uuid) {
         UUIDGenerator mockedUuidGenerator = getMockedUUIDGenerator(uuid);
         return numberReceiverConfig.createForTests(mockedUuidGenerator, receiverRepository, timeGeneratorFacade);
     }
 
-    private UUIDGenerator getMockedUUIDGenerator(UUID uuid) {
-        UUIDGenerator mockedUuidGenerator = Mockito.mock(UUIDGenerator.class);
-        Mockito.when(mockedUuidGenerator.generateRandomUUID()).thenReturn(uuid);
-        return mockedUuidGenerator;
-    }
 
 }

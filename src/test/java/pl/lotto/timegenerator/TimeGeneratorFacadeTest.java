@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TimeGeneratorFacadeTest implements SampleClock {
 
     private final TimeGeneratorConfiguration timeGeneratorConfiguration = new TimeGeneratorConfiguration();
-
     private final LocalDate sampleDateTests = LocalDate.of(2022, 8, 12);
     private final LocalTime sampleTimeTests = LocalTime.of(12, 11);
     private final LocalDateTime expectedCurrentTime = LocalDateTime.of(sampleDateTests, sampleTimeTests);
