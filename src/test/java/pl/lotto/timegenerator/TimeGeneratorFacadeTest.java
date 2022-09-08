@@ -18,8 +18,10 @@ class TimeGeneratorFacadeTest implements SampleClock {
     private final LocalTime sampleTimeTests = LocalTime.of(12, 11);
     private final LocalDateTime expectedCurrentTime = LocalDateTime.of(sampleDateTests, sampleTimeTests);
     private final Clock sampleClockForTests = sampleClock(sampleDateTests, sampleTimeTests);
-    private final TimeGeneratorFacade timeGeneratorFacadeForTests = timeGeneratorConfiguration.createForTest(sampleClockForTests);
-
+    private final DayOfWeek drawDayOfWeek = DayOfWeek.FRIDAY;
+    private final LocalTime drawTime = LocalTime.of(12, 10);
+    private final Duration expirationInDays = Duration.ofDays(365*2);
+    private final TimeGeneratorFacade timeGeneratorFacadeForTests = timeGeneratorConfiguration.createForTest(sampleClockForTests,drawDayOfWeek,drawTime,expirationInDays);
 
     static Stream<Arguments> inputExpectedDrawsDates() {
         return Stream.of(
@@ -38,7 +40,7 @@ class TimeGeneratorFacadeTest implements SampleClock {
         // given
         LocalTime sampleTime = LocalTime.of(8, 0);
         Clock clockForTest = sampleClock(sampleDate, sampleTime);
-        TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfiguration.createForTest(clockForTest);
+        TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfiguration.createForTest(clockForTest,drawDayOfWeek,drawTime,expirationInDays);
 
         // when
         LocalDateTime actualDrawDateTime = timeGeneratorFacade.getDrawDateAndTime();

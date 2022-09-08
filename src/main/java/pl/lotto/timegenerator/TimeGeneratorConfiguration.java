@@ -7,10 +7,7 @@ import java.time.LocalTime;
 
 public class TimeGeneratorConfiguration {
 
-    public TimeGeneratorFacade createForTest(Clock clockForTest) {
-        DayOfWeek drawDayOfWeek = DayOfWeek.FRIDAY;
-        LocalTime drawTime = LocalTime.of(12, 10);
-        Duration expirationInDays = Duration.ofDays(365 * 2);
+    public TimeGeneratorFacade createForTest(Clock clockForTest, DayOfWeek drawDayOfWeek, LocalTime drawTime, Duration expirationInDays) {
         ExpirationDateTimeGenerator expirationDateTimeGenerator = new ExpirationDateTimeGenerator(expirationInDays);
         CurrentDateTimeGenerator currentDateTimeGenerator = new CurrentDateTimeGenerator(clockForTest);
         DrawDateTimeGenerator drawDateTimeGenerator = new DrawDateTimeGenerator(drawDayOfWeek, drawTime);
