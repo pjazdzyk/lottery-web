@@ -1,24 +1,22 @@
 package pl.lotto.numberreceiver;
 
-import pl.lotto.numberreceiver.dto.CouponDTO;
-
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-class NumberReceiverRepositoryRepository implements Repository {
+class NumberReceiverRepositoryCouponRepository implements CouponRepository {
 
-    private final Map<UUID, CouponDTO> databaseInMemory = new ConcurrentHashMap<>();
+    private final Map<UUID, Coupon> databaseInMemory = new ConcurrentHashMap<>();
 
     @Override
-    public CouponDTO save(CouponDTO couponDTO) {
-        databaseInMemory.put(couponDTO.uuid(), couponDTO);
-        return couponDTO;
+    public Coupon save(Coupon coupon) {
+        databaseInMemory.put(coupon.uuid(), coupon);
+        return coupon;
     }
 
     @Override
-    public List<CouponDTO> getUserCouponListForDrawDate(LocalDateTime drawDate) {
+    public List<Coupon> getUserCouponListForDrawDate(LocalDateTime drawDate) {
         return databaseInMemory.values()
                 .stream()
                 .filter(coupon -> drawDate.isEqual(coupon.resultsDrawDate()))
@@ -26,18 +24,18 @@ class NumberReceiverRepositoryRepository implements Repository {
     }
 
     @Override
-    public Optional<CouponDTO> getUserCouponByUUID(UUID uuid) {
+    public Optional<Coupon> getUserCouponByUUID(UUID uuid) {
         return Optional.ofNullable(databaseInMemory.get(uuid));
     }
 
     @Override
-    public Optional<CouponDTO> deleteCouponByUUID(UUID uuid) {
+    public Optional<Coupon> deleteCouponByUUID(UUID uuid) {
         return Optional.ofNullable(databaseInMemory.remove(uuid));
     }
 
     @Override
-    public List<CouponDTO> deleteAllExpiredCoupons(LocalDateTime currentDateTime) {
-        List<CouponDTO> toBeRemoved = databaseInMemory.values()
+    public List<Coupon> deleteAllExpiredCoupons(LocalDateTime currentDateTime) {
+        List<Coupon> toBeRemoved = databaseInMemory.values()
                 .stream()
                 .filter(coupon -> currentDateTime.isAfter(coupon.expirationDate()))
                 .toList();

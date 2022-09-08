@@ -1,6 +1,5 @@
 package pl.lotto.numberreceiver;
 
-import pl.lotto.numberreceiver.dto.CouponDTO;
 import pl.lotto.timegenerator.TimeGeneratorFacade;
 
 import java.time.LocalDateTime;
@@ -17,12 +16,12 @@ class CouponGenerator {
         this.timeGeneratorFacade = timeGeneratorFacade;
     }
 
-    CouponDTO generateUserCoupon(List<Integer> userTypedNumbers) {
+    Coupon generateUserCoupon(List<Integer> userTypedNumbers) {
         UUID uuid = uuidGenerator.generateRandomUUID();
         LocalDateTime creationTime = timeGeneratorFacade.getCurrentDateAndTime();
         LocalDateTime drawTime = timeGeneratorFacade.getDrawDateAndTime();
         LocalDateTime expirationDate = timeGeneratorFacade.getExpirationDateAndTime();
-        return new CouponDTO(uuid, creationTime, drawTime, expirationDate, userTypedNumbers);
+        return new Coupon(uuid, creationTime, drawTime, expirationDate, userTypedNumbers);
     }
 
 }
