@@ -17,4 +17,6 @@ interface CouponRepository {
 
     List<Coupon> deleteAllExpiredCoupons(LocalDateTime currentDateTime);
 
+    List<Coupon> getAllCoupons();
+
 }

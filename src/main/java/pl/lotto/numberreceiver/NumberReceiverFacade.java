@@ -27,8 +27,8 @@ public class NumberReceiverFacade {
     }
 
     public List<CouponDto> getUserCouponListForDrawDate(LocalDateTime drawDate) {
-        List<Coupon> userCoupons = userCouponCouponRepository.getUserCouponListForDrawDate(drawDate);
-        return CouponMapper.toCouponDtoList(userCoupons);
+        List<Coupon> coupons = userCouponCouponRepository.getUserCouponListForDrawDate(drawDate);
+        return CouponMapper.toCouponDtoList(coupons);
     }
 
     Optional<CouponDto> getUserCouponByUUID(UUID uuid) {
@@ -43,8 +43,13 @@ public class NumberReceiverFacade {
 
     List<CouponDto> deleteAllExpiredCoupons() {
         LocalDateTime currentTime = timeGeneratorFacade.getCurrentDateAndTime();
-        List<Coupon> userCoupons =  userCouponCouponRepository.deleteAllExpiredCoupons(currentTime);
-        return CouponMapper.toCouponDtoList(userCoupons);
+        List<Coupon> coupons =  userCouponCouponRepository.deleteAllExpiredCoupons(currentTime);
+        return CouponMapper.toCouponDtoList(coupons);
+    }
+
+    List<CouponDto> getAllCoupons(){
+        List<Coupon> coupons = userCouponCouponRepository.getAllCoupons();
+        return CouponMapper.toCouponDtoList(coupons);
     }
 
 }

@@ -43,5 +43,10 @@ class NumberReceiverRepositoryImpl implements CouponRepository {
         return toBeRemoved;
     }
 
+    @Override
+    public List<Coupon> getAllCoupons() {
+        return new ArrayList<>(databaseInMemory.values());
+    }
+
 
 }
