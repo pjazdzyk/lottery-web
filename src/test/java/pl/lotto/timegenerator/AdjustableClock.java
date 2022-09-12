@@ -3,11 +3,12 @@ package pl.lotto.timegenerator;
 import java.time.*;
 
 public class AdjustableClock extends Clock {
+
     private Instant instant;
     private final ZoneId zone;
 
-    AdjustableClock(Instant fixedInstant, ZoneId zone) {
-        this.instant = fixedInstant;
+    private AdjustableClock(Instant initialInstant, ZoneId zone) {
+        this.instant = initialInstant;
         this.zone = zone;
     }
 
@@ -51,7 +52,7 @@ public class AdjustableClock extends Clock {
         return "AdjustableClock[" + instant + "," + zone + "]";
     }
 
-    public static AdjustableClock fromLocalDateAndLocalTime(LocalDate date, LocalTime time, ZoneId zone) {
+    public static AdjustableClock ofLocalDateAndLocalTime(LocalDate date, LocalTime time, ZoneId zone) {
         ZonedDateTime zoneDateTime = createZoneDateTime(date, time, zone);
         return new AdjustableClock(zoneDateTime.toInstant(), zone);
     }
@@ -65,19 +66,19 @@ public class AdjustableClock extends Clock {
         advanceInTimeBy(offset);
     }
 
-    public void setClockFromLocalDateTime(LocalDateTime localDateTime) {
+    public void setClockToLocalDateTime(LocalDateTime localDateTime) {
         ZonedDateTime zoneDateTime = createZoneDateTime(localDateTime.toLocalDate(), localDateTime.toLocalTime(), zone);
         this.instant = zoneDateTime.toInstant();
     }
 
-    public void setClockFromLocalDate(LocalDate localDate) {
+    public void setClockToLocalDate(LocalDate localDate) {
         LocalDateTime localDateTime = LocalDateTime.of(localDate, LocalTime.now(this));
-        setClockFromLocalDateTime(localDateTime);
+        setClockToLocalDateTime(localDateTime);
     }
 
-    public void setClockFromLocalTime(LocalTime localTime) {
+    public void setClockToLocalTime(LocalTime localTime) {
         LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(this), localTime);
-        setClockFromLocalDateTime(localDateTime);
+        setClockToLocalDateTime(localDateTime);
     }
 
     private static ZonedDateTime createZoneDateTime(LocalDate date, LocalTime time, ZoneId zone) {

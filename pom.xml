@@ -13,7 +13,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <junit-jupiter.version>5.9.0</junit-jupiter.version>
         <assertj-core.version>3.23.1</assertj-core.version>
-        <mockito-core.version>4.7.0</mockito-core.version>
+        <mockito.version>4.8.0</mockito.version>
     </properties>
 
     <dependencies>
@@ -31,9 +31,9 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>4.7.0</version>
-            <scope>${mockito-core.version}</scope>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

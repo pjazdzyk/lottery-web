@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-class NumberReceiverRepositoryImpl implements CouponRepository {
+public class NumberReceiverRepositoryImpl implements CouponRepository {
 
     private final Map<UUID, Coupon> databaseInMemory = new ConcurrentHashMap<>();
 

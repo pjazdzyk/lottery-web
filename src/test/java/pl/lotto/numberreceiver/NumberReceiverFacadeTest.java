@@ -4,40 +4,31 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.lotto.numberreceiver.dto.CouponDto;
-import pl.lotto.timegenerator.AdjustableClock;
-import pl.lotto.timegenerator.TimeGeneratorConfiguration;
 import pl.lotto.timegenerator.TimeGeneratorFacade;
 
-import java.time.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-class NumberReceiverFacadeTest implements MockedUUIDGenerator {
+class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGeneratorFacade {
 
-    final private TimeGeneratorConfiguration timeGeneratorConfig = new TimeGeneratorConfiguration();
-    final private NumberReceiverConfiguration numberReceiverConfig = new NumberReceiverConfiguration();
-    private final UUIDGenerator uuidGenerator = new UUIDGenerator();
-    private final LocalDate sampleDateTests = LocalDate.of(2022, 8, 8);
-    private final LocalTime sampleTimeTests = LocalTime.of(10, 10);
-    private final AdjustableClock sampleClockForTests = AdjustableClock.fromLocalDateAndLocalTime(sampleDateTests, sampleTimeTests, ZoneId.systemDefault());
-    private final DayOfWeek drawDayOfWeek = DayOfWeek.FRIDAY;
-    private final LocalTime drawTime = LocalTime.of(12, 10);
-    private final Duration expirationInDays = Duration.ofDays(365 * 2);
-    private TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfig.createForTest(sampleClockForTests, drawDayOfWeek, drawTime, expirationInDays);
     private final UUID uuidForMocks = UUID.fromString("ef241277-64a2-457a-beea-a4c589803a26");
+    private final UUIDGenerator uuidGenerator = new UUIDGenerator();
     private CouponRepository receiverCouponRepository = new NumberReceiverRepositoryImpl();
-    private NumberReceiverFacade numberReceiverFacade = numberReceiverConfig.createForTests(uuidGenerator, receiverCouponRepository, timeGeneratorFacade);
+    private final TimeGeneratorFacade mockedTimeGeneratorFacade = createMockedTimeGeneratorFacadeWithDefaultDates();
+    final private NumberReceiverConfiguration numberReceiverConfig = new NumberReceiverConfiguration();
+    private  NumberReceiverFacade numberReceiverFacade = numberReceiverConfig.createForTests(uuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade);
 
     @AfterEach
     void tearDown() {
+        resetTimeFacadeToDefaultDates(mockedTimeGeneratorFacade);
         receiverCouponRepository = new NumberReceiverRepositoryImpl();
-        sampleClockForTests.setClockFromLocalDateTime(LocalDateTime.of(sampleDateTests, sampleTimeTests));
-        timeGeneratorFacade = timeGeneratorConfig.createForTest(sampleClockForTests, drawDayOfWeek, drawTime, expirationInDays);
-        numberReceiverFacade = numberReceiverConfig.createForTests(uuidGenerator, receiverCouponRepository, timeGeneratorFacade);
+        numberReceiverFacade = numberReceiverConfig.createForTests(uuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade);
     }
 
     @Test
@@ -60,10 +51,9 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator {
     void getUserCouponsListForDrawDate_givenDrawDate_returnsUserCouponForExpectedDrawDate() {
         // given (8 August by default)
         List<CouponDto> initialCoupons = seedSomeCouponsToTestDB(numberReceiverFacade, 1);
-
-        // Advancing in time to (13 August)
-        sampleClockForTests.plusDays(5);
-        LocalDateTime laterDrawDate = timeGeneratorFacade.getDrawDateAndTime();
+        // Time has passed, new draw date is
+        LocalDateTime laterDrawDate = sampleDrawDate.plusDays(7);
+        when(mockedTimeGeneratorFacade.getDrawDateAndTime()).thenReturn(laterDrawDate);
         seedSomeCouponsToTestDB(numberReceiverFacade, 1);
 
         // when
@@ -71,6 +61,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator {
 
         // then
         assertThat(actualCouponsForSpecifiedDrawDate).doesNotContainAnyElementsOf(initialCoupons);
+        assertThat(actualCouponsForSpecifiedDrawDate).hasSize(1);
 
     }
 
@@ -111,11 +102,8 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator {
     void deleteAllExpiredCoupons_givenCurrentTime_allExpiredCouponsAreRemoved() {
         // given
         seedSomeCouponsToTestDB(numberReceiverFacade, 4);
-        // advancing in time by duration of expiration, including days to next draw, and +1 to get beyond expiration
-        LocalDateTime oldDrawDate = timeGeneratorFacade.getDrawDateAndTime();
-        Duration offsetFromSampleLocalTimeToDrawDate = Duration.between(timeGeneratorFacade.getCurrentDateAndTime(), oldDrawDate);
-        Duration durationBeyondExpiration = expirationInDays.plus(offsetFromSampleLocalTimeToDrawDate).plusDays(1);
-        sampleClockForTests.advanceInTimeBy(durationBeyondExpiration);
+        // advancing in time to year 2030
+        when(mockedTimeGeneratorFacade.getCurrentDateAndTime()).thenReturn(sampleCurrentDateTime.plusYears(8));
         seedSomeCouponsToTestDB(numberReceiverFacade, 2);
 
         // when
@@ -138,7 +126,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator {
 
     private NumberReceiverFacade getNumberReceiverFacadeWithMockedUUID(UUID uuid) {
         UUIDGenerator mockedUuidGenerator = getMockedUUIDGenerator(uuid);
-        return numberReceiverConfig.createForTests(mockedUuidGenerator, receiverCouponRepository, timeGeneratorFacade);
+        return numberReceiverConfig.createForTests(mockedUuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade);
     }
 
 
