@@ -16,7 +16,7 @@ class ResultsCheckerRepositoryStub implements ResultCheckerRepository {
     }
 
     @Override
-    public int saveFromList(List<LotteryResults> lotteryResults) {
+    public int saveList(List<LotteryResults> lotteryResults) {
         lotteryResults.forEach(this::save);
         return lotteryResults.size();
     }
@@ -54,5 +54,19 @@ class ResultsCheckerRepositoryStub implements ResultCheckerRepository {
     @Override
     public List<LotteryResults> getAllLotteryResults() {
         return new ArrayList<>(databaseInMemory.values());
+    }
+
+    @Override
+    public boolean contains(LotteryResults lotteryResults) {
+        return databaseInMemory.containsKey(lotteryResults.uuid());
+    }
+
+    @Override
+    public List<LotteryResults> getLotteryResultsDrawDateWinnersOnly(LocalDateTime drawDate) {
+        return databaseInMemory.values()
+                .stream()
+                .filter(lotteryResult -> drawDate.isEqual(lotteryResult.drawDate()))
+                .filter(LotteryResults::isWinner)
+                .collect(Collectors.toList());
     }
 }

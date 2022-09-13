@@ -38,4 +38,9 @@ class WinningNumberRepositoryStub implements WinningNumberRepository {
     public List<WinningNumbers> getAllWinningNumbers() {
         return new ArrayList<>(databaseInMemory.values());
     }
+
+    @Override
+    public boolean contains(WinningNumbers winningNumbers) {
+        return databaseInMemory.containsKey(winningNumbers.drawDate());
+    }
 }

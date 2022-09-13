@@ -48,5 +48,10 @@ public class NumberReceiverRepositoryStub implements CouponRepository {
         return new ArrayList<>(databaseInMemory.values());
     }
 
+    @Override
+    public boolean contains(Coupon coupon) {
+        return databaseInMemory.containsKey(coupon.uuid());
+    }
+
 
 }

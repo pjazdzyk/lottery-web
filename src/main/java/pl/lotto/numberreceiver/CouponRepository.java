@@ -19,4 +19,6 @@ interface CouponRepository {
 
     List<Coupon> getAllCoupons();
 
+    boolean contains(Coupon coupon);
+
 }

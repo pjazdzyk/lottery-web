@@ -19,9 +19,11 @@ interface MockedNumberReceiverFacade extends SampleDrawDate{
     LocalDateTime expirationDateTime = sampleDrawDateTime.plusYears(2);
 
     List<CouponDto> sampleCouponList = List.of(
+            // Winners
             new CouponDto(sampleUuid, sampleDrawDateTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 4, 5, 6)),
             new CouponDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 4, 50, 60)),
             new CouponDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 70, 80, 90)),
+            // Losers
             new CouponDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 30, 70, 80, 90)),
             new CouponDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(10, 20, 30, 70, 80, 90)),
             new CouponDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(10, 20, 30, 70, 80, 90))

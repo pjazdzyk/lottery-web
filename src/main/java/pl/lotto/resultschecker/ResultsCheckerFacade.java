@@ -38,7 +38,7 @@ public class ResultsCheckerFacade {
         }
         List<CouponDto> couponDtoForDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(drawDate);
         List<LotteryResults> listOfLotteryResults = lotteryResultsGenerator.getListOfLotteryResults(couponDtoForDrawDate, winningNumbersDto.winningNumbers());
-        resultCheckerRepository.saveFromList(listOfLotteryResults);
+        resultCheckerRepository.saveList(listOfLotteryResults);
         generatedResultsCount = listOfLotteryResults.size();
         return generatedResultsCount;
     }
@@ -55,6 +55,11 @@ public class ResultsCheckerFacade {
 
     public List<LotteryResultsDto> getLotteryResultsForDrawDate(LocalDateTime drawDate) {
         List<LotteryResults> lotteryResults = resultCheckerRepository.getLotteryResultsForDrawDate(drawDate);
+        return LotteryResultsMapper.toDtoList(lotteryResults);
+    }
+
+    public List<LotteryResultsDto> getLotteryResultsDrawDateWinnersOnly(LocalDateTime drawDate){
+        List<LotteryResults> lotteryResults = resultCheckerRepository.getLotteryResultsDrawDateWinnersOnly(drawDate);
         return LotteryResultsMapper.toDtoList(lotteryResults);
     }
 

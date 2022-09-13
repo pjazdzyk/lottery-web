@@ -15,4 +15,6 @@ interface WinningNumberRepository {
     Optional<WinningNumbers> deleteWinningNumbersForDate(LocalDateTime drawDate);
 
     List<WinningNumbers> getAllWinningNumbers();
+
+    boolean contains(WinningNumbers winningNumbers);
 }

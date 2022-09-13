@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ResultCheckerRepository {
+interface ResultCheckerRepository {
 
     LotteryResults save(LotteryResults lotteryResult);
 
-    int saveFromList(List<LotteryResults> lotteryResults);
+    int saveList(List<LotteryResults> lotteryResults);
 
     Optional<LotteryResults> getLotteryResultsForUuid(UUID uuid);
 
@@ -21,6 +21,9 @@ public interface ResultCheckerRepository {
 
     List<LotteryResults> getAllLotteryResults();
 
+    boolean contains(LotteryResults lotteryResults);
+
+    List<LotteryResults> getLotteryResultsDrawDateWinnersOnly(LocalDateTime drawDate);
 }
 
 
