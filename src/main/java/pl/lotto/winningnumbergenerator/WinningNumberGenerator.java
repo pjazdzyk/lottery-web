@@ -10,7 +10,6 @@ class WinningNumberGenerator {
 
     private final RandomGenerator randomGenerator;
     private final TimeGeneratorFacade timeGenerator;
-
     private WinningNumbers winningNumbers;
 
     WinningNumberGenerator(RandomGenerator randomGenerator, TimeGeneratorFacade timeGenerator) {

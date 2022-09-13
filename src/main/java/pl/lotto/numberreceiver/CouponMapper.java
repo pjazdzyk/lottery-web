@@ -13,8 +13,8 @@ class CouponMapper {
     }
 
     static Coupon toCoupon(CouponDto couponDto) {
-        return new Coupon(couponDto.uuid(), couponDto.creationDate(), couponDto.resultsDrawDate(),
-                couponDto.expirationDate(), couponDto.typedNumbers());
+        return new Coupon(couponDto.uuid(), couponDto.creationDateTime(), couponDto.drawDateTime(),
+                couponDto.expirationDateTime(), couponDto.typedNumbers());
     }
 
     static List<CouponDto> toCouponDtoList(List<Coupon> coupon) {

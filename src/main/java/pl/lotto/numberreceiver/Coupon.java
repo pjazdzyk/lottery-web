@@ -30,9 +30,9 @@ record Coupon(UUID uuid, LocalDateTime creationDate, LocalDateTime resultsDrawDa
     public String toString() {
         return "Coupon{" +
                 "uuid=" + uuid +
-                ", creationDate=" + creationDate +
-                ", resultsDrawDate=" + resultsDrawDate +
-                ", expirationDate=" + expirationDate +
+                ", creationDateTime=" + creationDate +
+                ", drawDateTime=" + resultsDrawDate +
+                ", expirationDateTime=" + expirationDate +
                 ", typedNumbers=" + typedNumbers +
                 '}';
     }

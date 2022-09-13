@@ -29,12 +29,12 @@ public class WinningNumberGeneratorFacade {
         return true;
     }
 
-    public Optional<WinningNumbersDto> retrieveLastWinningNumbers() {
+    public Optional<WinningNumbersDto> getLastWinningNumbers() {
         LocalDateTime currentDrawDate = timeGeneratorFacade.getDrawDateAndTime();
-        return retrieveWinningNumbersForDate(currentDrawDate);
+        return getWinningNumbersForDate(currentDrawDate);
     }
 
-    public Optional<WinningNumbersDto> retrieveWinningNumbersForDate(LocalDateTime drawDate) {
+    public Optional<WinningNumbersDto> getWinningNumbersForDate(LocalDateTime drawDate) {
         Optional<WinningNumbers> winningNumbersForDrawDate = winningNumberRepository.getWinningNumbersForDrawDate(drawDate);
         return winningNumbersForDrawDate.map(WinningNumberMapper::toDto);
     }

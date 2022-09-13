@@ -16,8 +16,8 @@ import static org.mockito.Mockito.when;
 
 class WinningWinningNumberGeneratorFacadeTest implements MockedRandomGenerator, MockedTimeGeneratorFacade {
 
-    private final RandomGenerator randomGenerator = new RandomGenerator();
-    private final WinningNumberRepository winningNumberRepository = new WinningNumberRepositoryImpl();
+    private final RandomGenerator randomGenerator = new RandomGenerator(1,99,6);
+    private final WinningNumberRepository winningNumberRepository = new WinningNumberRepositoryStub();
     private final TimeGeneratorFacade mockedTimeGeneratorFacade = createMockedTimeGeneratorFacadeWithDefaultDates();
     private final WinningNumberGeneratorConfiguration winningNumberGeneratorConfig = new WinningNumberGeneratorConfiguration();
     private final WinningNumberGeneratorFacade winningNumberGeneratorFacade = winningNumberGeneratorConfig.createForTests(randomGenerator, mockedTimeGeneratorFacade, winningNumberRepository);
@@ -38,11 +38,11 @@ class WinningWinningNumberGeneratorFacadeTest implements MockedRandomGenerator, 
 
         // when
         winningNumberGeneratorFacade.runLottery();
-        Optional<WinningNumbersDto> actualWinningNumbersOptional = winningNumberGeneratorFacade.retrieveLastWinningNumbers();
+        Optional<WinningNumbersDto> actualWinningNumbersOptional = winningNumberGeneratorFacade.getLastWinningNumbers();
         WinningNumbersDto actualWinningNumbers = actualWinningNumbersOptional.orElse(null);
 
         // then
-        Optional<WinningNumbersDto> expectedWinningNumbersOptional = winningNumberGeneratorFacade.retrieveLastWinningNumbers();
+        Optional<WinningNumbersDto> expectedWinningNumbersOptional = winningNumberGeneratorFacade.getLastWinningNumbers();
         WinningNumbersDto expectedWinningNumbers = expectedWinningNumbersOptional.orElse(null);
         assertThat(actualWinningNumbers).isEqualTo(expectedWinningNumbers);
     }
@@ -52,7 +52,7 @@ class WinningWinningNumberGeneratorFacadeTest implements MockedRandomGenerator, 
     void retrieveLastWinningNumbers_givenCurrentDateAfterDrawDateNumbersWereGeneratedBefore_returnsNewWinningNumbers() {
         // given
         winningNumberGeneratorFacade.runLottery();
-        Optional<WinningNumbersDto> oldWinningNumbersOptional = winningNumberGeneratorFacade.retrieveLastWinningNumbers();
+        Optional<WinningNumbersDto> oldWinningNumbersOptional = winningNumberGeneratorFacade.getLastWinningNumbers();
         WinningNumbersDto previousWinningNumbers = oldWinningNumbersOptional.orElse(null);
         // advancing in time by 10 days
         LocalDateTime tenDaysLater = sampleCurrentDateTime.plusDays(10);
@@ -62,7 +62,7 @@ class WinningWinningNumberGeneratorFacadeTest implements MockedRandomGenerator, 
         winningNumberGeneratorFacade.runLottery();
 
         // when
-        Optional<WinningNumbersDto> actualWinningNumbersOptional = winningNumberGeneratorFacade.retrieveLastWinningNumbers();
+        Optional<WinningNumbersDto> actualWinningNumbersOptional = winningNumberGeneratorFacade.getLastWinningNumbers();
         WinningNumbersDto actualWinningNumbers = actualWinningNumbersOptional.orElse(null);
 
         // then

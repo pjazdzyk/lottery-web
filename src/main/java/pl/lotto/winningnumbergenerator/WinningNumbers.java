@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 record WinningNumbers(LocalDateTime drawDate, List<Integer> winningNumbers) {
-
     @Override
     public List<Integer> winningNumbers() {
         return new ArrayList<>(winningNumbers);

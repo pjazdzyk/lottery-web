@@ -19,7 +19,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
 
     private final UUID uuidForMocks = UUID.fromString("ef241277-64a2-457a-beea-a4c589803a26");
     private final UUIDGenerator uuidGenerator = new UUIDGenerator();
-    private CouponRepository receiverCouponRepository = new NumberReceiverRepositoryImpl();
+    private CouponRepository receiverCouponRepository = new NumberReceiverRepositoryStub();
     private final TimeGeneratorFacade mockedTimeGeneratorFacade = createMockedTimeGeneratorFacadeWithDefaultDates();
     final private NumberReceiverConfiguration numberReceiverConfig = new NumberReceiverConfiguration();
     private  NumberReceiverFacade numberReceiverFacade = numberReceiverConfig.createForTests(uuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade);
@@ -27,7 +27,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
     @AfterEach
     void tearDown() {
         resetTimeFacadeToDefaultDates(mockedTimeGeneratorFacade);
-        receiverCouponRepository = new NumberReceiverRepositoryImpl();
+        receiverCouponRepository = new NumberReceiverRepositoryStub();
         numberReceiverFacade = numberReceiverConfig.createForTests(uuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade);
     }
 

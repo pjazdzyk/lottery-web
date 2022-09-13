@@ -7,14 +7,20 @@ import java.util.stream.IntStream;
 
 class RandomGenerator {
 
-    private final byte MIN_NUMBER_VALUE = 1;
-    private final byte MAX_NUMBER_VALUE = 99;
-    private final byte NUMBERS_TO_DRAW = 6;
+    private final int MIN_NUMBER_VALUE;
+    private final int MAX_NUMBER_VALUE;
+    private final int DRAWN_NUMBERS_COUNT;
+
+    public RandomGenerator(int minNumberValue, int maxNumberValue, int drawnNumbersCount) {
+        this.MIN_NUMBER_VALUE = minNumberValue;
+        this.MAX_NUMBER_VALUE = maxNumberValue;
+        this.DRAWN_NUMBERS_COUNT = drawnNumbersCount;
+    }
 
     public List<Integer> generateWinningNumbers() {
         List<Integer> allValidNumbers = IntStream.rangeClosed(MIN_NUMBER_VALUE, MAX_NUMBER_VALUE).boxed().collect(Collectors.toList());
         Collections.shuffle(allValidNumbers);
-        return allValidNumbers.stream().limit(NUMBERS_TO_DRAW).toList();
+        return allValidNumbers.stream().limit(DRAWN_NUMBERS_COUNT).toList();
     }
 
 }

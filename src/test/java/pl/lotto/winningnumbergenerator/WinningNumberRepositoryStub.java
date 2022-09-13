@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-class WinningNumberRepositoryImpl implements WinningNumberRepository {
+class WinningNumberRepositoryStub implements WinningNumberRepository {
 
     Map<LocalDateTime, WinningNumbers> databaseInMemory = new ConcurrentHashMap<>();
 

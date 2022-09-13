@@ -9,9 +9,9 @@ interface CouponRepository {
 
     Coupon save(Coupon coupon);
 
-    List<Coupon> getUserCouponListForDrawDate(LocalDateTime drawDate);
-
     Optional<Coupon> getUserCouponByUUID(UUID uuid);
+
+    List<Coupon> getUserCouponListForDrawDate(LocalDateTime drawDate);
 
     Optional<Coupon> deleteCouponByUUID(UUID uuid);
 

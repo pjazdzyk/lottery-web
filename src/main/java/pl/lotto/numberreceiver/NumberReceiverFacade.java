@@ -26,28 +26,28 @@ public class NumberReceiverFacade {
         return CouponMapper.toCouponDto(coupon);
     }
 
+    public Optional<CouponDto> getUserCouponByUUID(UUID uuid) {
+        Optional<Coupon> coupon = userCouponCouponRepository.getUserCouponByUUID(uuid);
+        return coupon.map(CouponMapper::toCouponDto);
+    }
+
     public List<CouponDto> getUserCouponListForDrawDate(LocalDateTime drawDate) {
         List<Coupon> coupons = userCouponCouponRepository.getUserCouponListForDrawDate(drawDate);
         return CouponMapper.toCouponDtoList(coupons);
     }
 
-    Optional<CouponDto> getUserCouponByUUID(UUID uuid) {
-        Optional<Coupon> coupon = userCouponCouponRepository.getUserCouponByUUID(uuid);
-        return coupon.map(CouponMapper::toCouponDto);
-    }
-
-    Optional<CouponDto> deleteUserCouponByUUID(UUID uuid) {
+    public Optional<CouponDto> deleteUserCouponByUUID(UUID uuid) {
         Optional<Coupon> coupon = userCouponCouponRepository.deleteCouponByUUID(uuid);
         return coupon.map(CouponMapper::toCouponDto);
     }
 
-    List<CouponDto> deleteAllExpiredCoupons() {
+    public List<CouponDto> deleteAllExpiredCoupons() {
         LocalDateTime currentTime = timeGeneratorFacade.getCurrentDateAndTime();
         List<Coupon> coupons =  userCouponCouponRepository.deleteAllExpiredCoupons(currentTime);
         return CouponMapper.toCouponDtoList(coupons);
     }
 
-    List<CouponDto> getAllCoupons(){
+    public List<CouponDto> getAllCoupons(){
         List<Coupon> coupons = userCouponCouponRepository.getAllCoupons();
         return CouponMapper.toCouponDtoList(coupons);
     }
