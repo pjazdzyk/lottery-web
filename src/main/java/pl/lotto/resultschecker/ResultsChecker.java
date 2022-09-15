@@ -4,10 +4,10 @@ import java.util.List;
 
 class ResultsChecker {
 
-    private final int MATCHES_TO_WIN_CRITERIA;
+    WinningRules winningRules;
 
-    public ResultsChecker(int minNumberOfMatchesToWin) {
-        this.MATCHES_TO_WIN_CRITERIA = minNumberOfMatchesToWin;
+    public ResultsChecker(WinningRules winningRules) {
+        this.winningRules = winningRules;
     }
 
     List<Integer> getMatchedNumbers(List<Integer> userTypedNumbers, List<Integer> winningNumbers) {
@@ -15,7 +15,7 @@ class ResultsChecker {
     }
 
     boolean checkIfIsWinner(List<Integer> matchedNumbers) {
-        return matchedNumbers.size() >= MATCHES_TO_WIN_CRITERIA;
+        return matchedNumbers.size() >= winningRules.minimumMatchesCountToWin();
     }
 
 }

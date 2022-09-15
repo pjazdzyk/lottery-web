@@ -1,7 +1,8 @@
 package pl.lotto.resultschecker;
 
 import pl.lotto.numberreceiver.NumberReceiverFacade;
-import pl.lotto.numberreceiver.dto.CouponDto;
+import pl.lotto.numberreceiver.dto.InputStatus;
+import pl.lotto.numberreceiver.dto.ReceiverDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,15 +19,17 @@ interface MockedNumberReceiverFacade extends SampleDrawDate{
     LocalDateTime sampleCreationTime = LocalDateTime.of(2021, 8, 8, 12, 0, 0);
     LocalDateTime expirationDateTime = sampleDrawDateTime.plusYears(2);
 
-    List<CouponDto> sampleCouponList = List.of(
+    InputStatus saved = InputStatus.SAVED;
+
+    List<ReceiverDto> sampleCouponList = List.of(
             // Winners
-            new CouponDto(sampleUuid, sampleDrawDateTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 4, 5, 6)),
-            new CouponDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 4, 50, 60)),
-            new CouponDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 70, 80, 90)),
+            new ReceiverDto(sampleUuid, sampleDrawDateTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 4, 5, 6), saved),
+            new ReceiverDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 4, 50, 60), saved),
+            new ReceiverDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 70, 80, 90), saved),
             // Losers
-            new CouponDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 30, 70, 80, 90)),
-            new CouponDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(10, 20, 30, 70, 80, 90)),
-            new CouponDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(10, 20, 30, 70, 80, 90))
+            new ReceiverDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 30, 70, 80, 90), saved),
+            new ReceiverDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(10, 20, 30, 70, 80, 90), saved),
+            new ReceiverDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(10, 20, 30, 70, 80, 90), saved)
     );
 
     default NumberReceiverFacade createMockedNumberReceiverFacade() {

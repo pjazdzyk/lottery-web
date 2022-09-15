@@ -7,20 +7,18 @@ import java.util.stream.IntStream;
 
 class RandomGenerator {
 
-    private final int MIN_NUMBER_VALUE;
-    private final int MAX_NUMBER_VALUE;
-    private final int DRAWN_NUMBERS_COUNT;
+    private final RandomGeneratorRules randomGeneratorRules;
 
-    public RandomGenerator(int minNumberValue, int maxNumberValue, int drawnNumbersCount) {
-        this.MIN_NUMBER_VALUE = minNumberValue;
-        this.MAX_NUMBER_VALUE = maxNumberValue;
-        this.DRAWN_NUMBERS_COUNT = drawnNumbersCount;
+    public RandomGenerator(RandomGeneratorRules randomGeneratorRules) {
+        this.randomGeneratorRules = randomGeneratorRules;
     }
 
     public List<Integer> generateWinningNumbers() {
-        List<Integer> allValidNumbers = IntStream.rangeClosed(MIN_NUMBER_VALUE, MAX_NUMBER_VALUE).boxed().collect(Collectors.toList());
+        List<Integer> allValidNumbers = IntStream.rangeClosed(randomGeneratorRules.minNumberValue(),
+                randomGeneratorRules.maxNumberValue()).boxed().collect(Collectors.toList());
+
         Collections.shuffle(allValidNumbers);
-        return allValidNumbers.stream().limit(DRAWN_NUMBERS_COUNT).toList();
+        return allValidNumbers.stream().limit(randomGeneratorRules.drawnNumbersCount()).toList();
     }
 
 }

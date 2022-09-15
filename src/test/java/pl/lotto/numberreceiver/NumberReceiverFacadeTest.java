@@ -3,7 +3,8 @@ package pl.lotto.numberreceiver;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pl.lotto.numberreceiver.dto.CouponDto;
+import pl.lotto.numberreceiver.dto.InputStatus;
+import pl.lotto.numberreceiver.dto.ReceiverDto;
 import pl.lotto.timegenerator.TimeGeneratorFacade;
 
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
     private CouponRepository receiverCouponRepository = new NumberReceiverRepositoryStub();
     private final TimeGeneratorFacade mockedTimeGeneratorFacade = createMockedTimeGeneratorFacadeWithDefaultDates();
     final private NumberReceiverConfiguration numberReceiverConfig = new NumberReceiverConfiguration();
-    private  NumberReceiverFacade numberReceiverFacade = numberReceiverConfig.createForTests(uuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade);
+    private NumberReceiverFacade numberReceiverFacade = numberReceiverConfig.createForTests(uuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade);
 
     @AfterEach
     void tearDown() {
@@ -32,32 +33,102 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
     }
 
     @Test
+    @DisplayName("should return dto with invalid status when input numbers are not provided (null), numbers are not saved")
+    void inputNumbers_givenInputNumbersAsNull_returnDtoWithInvalidStatus(){
+        // given
+        List<Integer> inputNumbers =  null;
+
+        // when
+        ReceiverDto actualDto = numberReceiverFacade.inputNumbers(inputNumbers);
+        List<ReceiverDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
+
+        // then
+        assertThat(actualDto.status()).isEqualTo(InputStatus.INVALID);
+        assertThat(actualRepositoryItems).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should return dto with invalid status when input number list have incorrect size, numbers are not saved")
+    void inputNumbers_givenInputNumbersWithIncorrectSize_returnsDtoWithInvalidStatus() {
+        // given
+        List<Integer> notEnoughNumbers = List.of(1, 2, 3, 4, 5);
+        List<Integer> toManyNumbers = List.of(1, 2, 3, 4, 5, 6, 7);
+
+        // when
+        ReceiverDto actualNotEnough = numberReceiverFacade.inputNumbers(notEnoughNumbers);
+        ReceiverDto actualToMany = numberReceiverFacade.inputNumbers(toManyNumbers);
+        List<ReceiverDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
+
+        // then
+        assertThat(actualNotEnough.uuid()).isNull();
+        assertThat(actualNotEnough.status()).isEqualTo(InputStatus.INVALID);
+        assertThat(actualToMany.uuid()).isNull();
+        assertThat(actualToMany.status()).isEqualTo(InputStatus.INVALID);
+        assertThat(actualRepositoryItems).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should return dto with invalid status when input number list contains negative number")
+    void inputNumbers_givenInputNumbersContainsNegativeValue_returnDtoWithInvalidStatus(){
+        // given
+        List<Integer> inputNumbers = List.of(1, 2, -3, 4, 5, 6);
+
+        // when
+        ReceiverDto actualDto = numberReceiverFacade.inputNumbers(inputNumbers);
+        List<ReceiverDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
+
+        // then
+        assertThat(actualDto.status()).isEqualTo(InputStatus.INVALID);
+        assertThat(actualRepositoryItems).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should return dto with invalid status when input number contains numbers outside game rules boundary")
+    void inputNumbers_givenInputNumbersWithNumbersOutsideBoundary_returnsDtoWithInvalidStatus() {
+        // given
+        List<Integer> withNumberBelowLimit = List.of(0, 2, 3, 4, 5, 6);
+        List<Integer> withNumberAboveLimit = List.of(1, 2, 3, 4, 100, 6);
+
+        // when
+        ReceiverDto actualBelowLimitDto = numberReceiverFacade.inputNumbers(withNumberBelowLimit);
+        ReceiverDto actualAboveLimitDto = numberReceiverFacade.inputNumbers(withNumberAboveLimit);
+        List<ReceiverDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
+
+        // then
+        assertThat(actualBelowLimitDto.uuid()).isNull();
+        assertThat(actualBelowLimitDto.status()).isEqualTo(InputStatus.INVALID);
+        assertThat(actualAboveLimitDto.uuid()).isNull();
+        assertThat(actualAboveLimitDto.status()).isEqualTo(InputStatus.INVALID);
+        assertThat(actualRepositoryItems).isEmpty();
+    }
+
+    @Test
     @DisplayName("should save coupon when user input numbers are provided")
     void inputNumbers_givenInputNumbers_returnsResultDTOWithUserNumbers() {
         // given
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
 
         // when
-        CouponDto actualCoupon = numberReceiverFacade.inputNumbers(numbersFromUser);
+        ReceiverDto actualCoupon = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         // then
-        Optional<CouponDto> expectedCouponDtoOptional = numberReceiverFacade.getUserCouponByUUID(actualCoupon.uuid());
-        CouponDto expectedCouponDto = expectedCouponDtoOptional.orElse(null);
-        assertThat(actualCoupon).isEqualTo(expectedCouponDto);
+        Optional<ReceiverDto> expectedCouponDtoOptional = numberReceiverFacade.getUserCouponByUUID(actualCoupon.uuid());
+        ReceiverDto expectedReceiverDto = expectedCouponDtoOptional.orElse(null);
+        assertThat(actualCoupon).isEqualTo(expectedReceiverDto);
     }
 
     @Test
     @DisplayName("should return list of coupons for specific draw date when draw date is provided")
     void getUserCouponsListForDrawDate_givenDrawDate_returnsUserCouponForExpectedDrawDate() {
         // given (8 August by default)
-        List<CouponDto> initialCoupons = seedSomeCouponsToTestDB(numberReceiverFacade, 1);
+        List<ReceiverDto> initialCoupons = seedSomeCouponsToTestDB(numberReceiverFacade, 1);
         // Time has passed, new draw date is
         LocalDateTime laterDrawDate = sampleDrawDate.plusDays(7);
         when(mockedTimeGeneratorFacade.getDrawDateAndTime()).thenReturn(laterDrawDate);
         seedSomeCouponsToTestDB(numberReceiverFacade, 1);
 
         // when
-        List<CouponDto> actualCouponsForSpecifiedDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(laterDrawDate);
+        List<ReceiverDto> actualCouponsForSpecifiedDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(laterDrawDate);
 
         // then
         assertThat(actualCouponsForSpecifiedDrawDate).doesNotContainAnyElementsOf(initialCoupons);
@@ -73,8 +144,8 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
 
         // when
-        Optional<CouponDto> actualUserCoupon = numberReceiverFacade.getUserCouponByUUID(uuidForMocks);
-        UUID actualUUID = actualUserCoupon.map(CouponDto::uuid).orElse(null);
+        Optional<ReceiverDto> actualUserCoupon = numberReceiverFacade.getUserCouponByUUID(uuidForMocks);
+        UUID actualUUID = actualUserCoupon.map(ReceiverDto::uuid).orElse(null);
 
         // then
         assertThat(actualUUID).isEqualTo(uuidForMocks);
@@ -88,11 +159,11 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
 
         // when
-        Optional<CouponDto> deletedCouponOptional = numberReceiverFacade.deleteUserCouponByUUID(uuidForMocks);
-        UUID deletedUUID = deletedCouponOptional.map(CouponDto::uuid).orElse(null);
+        Optional<ReceiverDto> deletedCouponOptional = numberReceiverFacade.deleteUserCouponByUUID(uuidForMocks);
+        UUID deletedUUID = deletedCouponOptional.map(ReceiverDto::uuid).orElse(null);
 
         // then
-        Optional<CouponDto> expectedDeletedCouponOptional = numberReceiverFacade.getUserCouponByUUID(uuidForMocks);
+        Optional<ReceiverDto> expectedDeletedCouponOptional = numberReceiverFacade.getUserCouponByUUID(uuidForMocks);
         assertThat(deletedUUID).isEqualTo(uuidForMocks);
         assertThat(expectedDeletedCouponOptional).isEmpty();
     }
@@ -107,19 +178,19 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         seedSomeCouponsToTestDB(numberReceiverFacade, 2);
 
         // when
-        List<CouponDto> deletedCoupons = numberReceiverFacade.deleteAllExpiredCoupons();
-        List<CouponDto> actualRemainingCoupons = numberReceiverFacade.getAllCoupons();
+        List<ReceiverDto> deletedCoupons = numberReceiverFacade.deleteAllExpiredCoupons();
+        List<ReceiverDto> actualRemainingCoupons = numberReceiverFacade.getAllCoupons();
 
         // then
         assertThat(actualRemainingCoupons).doesNotContainAnyElementsOf(deletedCoupons);
 
     }
 
-    private List<CouponDto> seedSomeCouponsToTestDB(NumberReceiverFacade numberReceiverFacade, int amount) {
-        List<CouponDto> coupons = new ArrayList<>(amount);
+    private List<ReceiverDto> seedSomeCouponsToTestDB(NumberReceiverFacade numberReceiverFacade, int amount) {
+        List<ReceiverDto> coupons = new ArrayList<>(amount);
         for (int i = 0; i < amount; i++) {
-            CouponDto couponDto = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
-            coupons.add(couponDto);
+            ReceiverDto receiverDto = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
+            coupons.add(receiverDto);
         }
         return coupons;
     }
@@ -128,6 +199,5 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         UUIDGenerator mockedUuidGenerator = getMockedUUIDGenerator(uuid);
         return numberReceiverConfig.createForTests(mockedUuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade);
     }
-
 
 }

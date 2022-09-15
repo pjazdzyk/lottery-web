@@ -1,31 +1,21 @@
 package pl.lotto.numberreceiver;
 
-import pl.lotto.numberreceiver.dto.CouponDto;
+import pl.lotto.numberreceiver.dto.InputStatus;
+import pl.lotto.numberreceiver.dto.ReceiverDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 class CouponMapper {
 
-    static CouponDto toCouponDto(Coupon coupon) {
-        return new CouponDto(coupon.uuid(), coupon.creationDate(), coupon.resultsDrawDate(),
-                coupon.expirationDate(), coupon.typedNumbers());
+    static ReceiverDto toDto(Coupon coupon, InputStatus status) {
+        return new ReceiverDto(coupon.uuid(), coupon.creationDate(), coupon.resultsDrawDate(),
+                coupon.expirationDate(), coupon.typedNumbers(), status);
     }
 
-    static Coupon toCoupon(CouponDto couponDto) {
-        return new Coupon(couponDto.uuid(), couponDto.creationDateTime(), couponDto.drawDateTime(),
-                couponDto.expirationDateTime(), couponDto.typedNumbers());
-    }
-
-    static List<CouponDto> toCouponDtoList(List<Coupon> coupon) {
+    static List<ReceiverDto> toDtoList(List<Coupon> coupon, InputStatus status) {
         return coupon.stream()
-                .map(CouponMapper::toCouponDto)
-                .collect(Collectors.toList());
-    }
-
-    static List<Coupon> toCouponList(List<CouponDto> couponDto) {
-        return couponDto.stream()
-                .map(CouponMapper::toCoupon)
+                .map(tempCoupon -> toDto(tempCoupon,status))
                 .collect(Collectors.toList());
     }
 

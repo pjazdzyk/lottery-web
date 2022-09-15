@@ -7,8 +7,9 @@ public class ResultsCheckerConfiguration {
     public ResultsCheckerFacade createForTests(NumberReceiverFacade numberReceiverFacade, WinningNumberGeneratorFacade winningNumbersFacade,
                                                ResultCheckerRepository resultCheckerRepository) {
 
-        int MIN_MATCHES_WIN_CRITERIA = 3;
-        ResultsChecker resultsChecker = new ResultsChecker(MIN_MATCHES_WIN_CRITERIA);
+        int minMatchesToWin = 3;
+        WinningRules winningRules = new WinningRules(minMatchesToWin);
+        ResultsChecker resultsChecker = new ResultsChecker(winningRules);
         LotteryResultsGenerator lotteryResultsGenerator = new LotteryResultsGenerator(resultsChecker);
         return new ResultsCheckerFacade(numberReceiverFacade, winningNumbersFacade, lotteryResultsGenerator, resultCheckerRepository);
     }
