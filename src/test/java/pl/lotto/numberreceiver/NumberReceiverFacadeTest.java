@@ -10,7 +10,6 @@ import pl.lotto.timegenerator.TimeGeneratorFacade;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -112,9 +111,9 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         ReceiverDto actualCoupon = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         // then
-        Optional<ReceiverDto> expectedCouponDtoOptional = numberReceiverFacade.getUserCouponByUUID(actualCoupon.uuid());
-        ReceiverDto expectedReceiverDto = expectedCouponDtoOptional.orElse(null);
+        ReceiverDto expectedReceiverDto = numberReceiverFacade.getUserCouponByUUID(actualCoupon.uuid());
         assertThat(actualCoupon).isEqualTo(expectedReceiverDto);
+        assertThat(actualCoupon.status()).isEqualTo(InputStatus.SAVED);
     }
 
     @Test
@@ -133,6 +132,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         // then
         assertThat(actualCouponsForSpecifiedDrawDate).doesNotContainAnyElementsOf(initialCoupons);
         assertThat(actualCouponsForSpecifiedDrawDate).hasSize(1);
+        assertThat(actualCouponsForSpecifiedDrawDate.get(0).status()).isEqualTo(InputStatus.SAVED);
 
     }
 
@@ -144,11 +144,11 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
 
         // when
-        Optional<ReceiverDto> actualUserCoupon = numberReceiverFacade.getUserCouponByUUID(uuidForMocks);
-        UUID actualUUID = actualUserCoupon.map(ReceiverDto::uuid).orElse(null);
+        ReceiverDto actualReceiverDto = numberReceiverFacade.getUserCouponByUUID(uuidForMocks);
 
         // then
-        assertThat(actualUUID).isEqualTo(uuidForMocks);
+        assertThat(actualReceiverDto.uuid()).isEqualTo(uuidForMocks);
+        assertThat(actualReceiverDto.status()).isEqualTo(InputStatus.SAVED);
     }
 
     @Test
@@ -159,13 +159,11 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
 
         // when
-        Optional<ReceiverDto> deletedCouponOptional = numberReceiverFacade.deleteUserCouponByUUID(uuidForMocks);
-        UUID deletedUUID = deletedCouponOptional.map(ReceiverDto::uuid).orElse(null);
+        ReceiverDto actualDeletedReceiverDto = numberReceiverFacade.deleteUserCouponByUUID(uuidForMocks);
 
         // then
-        Optional<ReceiverDto> expectedDeletedCouponOptional = numberReceiverFacade.getUserCouponByUUID(uuidForMocks);
-        assertThat(deletedUUID).isEqualTo(uuidForMocks);
-        assertThat(expectedDeletedCouponOptional).isEmpty();
+        assertThat(actualDeletedReceiverDto.uuid()).isEqualTo(uuidForMocks);
+        assertThat(actualDeletedReceiverDto.status()).isEqualTo(InputStatus.DELETED);
     }
 
     @Test
@@ -178,11 +176,12 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         seedSomeCouponsToTestDB(numberReceiverFacade, 2);
 
         // when
-        List<ReceiverDto> deletedCoupons = numberReceiverFacade.deleteAllExpiredCoupons();
-        List<ReceiverDto> actualRemainingCoupons = numberReceiverFacade.getAllCoupons();
+        List<ReceiverDto> actualListOfDeletedDto = numberReceiverFacade.deleteAllExpiredCoupons();
+        List<ReceiverDto> actualListOfRemainingDto = numberReceiverFacade.getAllCoupons();
 
         // then
-        assertThat(actualRemainingCoupons).doesNotContainAnyElementsOf(deletedCoupons);
+        assertThat(actualListOfRemainingDto).doesNotContainAnyElementsOf(actualListOfDeletedDto);
+        assertThat(actualListOfDeletedDto).allMatch(tempDto -> tempDto.status() == InputStatus.DELETED);
 
     }
 

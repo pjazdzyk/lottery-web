@@ -18,6 +18,7 @@ public class NumberReceiverFacade {
 
     public NumberReceiverFacade(CouponRepository numberReceiverRepositoryCouponRepository, CouponGenerator couponGenerator,
                                 TimeGeneratorFacade timeGeneratorFacade, InputValidator inputValidator) {
+
         this.userCouponCouponRepository = numberReceiverRepositoryCouponRepository;
         this.couponGenerator = couponGenerator;
         this.timeGeneratorFacade = timeGeneratorFacade;
@@ -25,7 +26,7 @@ public class NumberReceiverFacade {
     }
 
     public ReceiverDto inputNumbers(List<Integer> numbersFromUser) {
-        InputStatus inputStatus = inputValidator.isValidInput(numbersFromUser);
+        InputStatus inputStatus = inputValidator.validateInput(numbersFromUser);
         if (inputStatus == InputStatus.INVALID) {
             return invalidDto(numbersFromUser, inputStatus);
         }
@@ -34,9 +35,12 @@ public class NumberReceiverFacade {
         return CouponMapper.toDto(coupon, InputStatus.SAVED);
     }
 
-    public Optional<ReceiverDto> getUserCouponByUUID(UUID uuid) {
-        Optional<Coupon> coupon = userCouponCouponRepository.getUserCouponByUUID(uuid);
-        return coupon.map(couponOpt -> CouponMapper.toDto(couponOpt, InputStatus.SAVED));
+    public ReceiverDto getUserCouponByUUID(UUID uuid) {
+        Optional<Coupon> couponOptional = userCouponCouponRepository.getUserCouponByUUID(uuid);
+        if (couponOptional.isEmpty()) {
+            return notFoundDto();
+        }
+        return CouponMapper.toDto(couponOptional.get(), InputStatus.SAVED);
     }
 
     public List<ReceiverDto> getUserCouponListForDrawDate(LocalDateTime drawDate) {
@@ -44,9 +48,12 @@ public class NumberReceiverFacade {
         return CouponMapper.toDtoList(coupons, InputStatus.SAVED);
     }
 
-    public Optional<ReceiverDto> deleteUserCouponByUUID(UUID uuid) {
-        Optional<Coupon> coupon = userCouponCouponRepository.deleteCouponByUUID(uuid);
-        return coupon.map(couponOpt -> CouponMapper.toDto(couponOpt, InputStatus.DELETED));
+    public ReceiverDto deleteUserCouponByUUID(UUID uuid) {
+        Optional<Coupon> couponOptional = userCouponCouponRepository.deleteCouponByUUID(uuid);
+        if (couponOptional.isEmpty()) {
+            return notFoundDto();
+        }
+        return CouponMapper.toDto(couponOptional.get(), InputStatus.DELETED);
     }
 
     public List<ReceiverDto> deleteAllExpiredCoupons() {
@@ -64,6 +71,9 @@ public class NumberReceiverFacade {
         return new ReceiverDto(null, null, null, null, numbersFromUser, status);
     }
 
+    private ReceiverDto notFoundDto() {
+        return new ReceiverDto(null, null, null, null, null, InputStatus.NOT_FOUND);
+    }
 }
 
 

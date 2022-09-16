@@ -4,21 +4,23 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
-import pl.lotto.resultschecker.dto.LotteryResultsDto;
+import pl.lotto.resultschecker.dto.CheckerStatus;
+import pl.lotto.resultschecker.dto.CheckerDto;
 import pl.lotto.winningnumbergenerator.WinningNumberGeneratorFacade;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ResultCheckerFacadeTest implements MockedNumberReceiverFacade, MockedWinningNumberGeneratorFacade {
 
-    NumberReceiverFacade mockedNumberReceiverFacade = createMockedNumberReceiverFacade();
-    WinningNumberGeneratorFacade mockedWinningNumbersFacade = createWinningNumberFacade();
-    ResultsCheckerConfiguration resultsCheckerConfig = new ResultsCheckerConfiguration();
-    ResultCheckerRepository resultCheckerRepository = new ResultsCheckerRepositoryStub();
-    ResultsCheckerFacade resultsCheckerFacade = resultsCheckerConfig.createForTests(mockedNumberReceiverFacade, mockedWinningNumbersFacade, resultCheckerRepository);
+    private final NumberReceiverFacade mockedNumberReceiverFacade = createMockedNumberReceiverFacade();
+    private final WinningNumberGeneratorFacade mockedWinningNumbersFacade = createWinningNumberFacade();
+    private final ResultsCheckerConfiguration resultsCheckerConfig = new ResultsCheckerConfiguration();
+    private ResultCheckerRepository resultCheckerRepository = new ResultsCheckerRepositoryStub();
+    private final ResultsCheckerFacade resultsCheckerFacade = resultsCheckerConfig.createForTests(mockedNumberReceiverFacade, mockedWinningNumbersFacade, resultCheckerRepository);
 
     @BeforeEach
     void tearDown() {
@@ -44,30 +46,43 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade, MockedWinni
         resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // when
-        Optional<LotteryResultsDto> resultDtoOptional = resultsCheckerFacade.getResultsForId(sampleUuid);
-        LotteryResultsDto actualResult = resultDtoOptional.orElse(null);
+        CheckerDto actualResultCheckDto = resultsCheckerFacade.getResultsForId(sampleUuid);
 
         // then
-        assertThat(actualResult).isNotNull();
-        assertThat(actualResult.uuid()).isEqualTo(sampleUuid);
-        assertThat(actualResult.matchedNumbers()).isEqualTo(sampleWinningNumbers);
-        assertThat(actualResult.matchedNumbers().size()).isEqualTo(6);
+        assertThat(actualResultCheckDto.uuid()).isEqualTo(sampleUuid);
+        assertThat(actualResultCheckDto.status()).isEqualTo(CheckerStatus.OK);
+        assertThat(actualResultCheckDto.matchedNumbers()).isEqualTo(sampleWinningNumbers);
+        assertThat(actualResultCheckDto.matchedNumbers().size()).isEqualTo(6);
     }
 
     @Test
-    @DisplayName("should delete lottery results when uuid its is provided")
+    @DisplayName("should return not found lottery result when provided coupon uuid which is not in the database")
+    void getLotteryResultForUuid_givenInvalidUuid_returnLotteryNotFoundDto() {
+        // given
+        resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
+        UUID invalidUUid = UUID.fromString("7bc27e59-52f4-4bd8-974b-c3a62e8c4f92");
+
+        // when
+        CheckerDto actualResultCheckDto = resultsCheckerFacade.getResultsForId(invalidUUid);
+
+        // then
+        assertThat(actualResultCheckDto).isNotNull();
+        assertThat(actualResultCheckDto.status()).isEqualTo(CheckerStatus.NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("should delete lottery results when uuid is provided")
     void deleteLotteryResultsForUuid_givenUuid_shouldDeleteLotteryResult() {
         // given
         resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // when
-        Optional<LotteryResultsDto> resultDtoOptional = resultsCheckerFacade.deleteLotteryResultsForUuid(sampleUuid);
-        LotteryResultsDto actualResult = resultDtoOptional.orElse(null);
+        CheckerDto deletedCheckerResultDTo = resultsCheckerFacade.deleteLotteryResultsForUuid(sampleUuid);
 
         // then
-        assertThat(actualResult).isNotNull();
-        assertThat(actualResult.uuid()).isEqualTo(sampleUuid);
-        assertThat(resultsCheckerFacade.getResultsForId(sampleUuid)).isEmpty();
+        assertThat(deletedCheckerResultDTo.uuid()).isEqualTo(sampleUuid);
+        assertThat(deletedCheckerResultDTo.status()).isEqualTo(CheckerStatus.DELETED);
+        assertThat(resultsCheckerFacade.getResultsForId(sampleUuid).status()).isEqualTo(CheckerStatus.NOT_FOUND);
     }
 
     @Test
@@ -77,12 +92,26 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade, MockedWinni
         resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // when
-        List<LotteryResultsDto> lotteryResults = resultsCheckerFacade.getLotteryResultsForDrawDate(sampleDrawDateTime);
+        List<CheckerDto> lotteryResults = resultsCheckerFacade.getLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // then
         int expectedSize = 6;
         assertThat(lotteryResults).hasSize(expectedSize);
-        assertThat(lotteryResults).map(LotteryResultsDto::uuid).contains(sampleUuid);
+        assertThat(lotteryResults).map(CheckerDto::uuid).contains(sampleUuid);
+    }
+
+    @Test
+    @DisplayName("should return empty list when provided draw date does not exist in repository")
+    void getLotteryResultsForDrawDate_givenInvalidDrawDate_shouldReturnEmptyList() {
+        // given
+        resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
+
+        // when
+        List<CheckerDto> lotteryResults = resultsCheckerFacade.getLotteryResultsForDrawDate(LocalDateTime.of(2050,1,1,1,1,1));
+
+        // then
+        assertThat(lotteryResults).isNotNull();
+        assertThat(lotteryResults).isEmpty();
     }
 
     @Test
@@ -92,12 +121,14 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade, MockedWinni
         resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // when
-        List<LotteryResultsDto> lotteryResultsWinners = resultsCheckerFacade.getLotteryResultsDrawDateWinnersOnly(sampleDrawDateTime);
+        List<CheckerDto> lotteryResultsWinners = resultsCheckerFacade.getLotteryResultsDrawDateWinnersOnly(sampleDrawDateTime);
 
         // then
         int expectedSize = 3;
         assertThat(lotteryResultsWinners).hasSize(expectedSize);
-        assertThat(lotteryResultsWinners).map(LotteryResultsDto::uuid).contains(sampleUuid);
+        assertThat(lotteryResultsWinners).allMatch(CheckerDto::isWinner);
+        assertThat(lotteryResultsWinners).allMatch(dto -> dto.status() == CheckerStatus.OK);
+        assertThat(lotteryResultsWinners).map(CheckerDto::uuid).contains(sampleUuid);
     }
 
     @Test
@@ -107,13 +138,13 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade, MockedWinni
         resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // when
-        List<LotteryResultsDto> deletedLotteryResults = resultsCheckerFacade.deleteLotteryResultsForDrawDate(sampleDrawDateTime);
+        List<CheckerDto> actualADeletedLotteryResults = resultsCheckerFacade.deleteLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // then
         int expectedDeletedListSize = 6;
-        assertThat(deletedLotteryResults).hasSize(expectedDeletedListSize);
+        assertThat(actualADeletedLotteryResults).hasSize(expectedDeletedListSize);
         int expectedLotteryResultsListSize = 0;
-        List<LotteryResultsDto> resultsLeftInRepo = resultsCheckerFacade.deleteLotteryResultsForDrawDate(sampleDrawDateTime);
+        List<CheckerDto> resultsLeftInRepo = resultsCheckerFacade.deleteLotteryResultsForDrawDate(sampleDrawDateTime);
         assertThat(resultsLeftInRepo).hasSize(expectedLotteryResultsListSize);
     }
 
@@ -124,11 +155,11 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade, MockedWinni
         resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // when
-        List<LotteryResultsDto> allLotteryResults = resultsCheckerFacade.getAllLotteryResults();
+        List<CheckerDto> actualAllLotteryResults = resultsCheckerFacade.getAllLotteryResults();
 
         // then
         int expectedDeletedListSize = 6;
-        assertThat(allLotteryResults).hasSize(expectedDeletedListSize);
+        assertThat(actualAllLotteryResults).hasSize(expectedDeletedListSize);
     }
 
 }

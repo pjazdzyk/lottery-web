@@ -1,32 +1,13 @@
 package pl.lotto.resultsannouncer;
 
+import pl.lotto.resultsannouncer.dto.AnnouncerStatus;
 import pl.lotto.resultsannouncer.dto.PublishedResultsDto;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import pl.lotto.resultschecker.dto.CheckerDto;
 
 class PublishedResultsMapper {
 
-    public static PublishedResults toPublishedResults(PublishedResultsDto PublishedResultsDto) {
-        return new PublishedResults(PublishedResultsDto.uuid(), PublishedResultsDto.drawDate(), PublishedResultsDto.winningNumbers(),
-                PublishedResultsDto.matchedNumbers(), PublishedResultsDto.isWinner());
+    public static PublishedResultsDto checkerDtoToPublishedDto(CheckerDto checkerDto, AnnouncerStatus status) {
+        return new PublishedResultsDto(checkerDto.uuid(), checkerDto.drawDate(), checkerDto.typedNumbers(),
+                checkerDto.winningNumbers(), checkerDto.matchedNumbers(), checkerDto.isWinner(), status);
     }
-
-    public static PublishedResultsDto toDto(PublishedResults PublishedResults) {
-        return new PublishedResultsDto(PublishedResults.uuid(), PublishedResults.drawDate(), PublishedResults.winningNumbers(),
-                PublishedResults.matchedNumbers(), PublishedResults.isWinner());
-    }
-
-    static List<PublishedResultsDto> toDtoList(List<PublishedResults> PublishedResults) {
-        return PublishedResults.stream()
-                .map(PublishedResultsMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    static List<PublishedResults> toPublishedResultsList(List<PublishedResultsDto> couponDto) {
-        return couponDto.stream()
-                .map(PublishedResultsMapper::toPublishedResults)
-                .collect(Collectors.toList());
-    }
-
 }

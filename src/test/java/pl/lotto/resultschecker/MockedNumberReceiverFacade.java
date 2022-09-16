@@ -6,7 +6,6 @@ import pl.lotto.numberreceiver.dto.ReceiverDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -34,7 +33,7 @@ interface MockedNumberReceiverFacade extends SampleDrawDate{
 
     default NumberReceiverFacade createMockedNumberReceiverFacade() {
         NumberReceiverFacade mockedNumberReceiverFacade = mock(NumberReceiverFacade.class);
-        when(mockedNumberReceiverFacade.getUserCouponByUUID(any(UUID.class))).thenReturn(Optional.of(sampleCouponList.get(0)));
+        when(mockedNumberReceiverFacade.getUserCouponByUUID(any(UUID.class))).thenReturn(sampleCouponList.get(0));
         when(mockedNumberReceiverFacade.getUserCouponListForDrawDate(any(LocalDateTime.class))).thenReturn(sampleCouponList);
         return mockedNumberReceiverFacade;
     }

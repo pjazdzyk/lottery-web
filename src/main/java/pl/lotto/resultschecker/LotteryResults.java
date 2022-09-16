@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-record LotteryResults(UUID uuid, LocalDateTime drawDate, List<Integer> winningNumbers,
+record LotteryResults(UUID uuid, LocalDateTime drawDate, List<Integer> inputNumbers, List<Integer> winningNumbers,
                       List<Integer> matchedNumbers, boolean isWinner) {
 
     @Override

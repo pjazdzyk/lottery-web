@@ -1,7 +1,12 @@
 package pl.lotto.resultsannouncer;
 
-class ResultsAnnouncerConfiguration {
+import pl.lotto.resultschecker.ResultsCheckerFacade;
 
+public class ResultsAnnouncerConfiguration {
+
+    ResultsAnnouncerFacade createForTests(ResultsCheckerFacade resultsCheckerFacade, PublishedResultsCache cacheRepository) {
+        return new ResultsAnnouncerFacade(resultsCheckerFacade, cacheRepository);
+    }
 
 
 }

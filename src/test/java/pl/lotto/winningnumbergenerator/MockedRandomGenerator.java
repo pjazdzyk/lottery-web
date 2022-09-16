@@ -4,7 +4,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-public interface MockedRandomGenerator {
+interface MockedRandomGenerator {
 
     default RandomGenerator getMockedNumberGenerator(List<Integer> overrideNumbers){
         RandomGenerator mockedRandomGenerator = Mockito.mock(RandomGenerator.class);

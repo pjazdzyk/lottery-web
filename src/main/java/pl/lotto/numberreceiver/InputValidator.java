@@ -13,20 +13,11 @@ class InputValidator {
         this.inputValidatorRules = inputValidatorRules;
     }
 
-    InputStatus isValidInput(List<Integer> inputNumbers) {
-        if(Objects.isNull(inputNumbers)){
-            return InputStatus.getInvalidStatusWithMsg("Null passed as argument.");
+    InputStatus validateInput(List<Integer> inputNumbers) {
+        if (Objects.isNull(inputNumbers) || doesNotMeetSizeRules(inputNumbers.size())
+                || doesNotMeetNumberBoundary(inputNumbers) || containsRepeatedNumbers(inputNumbers)) {
+            return InputStatus.INVALID;
         }
-        if (doesNotMeetSizeRules(inputNumbers.size())) {
-            return InputStatus.getInvalidStatusWithMsg("Invalid number count.");
-        }
-        if (doesNotMeetNumberBoundary(inputNumbers)) {
-            return InputStatus.getInvalidStatusWithMsg("Numbers does not meet game number boundary conditions.");
-        }
-        if (containsRepeatedNumbers(inputNumbers)) {
-            return InputStatus.getInvalidStatusWithMsg("Numbers are not unique.");
-        }
-
         return InputStatus.VALIDATED;
     }
 

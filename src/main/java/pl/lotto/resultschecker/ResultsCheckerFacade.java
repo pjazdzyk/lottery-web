@@ -2,14 +2,14 @@ package pl.lotto.resultschecker;
 
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.ReceiverDto;
-import pl.lotto.resultschecker.dto.LotteryResultsDto;
+import pl.lotto.resultschecker.dto.CheckerDto;
+import pl.lotto.resultschecker.dto.CheckerStatus;
 import pl.lotto.winningnumbergenerator.WinningNumberGeneratorFacade;
+import pl.lotto.winningnumbergenerator.dto.WinNumberStatus;
 import pl.lotto.winningnumbergenerator.dto.WinningNumbersDto;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class ResultsCheckerFacade {
     private final NumberReceiverFacade numberReceiverFacade;
@@ -25,52 +25,61 @@ public class ResultsCheckerFacade {
         this.resultCheckerRepository = resultCheckerRepository;
     }
 
-    //TODO: this may fail and overflow heap for large lists of coupons
-    //TODO: this wil consume a lot of memory for large lists of coupon - to develop some way of buffered processing
+    //TODO: implement scheduled call
     public int generateLotteryResultsForDrawDate(LocalDateTime drawDate) {
-        Optional<WinningNumbersDto> currentWinningNumbersOptional = winningNumbersFacade.getWinningNumbersForDate(drawDate);
-        WinningNumbersDto winningNumbersDto;
+        WinningNumbersDto winningNumbersDto = winningNumbersFacade.getWinningNumbersForDate(drawDate);
         int generatedResultsCount = 0;
-        if (currentWinningNumbersOptional.isPresent()) {
-            winningNumbersDto = currentWinningNumbersOptional.get();
-        } else {
+        if (winningNumbersDto.status() != WinNumberStatus.OK) {
             return generatedResultsCount;
         }
         List<ReceiverDto> receiverDtoForDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(drawDate);
-        List<LotteryResults> listOfLotteryResults = lotteryResultsGenerator.getListOfLotteryResults(receiverDtoForDrawDate, winningNumbersDto.winningNumbers());
+        List<LotteryResults> listOfLotteryResults = lotteryResultsGenerator.getListOfLotteryResults(receiverDtoForDrawDate,
+                winningNumbersDto.winningNumbers());
         resultCheckerRepository.saveList(listOfLotteryResults);
         generatedResultsCount = listOfLotteryResults.size();
         return generatedResultsCount;
     }
 
-    public Optional<LotteryResultsDto> getResultsForId(UUID uuid) {
+    public CheckerDto getResultsForId(UUID uuid) {
         Optional<LotteryResults> lotteryResultsOptional = resultCheckerRepository.getLotteryResultsForUuid(uuid);
-        return lotteryResultsOptional.map(LotteryResultsMapper::toDto);
+        if (lotteryResultsOptional.isEmpty()) {
+            return notFoundDto();
+        }
+        return LotteryResultsMapper.toDto(lotteryResultsOptional.get(), CheckerStatus.OK);
     }
 
-    public Optional<LotteryResultsDto> deleteLotteryResultsForUuid(UUID uuid) {
+    public CheckerDto deleteLotteryResultsForUuid(UUID uuid) {
         Optional<LotteryResults> lotteryResultsOptional = resultCheckerRepository.deleteLotteryResultsForUuid(uuid);
-        return lotteryResultsOptional.map(LotteryResultsMapper::toDto);
+        if (lotteryResultsOptional.isEmpty()) {
+            return notFoundDto();
+        }
+        return LotteryResultsMapper.toDto(lotteryResultsOptional.get(), CheckerStatus.DELETED);
     }
 
-    public List<LotteryResultsDto> getLotteryResultsForDrawDate(LocalDateTime drawDate) {
+    public List<CheckerDto> getLotteryResultsForDrawDate(LocalDateTime drawDate) {
         List<LotteryResults> lotteryResults = resultCheckerRepository.getLotteryResultsForDrawDate(drawDate);
-        return LotteryResultsMapper.toDtoList(lotteryResults);
+        return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.OK);
     }
 
-    public List<LotteryResultsDto> getLotteryResultsDrawDateWinnersOnly(LocalDateTime drawDate){
+    public List<CheckerDto> getLotteryResultsDrawDateWinnersOnly(LocalDateTime drawDate) {
         List<LotteryResults> lotteryResults = resultCheckerRepository.getLotteryResultsDrawDateWinnersOnly(drawDate);
-        return LotteryResultsMapper.toDtoList(lotteryResults);
+        return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.OK);
     }
 
-    public List<LotteryResultsDto> deleteLotteryResultsForDrawDate(LocalDateTime drawDate) {
+    public List<CheckerDto> deleteLotteryResultsForDrawDate(LocalDateTime drawDate) {
         List<LotteryResults> lotteryResults = resultCheckerRepository.deleteLotteryResultsForDrawDate(drawDate);
-        return LotteryResultsMapper.toDtoList(lotteryResults);
+        return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.DELETED);
     }
 
-    public List<LotteryResultsDto> getAllLotteryResults() {
+    public List<CheckerDto> getAllLotteryResults() {
         List<LotteryResults> lotteryResults = resultCheckerRepository.getAllLotteryResults();
-        return LotteryResultsMapper.toDtoList(lotteryResults);
+        return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.OK);
     }
+
+    private CheckerDto notFoundDto() {
+        return new CheckerDto(null, null, null, null, null, false, CheckerStatus.NOT_FOUND);
+    }
+
+
 
 }

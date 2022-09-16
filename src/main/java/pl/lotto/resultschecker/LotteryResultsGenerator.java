@@ -20,7 +20,7 @@ class LotteryResultsGenerator {
         List<Integer> userTypedNumbers = receiverDto.typedNumbers();
         List<Integer> matchedNumbers = resultsChecker.getMatchedNumbers(userTypedNumbers, winningNumbers);
         boolean isWinner = resultsChecker.checkIfIsWinner(matchedNumbers);
-        return new LotteryResults(receiverDto.uuid(), receiverDto.drawDateTime(), winningNumbers, matchedNumbers, isWinner);
+        return new LotteryResults(receiverDto.uuid(), receiverDto.drawDateTime(), receiverDto.typedNumbers(), winningNumbers, matchedNumbers, isWinner);
     }
 
 }
