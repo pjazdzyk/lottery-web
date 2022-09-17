@@ -9,6 +9,6 @@ interface PublishedResultsCache {
 
     PublishedResultsDto save(PublishedResultsDto lotteryResults);
 
-    Optional<PublishedResultsDto> getPublishedResultsForUuid(UUID uuid);
+    Optional<PublishedResultsDto> getCachedDtoForUuid(UUID uuid);
 
 }

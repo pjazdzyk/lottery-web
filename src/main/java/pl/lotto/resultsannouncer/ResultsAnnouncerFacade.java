@@ -20,7 +20,7 @@ public class ResultsAnnouncerFacade {
     }
 
     public PublishedResultsDto getResultsForId(UUID uuid) {
-        Optional<PublishedResultsDto> publishedResultsForUuidOpt = publishedResultsCache.getPublishedResultsForUuid(uuid);
+        Optional<PublishedResultsDto> publishedResultsForUuidOpt = publishedResultsCache.getCachedDtoForUuid(uuid);
         if (publishedResultsForUuidOpt.isPresent()) {
             return publishedResultsForUuidOpt.get();
         }

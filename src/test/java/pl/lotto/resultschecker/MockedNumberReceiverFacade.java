@@ -22,7 +22,7 @@ interface MockedNumberReceiverFacade extends SampleDrawDate{
 
     List<ReceiverDto> sampleCouponList = List.of(
             // Winners
-            new ReceiverDto(sampleUuid, sampleDrawDateTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 4, 5, 6), saved),
+            new ReceiverDto(sampleUuid, sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 4, 5, 6), saved),
             new ReceiverDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 4, 50, 60), saved),
             new ReceiverDto(UUID.randomUUID(), sampleCreationTime, sampleDrawDateTime, expirationDateTime, List.of(1, 2, 3, 70, 80, 90), saved),
             // Losers
