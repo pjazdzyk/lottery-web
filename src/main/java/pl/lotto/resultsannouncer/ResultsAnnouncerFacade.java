@@ -6,6 +6,7 @@ import pl.lotto.resultschecker.ResultsCheckerFacade;
 import pl.lotto.resultschecker.dto.CheckerDto;
 import pl.lotto.resultschecker.dto.CheckerStatus;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,6 +21,9 @@ public class ResultsAnnouncerFacade {
     }
 
     public PublishedResultsDto getResultsForId(UUID uuid) {
+        if(Objects.isNull(uuid)){
+            return notFoundDto();
+        }
         Optional<PublishedResultsDto> publishedResultsForUuidOpt = publishedResultsCache.getCachedDtoForUuid(uuid);
         if (publishedResultsForUuidOpt.isPresent()) {
             return publishedResultsForUuidOpt.get();
@@ -35,6 +39,5 @@ public class ResultsAnnouncerFacade {
     private PublishedResultsDto notFoundDto() {
         return new PublishedResultsDto(null, null, null, null, null, false, AnnouncerStatus.NOT_FOUND);
     }
-
 
 }

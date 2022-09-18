@@ -21,4 +21,5 @@ class CacheRepositoryStub implements PublishedResultsCache {
     public Optional<PublishedResultsDto> getCachedDtoForUuid(UUID uuid) {
         return Optional.ofNullable(cacheInMemory.get(uuid));
     }
+
 }
