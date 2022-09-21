@@ -1,5 +1,4 @@
 package pl.lotto.timegenerator;
-
 import java.time.LocalDateTime;
 
 public class TimeGeneratorFacade {
@@ -21,7 +20,5 @@ public class TimeGeneratorFacade {
     public LocalDateTime getExpirationDateAndTime() {
         return timeGenerator.getExpirationDateTime();
     }
-
-
 }
 

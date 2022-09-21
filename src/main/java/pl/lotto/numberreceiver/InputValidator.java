@@ -7,10 +7,10 @@ import java.util.Objects;
 
 class InputValidator {
 
-    public final InputValidatorRules inputValidatorRules;
+    public final LottoInputRules lottoInputRules;
 
-    InputValidator(InputValidatorRules inputValidatorRules) {
-        this.inputValidatorRules = inputValidatorRules;
+    InputValidator(LottoInputRules lottoInputRules) {
+        this.lottoInputRules = lottoInputRules;
     }
 
     InputStatus validateInput(List<Integer> inputNumbers) {
@@ -35,16 +35,16 @@ class InputValidator {
     }
 
     private boolean doesNotMeetMinMaxRules(int number) {
-        return number < inputValidatorRules.minNumberValue() || number > inputValidatorRules.maxNumberValue();
+        return number < lottoInputRules.minNumberValue() || number > lottoInputRules.maxNumberValue();
     }
 
     private boolean containsRepeatedNumbers(List<Integer> inputNumbers) {
         List<Integer> distinctList = inputNumbers.stream().distinct().toList();
-        return distinctList.size() < inputValidatorRules.drawnNumbersCount();
+        return distinctList.size() < lottoInputRules.drawnNumbersCount();
     }
 
     private boolean doesNotMeetSizeRules(int size) {
-        return size < inputValidatorRules.drawnNumbersCount() || size > inputValidatorRules.drawnNumbersCount();
+        return size < lottoInputRules.drawnNumbersCount() || size > lottoInputRules.drawnNumbersCount();
     }
 
 

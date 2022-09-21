@@ -4,7 +4,8 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 
 class CurrentDateTimeGenerator {
-    Clock clock;
+
+    private final Clock clock;
 
     CurrentDateTimeGenerator(Clock clock) {
         this.clock = clock;

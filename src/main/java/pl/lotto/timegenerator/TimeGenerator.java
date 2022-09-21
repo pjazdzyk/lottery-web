@@ -6,7 +6,6 @@ class TimeGenerator {
 
     private final CurrentDateTimeGenerator currentDateTimeGenerator;
     private final DrawDateTimeGenerator drawDateTimeGenerator;
-
     private final ExpirationDateTimeGenerator expirationDateTimeGenerator;
     private LocalDateTime drawDate; //TODO cant set as final, as once a week this will change
 
