@@ -2,25 +2,26 @@
 version: '3.1'
 
 services:
-
-  lotto-integration:
+  # actual database image
+  mongo:
     image: mongo
     restart: always
     ports:
-      - "27017:27017"
+      - "27017:27017"  # port forwarding
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
-      MONGO_INITDB_DATABASE: testowanie
+      MONGO_INITDB_DATABASE: lotto-integration
     volumes:
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
 
+  # web access point service, for created mongo db
   mongo-express:
     image: mongo-express
     restart: always
     ports:
-      - "8081:8081"
+      - "8081:8081"  # port forwarding
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@localhost:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/  # mongodb://{mongo-image-username}:{mongo-image-password}@{mongo-image-name}:{port}

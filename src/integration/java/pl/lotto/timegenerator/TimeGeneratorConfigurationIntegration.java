@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-public class TimeGeneratorIntegrationConfiguration {
+public class TimeGeneratorConfigurationIntegration {
 
     @Profile("integration")
     @Bean("integrationAdjustableClock")
-    AdjustableClock integrationClock(TimeConfigurable timeConfig){
+    AdjustableClock createAdjustableClock(TimeConfigurable timeConfig){
         return AdjustableClock.ofTimeConfiguration(timeConfig);
     }
 

@@ -2,6 +2,10 @@ spring:
   data:
     mongodb:
       database: lotto-integration
+      username: admin
+      password: admin
+      host: localhost
+      port: 27017
 
 lotto:
   input:
