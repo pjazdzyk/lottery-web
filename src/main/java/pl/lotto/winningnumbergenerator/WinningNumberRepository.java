@@ -1,20 +1,17 @@
 package pl.lotto.winningnumbergenerator;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-interface WinningNumberRepository {
+@Repository
+interface WinningNumberRepository extends MongoRepository<WinningNumbers, UUID> {
 
-    WinningNumbers save(WinningNumbers winningNumbers);
+    Optional<WinningNumbers> findByDrawDate(LocalDateTime drawDate);
+    void deleteByDrawDate(LocalDateTime drawDate);
+    boolean existsByDrawDate(LocalDateTime drawDate);
 
-    Optional<WinningNumbers> getWinningNumbersForDrawDate(LocalDateTime drawDate);
-
-    boolean containsNumbersOfDrawDate(LocalDateTime drawDate);
-
-    Optional<WinningNumbers> deleteWinningNumbersForDate(LocalDateTime drawDate);
-
-    List<WinningNumbers> getAllWinningNumbers();
-
-    boolean contains(WinningNumbers winningNumbers);
 }

@@ -8,5 +8,4 @@ public class ResultsAnnouncerConfiguration {
         return new ResultsAnnouncerFacade(resultsCheckerFacade, cacheRepository);
     }
 
-
 }

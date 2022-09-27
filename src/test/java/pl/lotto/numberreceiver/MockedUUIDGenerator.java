@@ -6,10 +6,10 @@ import java.util.UUID;
 
 interface MockedUUIDGenerator {
 
-    default UUIDGenerator getMockedUUIDGenerator(UUID uuid) {
-        UUIDGenerator mockedUuidGenerator = Mockito.mock(UUIDGenerator.class);
-        Mockito.when(mockedUuidGenerator.generateRandomUUID()).thenReturn(uuid);
-        return mockedUuidGenerator;
+    default ReceiverUuidGenerator getMockedUUIDGenerator(UUID uuid) {
+        ReceiverUuidGenerator mockedReceiverUuidGenerator = Mockito.mock(ReceiverUuidGenerator.class);
+        Mockito.when(mockedReceiverUuidGenerator.generateRandomUUID()).thenReturn(uuid);
+        return mockedReceiverUuidGenerator;
     }
 
 }

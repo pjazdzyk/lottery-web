@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 class CouponMapper {
 
     static ReceiverDto toDto(Coupon coupon, InputStatus status) {
-        return new ReceiverDto(coupon.uuid(), coupon.creationDate(), coupon.resultsDrawDate(),
+        return new ReceiverDto(coupon.uuid(), coupon.creationDate(), coupon.drawDate(),
                 coupon.expirationDate(), coupon.typedNumbers(), status);
     }
 

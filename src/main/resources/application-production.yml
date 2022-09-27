@@ -1,0 +1,20 @@
+spring:
+  data:
+    mongodb:
+      database: lotto-production
+
+lotto:
+  input:
+    minNumber: 1
+    maxNumber: 99
+    numberCount: 6
+  winning:
+    minWinNumber: ${lotto.input.minNumber}
+    maxWinNumber: ${lotto.input.maxNumber}
+    winNumberCount: ${lotto.input.numberCount}
+  time:
+    drawDayOfWeek: SATURDAY
+    drawHour: "12:00:00"
+    expirationInDays: 930
+  checker:
+    matchedNumbersToWin: 3

@@ -7,7 +7,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Document
-record Coupon(@Id UUID uuid, LocalDateTime creationDate, LocalDateTime resultsDrawDate,
-              LocalDateTime expirationDate, List<Integer> typedNumbers) {
+@Document(collection = "input-coupons")
+record Coupon(@Id UUID uuid,
+                     LocalDateTime creationDate,
+                     LocalDateTime drawDate,
+                     LocalDateTime expirationDate,
+                     List<Integer> typedNumbers) {
 }

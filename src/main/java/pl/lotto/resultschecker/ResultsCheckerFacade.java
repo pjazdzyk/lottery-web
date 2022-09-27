@@ -15,14 +15,14 @@ public class ResultsCheckerFacade {
     private final NumberReceiverFacade numberReceiverFacade;
     private final WinningNumberGeneratorFacade winningNumbersFacade;
     private final LotteryResultsGenerator lotteryResultsGenerator;
-    private final ResultCheckerRepository resultCheckerRepository;
+    private final ResultsCheckerRepository resultsCheckerRepository;
 
     public ResultsCheckerFacade(NumberReceiverFacade numberReceiverFacade, WinningNumberGeneratorFacade winningNumbersFacade,
-                                LotteryResultsGenerator lotteryResultsGenerator, ResultCheckerRepository resultCheckerRepository) {
+                                LotteryResultsGenerator lotteryResultsGenerator, ResultsCheckerRepository resultsCheckerRepository) {
         this.numberReceiverFacade = numberReceiverFacade;
         this.winningNumbersFacade = winningNumbersFacade;
         this.lotteryResultsGenerator = lotteryResultsGenerator;
-        this.resultCheckerRepository = resultCheckerRepository;
+        this.resultsCheckerRepository = resultsCheckerRepository;
     }
 
     //TODO: implement scheduled call
@@ -35,13 +35,13 @@ public class ResultsCheckerFacade {
         List<ReceiverDto> receiverDtoForDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(drawDate);
         List<LotteryResults> listOfLotteryResults = lotteryResultsGenerator.getListOfLotteryResults(receiverDtoForDrawDate,
                 winningNumbersDto.winningNumbers());
-        resultCheckerRepository.saveList(listOfLotteryResults);
+        resultsCheckerRepository.saveAll(listOfLotteryResults);
         generatedResultsCount = listOfLotteryResults.size();
         return generatedResultsCount;
     }
 
     public CheckerDto getResultsForId(UUID uuid) {
-        Optional<LotteryResults> lotteryResultsOptional = resultCheckerRepository.getLotteryResultsForUuid(uuid);
+        Optional<LotteryResults> lotteryResultsOptional = resultsCheckerRepository.findById(uuid);
         if (lotteryResultsOptional.isEmpty()) {
             return notFoundDto();
         }
@@ -49,30 +49,27 @@ public class ResultsCheckerFacade {
     }
 
     public CheckerDto deleteLotteryResultsForUuid(UUID uuid) {
-        Optional<LotteryResults> lotteryResultsOptional = resultCheckerRepository.deleteLotteryResultsForUuid(uuid);
+        Optional<LotteryResults> lotteryResultsOptional = resultsCheckerRepository.findById(uuid);
         if (lotteryResultsOptional.isEmpty()) {
             return notFoundDto();
         }
+        resultsCheckerRepository.deleteById(uuid);
         return LotteryResultsMapper.toDto(lotteryResultsOptional.get(), CheckerStatus.DELETED);
     }
 
     public List<CheckerDto> getLotteryResultsForDrawDate(LocalDateTime drawDate) {
-        List<LotteryResults> lotteryResults = resultCheckerRepository.getLotteryResultsForDrawDate(drawDate);
+        List<LotteryResults> lotteryResults = resultsCheckerRepository.findByDrawDate(drawDate);
         return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.OK);
     }
 
     public List<CheckerDto> getLotteryResultsDrawDateWinnersOnly(LocalDateTime drawDate) {
-        List<LotteryResults> lotteryResults = resultCheckerRepository.getLotteryResultsDrawDateWinnersOnly(drawDate);
+        boolean isWinner = true;
+        List<LotteryResults> lotteryResults = resultsCheckerRepository.findByDrawDateAndWinner(drawDate, isWinner);
         return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.OK);
     }
 
-    public List<CheckerDto> deleteLotteryResultsForDrawDate(LocalDateTime drawDate) {
-        List<LotteryResults> lotteryResults = resultCheckerRepository.deleteLotteryResultsForDrawDate(drawDate);
-        return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.DELETED);
-    }
-
     public List<CheckerDto> getAllLotteryResults() {
-        List<LotteryResults> lotteryResults = resultCheckerRepository.getAllLotteryResults();
+        List<LotteryResults> lotteryResults = resultsCheckerRepository.findAll();
         return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.OK);
     }
 

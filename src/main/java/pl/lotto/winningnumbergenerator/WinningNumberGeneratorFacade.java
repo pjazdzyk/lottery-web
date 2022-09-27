@@ -38,7 +38,7 @@ public class WinningNumberGeneratorFacade {
     }
 
     public WinningNumbersDto getWinningNumbersForDate(LocalDateTime drawDate) {
-        Optional<WinningNumbers> winningNumbersForDrawDateOptional = winningNumberRepository.getWinningNumbersForDrawDate(drawDate);
+        Optional<WinningNumbers> winningNumbersForDrawDateOptional = winningNumberRepository.findByDrawDate(drawDate);
         if (winningNumbersForDrawDateOptional.isEmpty()) {
             return notFoundDto();
         }
@@ -46,21 +46,22 @@ public class WinningNumberGeneratorFacade {
     }
 
     public WinningNumbersDto deleteWinningNumbersForDate(LocalDateTime drawDate) {
-        Optional<WinningNumbers> winningNumbersForDrawDateOptional = winningNumberRepository.deleteWinningNumbersForDate(drawDate);
+        Optional<WinningNumbers> winningNumbersForDrawDateOptional = winningNumberRepository.findByDrawDate(drawDate);
         if (winningNumbersForDrawDateOptional.isEmpty()) {
             return notFoundDto();
         }
+        winningNumberRepository.deleteByDrawDate(drawDate);
         return WinningNumberMapper.toDto(winningNumbersForDrawDateOptional.get(), WinNumberStatus.DELETED);
     }
 
     public List<WinningNumbersDto> getAllWinningNumbers() {
-        List<WinningNumbers> allWinningNumbers = winningNumberRepository.getAllWinningNumbers();
+        List<WinningNumbers> allWinningNumbers = winningNumberRepository.findAll();
         return WinningNumberMapper.toDtoList(allWinningNumbers, WinNumberStatus.OK);
     }
 
     private boolean checkIfActualNumbersAreAlreadyDrawnAndSaved() {
         LocalDateTime drawDate = timeGeneratorFacade.getDrawDateAndTime();
-        return winningNumberRepository.containsNumbersOfDrawDate(drawDate);
+        return winningNumberRepository.existsByDrawDate(drawDate);
     }
 
     private WinningNumbersDto notFoundDto() {

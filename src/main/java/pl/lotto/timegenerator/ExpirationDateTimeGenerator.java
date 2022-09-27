@@ -7,7 +7,6 @@ class ExpirationDateTimeGenerator {
 
     final private Duration expirationInDays;
 
-
     ExpirationDateTimeGenerator(Duration expirationInDays) {
         this.expirationInDays = expirationInDays;
     }

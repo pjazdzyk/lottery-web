@@ -1,24 +1,16 @@
 package pl.lotto.numberreceiver;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-interface CouponRepository {
+@Repository
+interface CouponRepository extends MongoRepository<Coupon, UUID> {
 
-    Coupon save(Coupon coupon);
-
-    Optional<Coupon> getUserCouponByUUID(UUID uuid);
-
-    List<Coupon> getUserCouponListForDrawDate(LocalDateTime drawDate);
-
-    Optional<Coupon> deleteCouponByUUID(UUID uuid);
-
-    List<Coupon> deleteAllExpiredCoupons(LocalDateTime currentDateTime);
-
-    List<Coupon> getAllCoupons();
-
-    boolean contains(Coupon coupon);
+  List<Coupon> findByDrawDate(LocalDateTime drawDate);
 
 }
+

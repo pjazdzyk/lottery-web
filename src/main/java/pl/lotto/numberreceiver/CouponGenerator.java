@@ -8,16 +8,16 @@ import java.util.UUID;
 
 class CouponGenerator {
 
-    private final UUIDGenerator uuidGenerator;
+    private final ReceiverUuidGenerator receiverUuidGenerator;
     private final TimeGeneratorFacade timeGeneratorFacade;
 
-    CouponGenerator(UUIDGenerator uuidGenerator, TimeGeneratorFacade timeGeneratorFacade) {
-        this.uuidGenerator = uuidGenerator;
+    CouponGenerator(ReceiverUuidGenerator receiverUuidGenerator, TimeGeneratorFacade timeGeneratorFacade) {
+        this.receiverUuidGenerator = receiverUuidGenerator;
         this.timeGeneratorFacade = timeGeneratorFacade;
     }
 
     Coupon generateUserCoupon(List<Integer> userTypedNumbers) {
-        UUID uuid = uuidGenerator.generateRandomUUID();
+        UUID uuid = receiverUuidGenerator.generateRandomUUID();
         LocalDateTime creationTime = timeGeneratorFacade.getCurrentDateAndTime();
         LocalDateTime drawTime = timeGeneratorFacade.getDrawDateAndTime();
         LocalDateTime expirationDate = timeGeneratorFacade.getExpirationDateAndTime();

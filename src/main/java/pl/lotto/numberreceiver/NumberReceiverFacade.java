@@ -7,21 +7,18 @@ import java.util.UUID;
 
 import pl.lotto.numberreceiver.dto.InputStatus;
 import pl.lotto.numberreceiver.dto.ReceiverDto;
-import pl.lotto.timegenerator.TimeGeneratorFacade;
 
 public class NumberReceiverFacade {
 
     private final CouponRepository userCouponCouponRepository;
     private final CouponGenerator couponGenerator;
-    private final TimeGeneratorFacade timeGeneratorFacade;
     private final InputValidator inputValidator;
 
     public NumberReceiverFacade(CouponRepository numberReceiverRepositoryCouponRepository, CouponGenerator couponGenerator,
-                                TimeGeneratorFacade timeGeneratorFacade, InputValidator inputValidator) {
+                                InputValidator inputValidator) {
 
         this.userCouponCouponRepository = numberReceiverRepositoryCouponRepository;
         this.couponGenerator = couponGenerator;
-        this.timeGeneratorFacade = timeGeneratorFacade;
         this.inputValidator = inputValidator;
     }
 
@@ -36,7 +33,7 @@ public class NumberReceiverFacade {
     }
 
     public ReceiverDto getUserCouponByUUID(UUID uuid) {
-        Optional<Coupon> couponOptional = userCouponCouponRepository.getUserCouponByUUID(uuid);
+        Optional<Coupon> couponOptional = userCouponCouponRepository.findById(uuid);
         if (couponOptional.isEmpty()) {
             return notFoundDto();
         }
@@ -44,26 +41,21 @@ public class NumberReceiverFacade {
     }
 
     public List<ReceiverDto> getUserCouponListForDrawDate(LocalDateTime drawDate) {
-        List<Coupon> coupons = userCouponCouponRepository.getUserCouponListForDrawDate(drawDate);
+        List<Coupon> coupons = userCouponCouponRepository.findByDrawDate(drawDate);
         return CouponMapper.toDtoList(coupons, InputStatus.SAVED);
     }
 
     public ReceiverDto deleteUserCouponByUUID(UUID uuid) {
-        Optional<Coupon> couponOptional = userCouponCouponRepository.deleteCouponByUUID(uuid);
+        Optional<Coupon> couponOptional = userCouponCouponRepository.findById(uuid);
         if (couponOptional.isEmpty()) {
             return notFoundDto();
         }
+        userCouponCouponRepository.deleteById(uuid);
         return CouponMapper.toDto(couponOptional.get(), InputStatus.DELETED);
     }
 
-    public List<ReceiverDto> deleteAllExpiredCoupons() {
-        LocalDateTime currentTime = timeGeneratorFacade.getCurrentDateAndTime();
-        List<Coupon> coupons = userCouponCouponRepository.deleteAllExpiredCoupons(currentTime);
-        return CouponMapper.toDtoList(coupons, InputStatus.DELETED);
-    }
-
     public List<ReceiverDto> getAllCoupons() {
-        List<Coupon> coupons = userCouponCouponRepository.getAllCoupons();
+        List<Coupon> coupons = userCouponCouponRepository.findAll();
         return CouponMapper.toDtoList(coupons, InputStatus.SAVED);
     }
 

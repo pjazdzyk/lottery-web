@@ -2,7 +2,6 @@ package pl.lotto.timegenerator;
 
 import java.time.*;
 
-
 public class AdjustableClock extends Clock {
 
     private Instant instant;
@@ -58,6 +57,10 @@ public class AdjustableClock extends Clock {
         return new AdjustableClock(zoneDateTime.toInstant(), zone);
     }
 
+    public static AdjustableClock ofTimeConfiguration(TimeConfigurable timeConfig) {
+        return ofLocalDateAndLocalTime(timeConfig.getSampleDate(), timeConfig.getSampleTime(), timeConfig.getZoneId());
+    }
+
     public void advanceInTimeBy(Duration clockOffset) {
         this.instant = instant.plus(clockOffset);
     }
@@ -81,7 +84,6 @@ public class AdjustableClock extends Clock {
         LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(this), localTime);
         setClockToLocalDateTime(localDateTime);
     }
-
 
     private static ZonedDateTime createZoneDateTime(LocalDate date, LocalTime time, ZoneId zone) {
         return ZonedDateTime.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),

@@ -18,24 +18,25 @@ import static org.mockito.Mockito.when;
 class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGeneratorFacade {
 
     private final UUID uuidForMocks = UUID.fromString("ef241277-64a2-457a-beea-a4c589803a26");
-    private final UUIDGenerator uuidGenerator = new UUIDGenerator();
-    private CouponRepository receiverCouponRepository = new NumberReceiverRepositoryStub();
+    private final ReceiverUuidGenerator receiverUuidGenerator = new ReceiverUuidGenerator();
+    private CouponRepository receiverCouponRepository = new NumberReceiverRepositoryInMemory();
     private final TimeGeneratorFacade mockedTimeGeneratorFacade = createMockedTimeGeneratorFacadeWithDefaultDates();
     final private NumberReceiverConfiguration numberReceiverConfig = new NumberReceiverConfiguration();
-    private NumberReceiverFacade numberReceiverFacade = numberReceiverConfig.createForTests(uuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade);
+    final private InputConfigurable inputConfig = new InputPropertyConfigTest(1,99,6);
+    private NumberReceiverFacade numberReceiverFacade = numberReceiverConfig.createForTests(receiverUuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade, inputConfig);
 
     @AfterEach
     void tearDown() {
         resetTimeFacadeToDefaultDates(mockedTimeGeneratorFacade);
-        receiverCouponRepository = new NumberReceiverRepositoryStub();
-        numberReceiverFacade = numberReceiverConfig.createForTests(uuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade);
+        receiverCouponRepository = new NumberReceiverRepositoryInMemory();
+        numberReceiverFacade = numberReceiverConfig.createForTests(receiverUuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade, inputConfig);
     }
 
     @Test
     @DisplayName("should return dto with invalid status when input numbers are not provided (null), numbers are not saved")
-    void inputNumbers_givenInputNumbersAsNull_returnDtoWithInvalidStatus(){
+    void inputNumbers_givenInputNumbersAsNull_returnDtoWithInvalidStatus() {
         // given
-        List<Integer> inputNumbers =  null;
+        List<Integer> inputNumbers = null;
 
         // when
         ReceiverDto actualDto = numberReceiverFacade.inputNumbers(inputNumbers);
@@ -68,7 +69,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
 
     @Test
     @DisplayName("should return dto with invalid status when input number list contains negative number")
-    void inputNumbers_givenInputNumbersContainsNegativeValue_returnDtoWithInvalidStatus(){
+    void inputNumbers_givenInputNumbersContainsNegativeValue_returnDtoWithInvalidStatus() {
         // given
         List<Integer> inputNumbers = List.of(1, 2, -3, 4, 5, 6);
 
@@ -166,25 +167,6 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         assertThat(actualDeletedReceiverDto.status()).isEqualTo(InputStatus.DELETED);
     }
 
-    @Test
-    @DisplayName("should delete all expired coupons")
-    void deleteAllExpiredCoupons_givenCurrentTime_allExpiredCouponsAreRemoved() {
-        // given
-        seedSomeCouponsToTestDB(numberReceiverFacade, 4);
-        // advancing in time to year 2030
-        when(mockedTimeGeneratorFacade.getCurrentDateAndTime()).thenReturn(sampleCurrentDateTime.plusYears(8));
-        seedSomeCouponsToTestDB(numberReceiverFacade, 2);
-
-        // when
-        List<ReceiverDto> actualListOfDeletedDto = numberReceiverFacade.deleteAllExpiredCoupons();
-        List<ReceiverDto> actualListOfRemainingDto = numberReceiverFacade.getAllCoupons();
-
-        // then
-        assertThat(actualListOfRemainingDto).doesNotContainAnyElementsOf(actualListOfDeletedDto);
-        assertThat(actualListOfDeletedDto).allMatch(tempDto -> tempDto.status() == InputStatus.DELETED);
-
-    }
-
     private List<ReceiverDto> seedSomeCouponsToTestDB(NumberReceiverFacade numberReceiverFacade, int amount) {
         List<ReceiverDto> coupons = new ArrayList<>(amount);
         for (int i = 0; i < amount; i++) {
@@ -195,8 +177,8 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
     }
 
     private NumberReceiverFacade getNumberReceiverFacadeWithMockedUUID(UUID uuid) {
-        UUIDGenerator mockedUuidGenerator = getMockedUUIDGenerator(uuid);
-        return numberReceiverConfig.createForTests(mockedUuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade);
+        ReceiverUuidGenerator mockedReceiverUuidGenerator = getMockedUUIDGenerator(uuid);
+        return numberReceiverConfig.createForTests(mockedReceiverUuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade, inputConfig);
     }
 
 }

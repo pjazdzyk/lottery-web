@@ -3,7 +3,5 @@ spring:
     active: integration
   data:
     mongodb:
-      database: receiver-coupons
-      username: admin
-      password: admin
-      host: localhost
+      uuid-representation: standard
+

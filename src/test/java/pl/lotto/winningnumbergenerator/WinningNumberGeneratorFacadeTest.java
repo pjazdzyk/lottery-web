@@ -16,9 +16,9 @@ import static org.mockito.Mockito.when;
 
 class WinningNumberGeneratorFacadeTest implements MockedTimeGeneratorFacade, MockedRandomGenerator {
 
-    private final RandomGeneratorRules randomGeneratorRules = new RandomGeneratorRules(1, 99, 6);
-    private final RandomGenerator randomGenerator = new RandomGenerator(randomGeneratorRules);
-    private final WinningNumberRepository winningNumberRepository = new WinningNumberRepositoryStub();
+    private final WinningConfigurable winningConfig = new WinningPropertyConfigTest(1,99,6);
+    private final RandomGenerator randomGenerator = new RandomGenerator(winningConfig);
+    private final WinningNumberRepository winningNumberRepository = new WinningNumberRepositoryInMemory();
     private final TimeGeneratorFacade mockedTimeGeneratorFacade = createMockedTimeGeneratorFacadeWithDefaultDates();
     private final WinningNumberGeneratorConfiguration winningNumberGeneratorConfig = new WinningNumberGeneratorConfiguration();
     private final WinningNumberGeneratorFacade winningNumberGeneratorFacade = winningNumberGeneratorConfig.createForTests(randomGenerator, mockedTimeGeneratorFacade, winningNumberRepository);

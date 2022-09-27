@@ -1,8 +1,11 @@
 package pl.lotto.numberreceiver;
 
+import org.springframework.stereotype.Component;
+
 import java.util.UUID;
 
-class UUIDGenerator {
+@Component
+class ReceiverUuidGenerator {
 
     UUID generateRandomUUID() {
         return UUID.randomUUID();

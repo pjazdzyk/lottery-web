@@ -1,0 +1,24 @@
+spring:
+  data:
+    mongodb:
+      database: lotto-integration
+
+lotto:
+  input:
+    minNumber: 1
+    maxNumber: 99
+    numberCount: 6
+  winning:
+    minWinNumber: ${lotto.input.minNumber}
+    maxWinNumber: ${lotto.input.maxNumber}
+    winNumberCount: ${lotto.input.numberCount}
+  time:
+    drawDayOfWeek: SATURDAY
+    drawHour: "12:00:00"
+    expirationInDays: 930
+    sampleDate: 2022-08-08
+    sampleTime: "17:15:00"
+    zoneId: Europe/Warsaw
+  checker:
+    matchedNumbersToWin: 3
+

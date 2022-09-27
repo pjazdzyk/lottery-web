@@ -1,19 +1,16 @@
 package pl.lotto.resultschecker;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-record LotteryResults(UUID uuid, LocalDateTime drawDate, List<Integer> inputNumbers, List<Integer> winningNumbers,
+@Document(collection = "lottery-results")
+record LotteryResults(@Id UUID uuid,
+                      LocalDateTime drawDate,
+                      List<Integer> inputNumbers,
+                      List<Integer> winningNumbers,
                       List<Integer> matchedNumbers, boolean isWinner) {
-
-    @Override
-    public List<Integer> winningNumbers() {
-        return new ArrayList<>(winningNumbers);
-    }
-
-    public List<Integer> matchedNumbers() {
-        return new ArrayList<>(winningNumbers);
-    }
 }

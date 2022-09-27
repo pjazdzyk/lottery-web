@@ -19,12 +19,16 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade, MockedWinni
     private final NumberReceiverFacade mockedNumberReceiverFacade = createMockedNumberReceiverFacade();
     private final WinningNumberGeneratorFacade mockedWinningNumbersFacade = createWinningNumberFacade();
     private final ResultsCheckerConfiguration resultsCheckerConfig = new ResultsCheckerConfiguration();
-    private ResultCheckerRepository resultCheckerRepository = new ResultsCheckerRepositoryStub();
-    private final ResultsCheckerFacade resultsCheckerFacade = resultsCheckerConfig.createForTests(mockedNumberReceiverFacade, mockedWinningNumbersFacade, resultCheckerRepository);
+    private ResultsCheckerRepository resultsCheckerRepository = new ResultsCheckerRepositoryInMemory();
+    private final int minNumbersToWin = 3;
+
+    private final CheckerConfigurable winningConfig = new CheckerPropertyConfigTest(minNumbersToWin);
+    private final ResultsCheckerFacade resultsCheckerFacade = resultsCheckerConfig.createForTests(mockedNumberReceiverFacade,
+            mockedWinningNumbersFacade, resultsCheckerRepository, winningConfig);
 
     @BeforeEach
     void tearDown() {
-        resultCheckerRepository = new ResultsCheckerRepositoryStub();
+        resultsCheckerRepository = new ResultsCheckerRepositoryInMemory();
     }
 
     @Test
@@ -107,7 +111,7 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade, MockedWinni
         resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // when
-        List<CheckerDto> lotteryResults = resultsCheckerFacade.getLotteryResultsForDrawDate(LocalDateTime.of(2050,1,1,1,1,1));
+        List<CheckerDto> lotteryResults = resultsCheckerFacade.getLotteryResultsForDrawDate(LocalDateTime.of(2050, 1, 1, 1, 1, 1));
 
         // then
         assertThat(lotteryResults).isNotNull();
@@ -129,23 +133,6 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade, MockedWinni
         assertThat(lotteryResultsWinners).allMatch(CheckerDto::isWinner);
         assertThat(lotteryResultsWinners).allMatch(dto -> dto.status() == CheckerStatus.OK);
         assertThat(lotteryResultsWinners).map(CheckerDto::uuid).contains(sampleUuid);
-    }
-
-    @Test
-    @DisplayName("should delete all lottery results dor that draw date when draw date is provided")
-    void deleteLotteryResultsForDrawDate_givenUuid_shouldDeleteAllLotteryResultsForThatDrawDate() {
-        // given
-        resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
-
-        // when
-        List<CheckerDto> actualADeletedLotteryResults = resultsCheckerFacade.deleteLotteryResultsForDrawDate(sampleDrawDateTime);
-
-        // then
-        int expectedDeletedListSize = 6;
-        assertThat(actualADeletedLotteryResults).hasSize(expectedDeletedListSize);
-        int expectedLotteryResultsListSize = 0;
-        List<CheckerDto> resultsLeftInRepo = resultsCheckerFacade.deleteLotteryResultsForDrawDate(sampleDrawDateTime);
-        assertThat(resultsLeftInRepo).hasSize(expectedLotteryResultsListSize);
     }
 
     @Test

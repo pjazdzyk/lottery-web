@@ -16,13 +16,17 @@ class TimeGeneratorFacadeTest {
 
     private final LocalDate sampleDateTests = LocalDate.of(2022, 8, 8);
     private final LocalTime sampleTimeTests = LocalTime.of(10, 10);
-    private final LocalDateTime expectedCurrentTime = LocalDateTime.of(sampleDateTests, sampleTimeTests);
-    private final AdjustableClock sampleClockForTests = AdjustableClock.ofLocalDateAndLocalTime(sampleDateTests, sampleTimeTests, ZoneId.systemDefault());
     private final DayOfWeek drawDayOfWeek = DayOfWeek.FRIDAY;
     private final LocalTime drawTime = LocalTime.of(12, 10);
     private final Duration expirationInDays = Duration.ofDays(365 * 2);
+    private final ZoneId zoneId = ZoneId.systemDefault();
+
+    private final TimeConfigurable timeConfigurator = new TimePropertyConfigTests(drawDayOfWeek, drawTime, expirationInDays, sampleDateTests, sampleTimeTests, zoneId);
+    private final LocalDateTime expectedCurrentTime = LocalDateTime.of(sampleDateTests, sampleTimeTests);
+    private final AdjustableClock sampleClockForTests = AdjustableClock.ofLocalDateAndLocalTime(sampleDateTests, sampleTimeTests, ZoneId.systemDefault());
+
     private final TimeGeneratorConfiguration timeGeneratorConfiguration = new TimeGeneratorConfiguration();
-    private final TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfiguration.createForTest(sampleClockForTests, drawDayOfWeek, drawTime, expirationInDays);
+    private final TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfiguration.createForTest(sampleClockForTests, timeConfigurator);
 
     @AfterEach
     void tearDown() {
