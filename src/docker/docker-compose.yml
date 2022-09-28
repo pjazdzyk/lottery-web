@@ -27,24 +27,25 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/  # mongodb://{mongo-image-username}:{mongo-image-password}@{mongo-image-name}:{port}
 
  # Redis cache service
-  redis-cache:
+  redis:
     image: redis:latest
     restart: always
     ports:
       - '6379:6379'
-    command: redis-server --save 60 1 --loglevel warning --requirepass example  #save every 60 seconds for at least 1 operation
+    command: redis-server --save 60 1 --loglevel warning   #save every 60 seconds for at least 1 operation
     volumes:
-      - redis-cache:/data
+      - redis:/data
 
- # redis-commander:
- #   container_name: redis-commander
- #   image: rediscommander/redis-commander:latest
- #   restart: always
- #   environment:
- #     - REDIS_HOSTS=local:redis-cache:6379
- #   ports:
- #     - "8081:8081"
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8082:8081"
 
 volumes:
-  redis-cache:
+  redis:
     driver: local

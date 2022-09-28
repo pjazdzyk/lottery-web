@@ -57,10 +57,6 @@ public class AdjustableClock extends Clock {
         return new AdjustableClock(zoneDateTime.toInstant(), zone);
     }
 
-    public static AdjustableClock ofTimeConfiguration(TimeConfigurable timeConfig) {
-        return ofLocalDateAndLocalTime(timeConfig.getSampleDate(), timeConfig.getSampleTime(), timeConfig.getZoneId());
-    }
-
     public void advanceInTimeBy(Duration clockOffset) {
         this.instant = instant.plus(clockOffset);
     }

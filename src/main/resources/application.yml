@@ -4,4 +4,21 @@ spring:
   data:
     mongodb:
       uuid-representation: standard
+      uri: mongodb://root:example@localhost:27017/lotto-production    # mongodb://[username:password@]host1[:port1]/[database-name]
+      host: localhost
 
+lotto:
+  input:
+    minNumber: 1
+    maxNumber: 99
+    numberCount: 6
+  winning:
+    minWinNumber: ${lotto.input.minNumber}
+    maxWinNumber: ${lotto.input.maxNumber}
+    winNumberCount: ${lotto.input.numberCount}
+  time:
+    drawDayOfWeek: SATURDAY
+    drawHour: "12:00:00"
+    expirationInDays: 930
+  checker:
+    matchedNumbersToWin: 3

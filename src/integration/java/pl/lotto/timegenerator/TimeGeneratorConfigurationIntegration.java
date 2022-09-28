@@ -4,23 +4,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+
+@Profile("integration")
 @Configuration
 public class TimeGeneratorConfigurationIntegration {
 
-    @Profile("integration")
-    @Bean("integrationAdjustableClock")
-    AdjustableClock createAdjustableClock(TimeConfigurable timeConfig){
-        return AdjustableClock.ofTimeConfiguration(timeConfig);
-    }
+    private final LocalDate initialDate = LocalDate.of(2022, 8, 8);
+    private final LocalTime initialTime = LocalTime.of(15, 15);
+    private final ZoneId zoneId = ZoneId.systemDefault();
 
-    @Profile("integration")
-    @Bean("integrationTimeGeneratorFacade")
-    public TimeGeneratorFacade createForIntegration(TimePropertyConfig timeConfig, AdjustableClock clockForTest) {
-        ExpirationDateTimeGenerator expirationDateTimeGenerator = new ExpirationDateTimeGenerator(timeConfig.getExpirationInDays());
-        CurrentDateTimeGenerator currentDateTimeGenerator = new CurrentDateTimeGenerator(clockForTest);
-        DrawDateTimeGenerator drawDateTimeGenerator = new DrawDateTimeGenerator(timeConfig.getDrawDayOfWeek(), timeConfig.getDrawHour());
-        TimeGenerator timeGenerator = new TimeGenerator(currentDateTimeGenerator, drawDateTimeGenerator, expirationDateTimeGenerator);
-        return new TimeGeneratorFacade(timeGenerator);
+    @Bean("adjustableClock")
+    public Clock createAdjustableClock() {
+        return AdjustableClock.ofLocalDateAndLocalTime(initialDate, initialTime, zoneId);
     }
 
 }

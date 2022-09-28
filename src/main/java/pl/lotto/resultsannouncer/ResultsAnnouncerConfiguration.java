@@ -18,7 +18,6 @@ public class ResultsAnnouncerConfiguration {
         return new ResultsAnnouncerFacade(resultsCheckerFacade, cacheRepository);
     }
 
-
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(60))

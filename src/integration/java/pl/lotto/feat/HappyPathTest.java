@@ -1,6 +1,7 @@
-package pl.lotto;
+package pl.lotto.feat;
 
 import org.junit.jupiter.api.Test;
+import pl.lotto.BaseIntegrationSpec;
 import pl.lotto.numberreceiver.dto.ReceiverDto;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ class HappyPathTest extends BaseIntegrationSpec {
     //TODO - in progress
     @Test
     void shouldReturnLotteryResults_whenInputNumbersAreProvided() {
-        // given
+        // given (2022.08.08 - monday)
         List<ReceiverDto> userInputs = seedFiveRandomUserInputs();
         UUID trackedUuid = userInputs.get(0).uuid();
         adjustableClock.plusDays(3);

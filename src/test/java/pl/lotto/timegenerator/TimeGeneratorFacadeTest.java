@@ -20,11 +20,9 @@ class TimeGeneratorFacadeTest {
     private final LocalTime drawTime = LocalTime.of(12, 10);
     private final Duration expirationInDays = Duration.ofDays(365 * 2);
     private final ZoneId zoneId = ZoneId.systemDefault();
-
-    private final TimeConfigurable timeConfigurator = new TimePropertyConfigTests(drawDayOfWeek, drawTime, expirationInDays, sampleDateTests, sampleTimeTests, zoneId);
+    private final TimeConfigurable timeConfigurator = new TimePropertyConfigTests(drawDayOfWeek, drawTime, expirationInDays);
     private final LocalDateTime expectedCurrentTime = LocalDateTime.of(sampleDateTests, sampleTimeTests);
-    private final AdjustableClock sampleClockForTests = AdjustableClock.ofLocalDateAndLocalTime(sampleDateTests, sampleTimeTests, ZoneId.systemDefault());
-
+    private final AdjustableClock sampleClockForTests = AdjustableClock.ofLocalDateAndLocalTime(sampleDateTests, sampleTimeTests, zoneId);
     private final TimeGeneratorConfiguration timeGeneratorConfiguration = new TimeGeneratorConfiguration();
     private final TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfiguration.createForTest(sampleClockForTests, timeConfigurator);
 
