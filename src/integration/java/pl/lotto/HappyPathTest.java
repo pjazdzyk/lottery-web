@@ -7,8 +7,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class HappyPathTest extends BaseIntegrationSpec {
 
+    //TODO - in progress
     @Test
     void shouldReturnLotteryResults_whenInputNumbersAreProvided() {
         // given
@@ -19,14 +22,22 @@ class HappyPathTest extends BaseIntegrationSpec {
 
         // when
         LocalDateTime drawDate = timeGeneratorFacade.getDrawDateAndTime();
-        winningNumberGeneratorFacade.runLottery();
-        resultsCheckerFacade.generateLotteryResultsForDrawDate(drawDate);
-        adjustableClock.plusDays(7);
-        LocalDateTime drawDate1 = timeGeneratorFacade.getDrawDateAndTime();
-        winningNumberGeneratorFacade.runLottery();
-        resultsCheckerFacade.generateLotteryResultsForDrawDate(drawDate1);
+        boolean lotteryWasRun = winningNumberGeneratorFacade.runLottery();
+        List<ReceiverDto> actualCouponList = numberReceiverFacade.getAllCoupons();
+
+        // then
+        int expectedSize = 10;
+        assertThat(lotteryWasRun).isTrue();
+        assertThat(actualCouponList).hasSize(expectedSize);
+
+        // when
+        adjustableClock.plusDays(3);
+        int actualGeneratedLotteryResults = resultsCheckerFacade.generateLotteryResultsForDrawDate(drawDate);
+
+        // then
+        int expectedLotteryResults = 10;
+        assertThat(actualGeneratedLotteryResults).isEqualTo(expectedLotteryResults);
 
     }
-
 
 }

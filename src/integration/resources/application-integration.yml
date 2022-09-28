@@ -1,11 +1,7 @@
 spring:
   data:
     mongodb:
-      database: lotto-integration
-      username: admin
-      password: admin
-      host: localhost
-      port: 27017
+      uri: mongodb://root:example@localhost:27017/lotto-integration    # mongodb://[username:password@]host1[:port1]/[database-name]
 
 lotto:
   input:
