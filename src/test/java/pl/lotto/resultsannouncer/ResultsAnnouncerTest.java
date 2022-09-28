@@ -41,12 +41,17 @@ class ResultsAnnouncerTest implements MockedResultsChecker{
     void getResultsForId_givenUuidSecondTime_returnsAnnouncerDtoFromCache(){
         // given
         // when
-        resultsAnnouncerFacade.getResultsForId(sampleUuid);
-        resultsAnnouncerFacade.getResultsForId(sampleUuid);
-        resultsAnnouncerFacade.getResultsForId(sampleUuid);
+        PublishedResultsDto firstQueryResponseDto = resultsAnnouncerFacade.getResultsForId(sampleUuid);
+        PublishedResultsDto secondQueryResponseDto = resultsAnnouncerFacade.getResultsForId(sampleUuid);
 
         // then
-        verify(publishedResultsCache, times(1)).save(any());
+        int expectedSaveInvocationCount = 1;
+        verify(publishedResultsCache, times(expectedSaveInvocationCount)).save(any());
+        AnnouncerStatus expectedFirstQueryStatus = AnnouncerStatus.PUBLISHED;
+        assertThat(firstQueryResponseDto.status()).isEqualTo(expectedFirstQueryStatus);
+        AnnouncerStatus expectedSecondQueryStatus = AnnouncerStatus.CACHED;
+        assertThat(secondQueryResponseDto.status()).isEqualTo(expectedSecondQueryStatus);
+
     }
 
     @Test

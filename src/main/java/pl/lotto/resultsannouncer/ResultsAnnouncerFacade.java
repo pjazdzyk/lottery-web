@@ -21,23 +21,30 @@ public class ResultsAnnouncerFacade {
     }
 
     public PublishedResultsDto getResultsForId(UUID uuid) {
-        if(Objects.isNull(uuid)){
+        if (Objects.isNull(uuid)) {
             return notFoundDto();
         }
-        Optional<PublishedResultsDto> publishedResultsForUuidOpt = publishedResultsCache.getCachedDtoForUuid(uuid);
-        if (publishedResultsForUuidOpt.isPresent()) {
-            return publishedResultsForUuidOpt.get();
+        Optional<PublishedResultsDto> publishedResultOptional = publishedResultsCache.getCachedDtoForUuid(uuid);
+        if (publishedResultOptional.isPresent()) {
+            return publishedResultOptional.get();
         }
         CheckerDto resultsForId = resultsCheckerFacade.getResultsForId(uuid);
         if (resultsForId.status() == CheckerStatus.NOT_FOUND) {
             return notFoundDto();
         }
-        PublishedResultsDto resultsToPublishDto = PublishedResultsMapper.checkerDtoToPublishedDto(resultsForId, AnnouncerStatus.PUBLISHED);
-        return publishedResultsCache.save(resultsToPublishDto);
+        PublishedResultsDto publishedResultsDto = PublishedResultsMapper.checkerDtoToPublishedDto(resultsForId, AnnouncerStatus.PUBLISHED);
+        publishedResultsCache.save(cachedDto(publishedResultsDto));
+        return publishedResultsDto;
     }
 
     private PublishedResultsDto notFoundDto() {
         return new PublishedResultsDto(null, null, null, null, null, false, AnnouncerStatus.NOT_FOUND);
+    }
+
+    private PublishedResultsDto cachedDto(PublishedResultsDto publishedDto) {
+        return new PublishedResultsDto(publishedDto.uuid(), publishedDto.drawDate(), publishedDto.typedNumbers(),
+                publishedDto.winningNumbers(), publishedDto.matchedNumbers(), publishedDto.isWinner(),
+                AnnouncerStatus.CACHED);
     }
 
 }

@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      database: lotto-production
+      uri: mongodb://root:example@localhost:27017/lotto-production    # mongodb://[username:password@]host1[:port1]/[database-name]
 
 lotto:
   input:
