@@ -4,8 +4,11 @@ spring:
   data:
     mongodb:
       uuid-representation: standard
-      uri: mongodb://root:example@localhost:27017/lotto-production    # mongodb://[username:password@]host1[:port1]/[database-name]
+      uri: mongodb://admin:admin@localhost:27017/lotto-web   # mongodb://[username:password@]host1[:port1]/[database-name]
       host: localhost
+  cache:
+    redis:
+      time-to-live: 60
 
 lotto:
   input:

@@ -1,5 +1,6 @@
 package pl.lotto.resultsannouncer.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -10,5 +11,5 @@ public record PublishedResultsDto(UUID uuid,
                                   List<Integer> winningNumbers,
                                   List<Integer> matchedNumbers,
                                   boolean isWinner,
-                                  AnnouncerStatus status) {
+                                  AnnouncerStatus status) implements Serializable {
 }

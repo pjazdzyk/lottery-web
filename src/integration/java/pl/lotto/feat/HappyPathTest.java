@@ -3,6 +3,7 @@ package pl.lotto.feat;
 import org.junit.jupiter.api.Test;
 import pl.lotto.BaseIntegrationSpec;
 import pl.lotto.numberreceiver.dto.ReceiverDto;
+import pl.lotto.resultsannouncer.dto.PublishedResultsDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,6 +40,9 @@ class HappyPathTest extends BaseIntegrationSpec {
         int expectedLotteryResults = 10;
         assertThat(actualGeneratedLotteryResults).isEqualTo(expectedLotteryResults);
 
+        resultsAnnouncerFacade.getResultsForId(trackedUuid);
+        PublishedResultsDto resultsForId = resultsAnnouncerFacade.getResultsForId(trackedUuid);
+        resultsAnnouncerFacade.getResultsForId(trackedUuid);
     }
 
 }

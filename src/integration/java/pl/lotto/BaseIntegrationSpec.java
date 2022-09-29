@@ -5,14 +5,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.ReceiverDto;
+import pl.lotto.resultsannouncer.ResultsAnnouncerFacade;
 import pl.lotto.resultschecker.ResultsCheckerFacade;
-import pl.lotto.timegenerator.*;
+import pl.lotto.timegenerator.AdjustableClock;
+import pl.lotto.timegenerator.TimeGeneratorFacade;
 import pl.lotto.winningnumbergenerator.WinningNumberGeneratorFacade;
 
 import java.util.List;
@@ -33,12 +36,21 @@ public class BaseIntegrationSpec {
     public WinningNumberGeneratorFacade winningNumberGeneratorFacade;
     @Autowired
     public ResultsCheckerFacade resultsCheckerFacade;
+
+    @Autowired
+    public ResultsAnnouncerFacade resultsAnnouncerFacade;
+
     @Container
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
+
+    @Container
+    private static final GenericContainer<?> redis = new GenericContainer<>(DockerImageName.parse("redis:5.0.3-alpine")).withExposedPorts(6379);
 
     @DynamicPropertySource
     private static void propertyOverride(DynamicPropertyRegistry registry) {
         registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+        registry.add("spring.redis.host", redis::getHost);
+        registry.add("spring.redis.port", () -> redis.getMappedPort(6379).toString());
     }
 
     protected List<ReceiverDto> seedFiveRandomUserInputs() {
