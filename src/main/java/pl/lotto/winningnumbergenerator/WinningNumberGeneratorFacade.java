@@ -20,21 +20,16 @@ public class WinningNumberGeneratorFacade {
         this.winningNumberGenerator = winningNumberGenerator;
         this.winningNumberRepository = winningNumberRepository;
         this.timeGeneratorFacade = timeGeneratorFacade;
+
     }
 
-    //TODO implement call by scheduler
-    public boolean runLottery() {
-        if (checkIfActualNumbersAreAlreadyDrawnAndSaved()) {
+    public boolean generateWinningNumbers(LocalDateTime drawDate) {
+        if (checkIfActualNumbersAreAlreadyDrawnAndSaved(drawDate)) {
             return false;
         }
-        WinningNumbers winningNumbers = winningNumberGenerator.getWinningNumbers();
+        WinningNumbers winningNumbers = winningNumberGenerator.generateWinningNumbers(drawDate);
         winningNumberRepository.save(winningNumbers);
         return true;
-    }
-
-    public WinningNumbersDto getLastWinningNumbers() {
-        LocalDateTime currentDrawDate = timeGeneratorFacade.getDrawDateAndTime();
-        return getWinningNumbersForDate(currentDrawDate);
     }
 
     public WinningNumbersDto getWinningNumbersForDate(LocalDateTime drawDate) {
@@ -42,7 +37,7 @@ public class WinningNumberGeneratorFacade {
         if (winningNumbersForDrawDateOptional.isEmpty()) {
             return notFoundDto();
         }
-        return WinningNumberMapper.toDto(winningNumbersForDrawDateOptional.get(), WinNumberStatus.OK);
+        return WinningNumberMapper.toDto(winningNumbersForDrawDateOptional.get(), WinNumberStatus.SAVED);
     }
 
     public WinningNumbersDto deleteWinningNumbersForDate(LocalDateTime drawDate) {
@@ -56,11 +51,10 @@ public class WinningNumberGeneratorFacade {
 
     public List<WinningNumbersDto> getAllWinningNumbers() {
         List<WinningNumbers> allWinningNumbers = winningNumberRepository.findAll();
-        return WinningNumberMapper.toDtoList(allWinningNumbers, WinNumberStatus.OK);
+        return WinningNumberMapper.toDtoList(allWinningNumbers, WinNumberStatus.SAVED);
     }
 
-    private boolean checkIfActualNumbersAreAlreadyDrawnAndSaved() {
-        LocalDateTime drawDate = timeGeneratorFacade.getDrawDateAndTime();
+    private boolean checkIfActualNumbersAreAlreadyDrawnAndSaved(LocalDateTime drawDate) {
         return winningNumberRepository.existsByDrawDate(drawDate);
     }
 

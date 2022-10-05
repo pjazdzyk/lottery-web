@@ -7,9 +7,9 @@ interface TimeConfigurable {
 
     void setDrawDayOfWeek(DayOfWeek drawDayOfWeek);
 
-    LocalTime getDrawHour();
+    LocalTime getDrawTime();
 
-    void setDrawHour(LocalTime drawHour);
+    void setDrawTime(LocalTime drawTime);
 
     Duration getExpirationInDays();
 

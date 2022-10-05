@@ -1,12 +1,12 @@
 package pl.lotto.winningnumbergenerator;
 
-public class WinningPropertyConfigTest implements WinningConfigurable{
+public class WinningPropertyPropertyConfigTest implements WinningPropertyConfigurable {
 
     private int minWinNumber;
     private int maxWinNumber;
     private int winNumberCount;
 
-    public WinningPropertyConfigTest(int minWinNumber, int maxWinNumber, int winNumberCount) {
+    public WinningPropertyPropertyConfigTest(int minWinNumber, int maxWinNumber, int winNumberCount) {
         this.minWinNumber = minWinNumber;
         this.maxWinNumber = maxWinNumber;
         this.winNumberCount = winNumberCount;

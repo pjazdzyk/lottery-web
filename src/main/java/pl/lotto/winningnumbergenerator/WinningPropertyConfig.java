@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(prefix = "lotto.winning")
-class WinningPropertyConfig implements WinningConfigurable {
+class WinningPropertyConfig implements WinningPropertyConfigurable {
 
     private int minWinNumber;
     private int maxWinNumber;

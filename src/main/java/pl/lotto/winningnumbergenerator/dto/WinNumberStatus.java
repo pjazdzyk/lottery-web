@@ -1,7 +1,7 @@
 package pl.lotto.winningnumbergenerator.dto;
 
 public enum WinNumberStatus {
-    OK,
+    SAVED,
     DELETED,
     NOT_FOUND
 }

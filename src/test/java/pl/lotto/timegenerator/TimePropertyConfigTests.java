@@ -26,13 +26,13 @@ public class TimePropertyConfigTests implements TimeConfigurable {
     }
 
     @Override
-    public LocalTime getDrawHour() {
+    public LocalTime getDrawTime() {
         return drawHour;
     }
 
     @Override
-    public void setDrawHour(LocalTime drawHour) {
-        this.drawHour = drawHour;
+    public void setDrawTime(LocalTime drawTime) {
+        this.drawHour = drawTime;
     }
 
     @Override

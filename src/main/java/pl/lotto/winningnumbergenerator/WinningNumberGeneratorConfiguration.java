@@ -7,17 +7,17 @@ import pl.lotto.timegenerator.TimeGeneratorFacade;
 @Configuration
 public class WinningNumberGeneratorConfiguration {
 
-    public WinningNumberGeneratorFacade createForTests(RandomGenerator randomGenerator, TimeGeneratorFacade timeGeneratorFacade,
+    public WinningNumberGeneratorFacade createForTests(RandomNumbersGenerator randomNumbersGenerator, TimeGeneratorFacade timeGeneratorFacade,
                                                        WinningNumberRepository winningNumberRepository) {
 
-        return createForProduction(randomGenerator, timeGeneratorFacade, winningNumberRepository);
+        return createForProduction(randomNumbersGenerator, timeGeneratorFacade, winningNumberRepository);
     }
 
     @Bean("winningNumbersFacade")
-    public WinningNumberGeneratorFacade createForProduction(RandomGenerator randomGenerator, TimeGeneratorFacade timeGeneratorFacade,
+    public WinningNumberGeneratorFacade createForProduction(RandomNumbersGenerator randomNumbersGenerator, TimeGeneratorFacade timeGeneratorFacade,
                                                             WinningNumberRepository winningNumberRepository) {
         WinningUuidGenerator uuidGenerator = new WinningUuidGenerator();
-        WinningNumberGenerator winningNumberGenerator = new WinningNumberGenerator(randomGenerator, timeGeneratorFacade, uuidGenerator);
+        WinningNumberGenerator winningNumberGenerator = new WinningNumberGenerator(randomNumbersGenerator, uuidGenerator);
         return new WinningNumberGeneratorFacade(winningNumberGenerator, winningNumberRepository, timeGeneratorFacade);
     }
 

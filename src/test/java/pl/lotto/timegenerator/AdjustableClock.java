@@ -4,10 +4,10 @@ import java.time.*;
 
 public class AdjustableClock extends Clock {
 
-    private Instant instant;
+    protected Instant instant;
     private final ZoneId zone;
 
-    private AdjustableClock(Instant initialInstant, ZoneId zone) {
+    public AdjustableClock(Instant initialInstant, ZoneId zone) {
         this.instant = initialInstant;
         this.zone = zone;
     }
@@ -27,7 +27,7 @@ public class AdjustableClock extends Clock {
 
     @Override
     public long millis() {
-        return instant.toEpochMilli();
+        return instant().toEpochMilli();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class AdjustableClock extends Clock {
         setClockToLocalDateTime(localDateTime);
     }
 
-    private static ZonedDateTime createZoneDateTime(LocalDate date, LocalTime time, ZoneId zone) {
+    protected static ZonedDateTime createZoneDateTime(LocalDate date, LocalTime time, ZoneId zone) {
         return ZonedDateTime.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
                 time.getHour(), time.getMinute(), time.getSecond(), time.getNano(), zone);
     }

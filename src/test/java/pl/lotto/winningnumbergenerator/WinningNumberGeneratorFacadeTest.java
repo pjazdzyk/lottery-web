@@ -16,12 +16,12 @@ import static org.mockito.Mockito.when;
 
 class WinningNumberGeneratorFacadeTest implements MockedTimeGeneratorFacade, MockedRandomGenerator {
 
-    private final WinningConfigurable winningConfig = new WinningPropertyConfigTest(1,99,6);
-    private final RandomGenerator randomGenerator = new RandomGenerator(winningConfig);
+    private final WinningPropertyConfigurable winningConfig = new WinningPropertyPropertyConfigTest(1,99,6);
+    private final RandomNumbersGenerator randomNumbersGenerator = new RandomNumbersGenerator(winningConfig);
     private final WinningNumberRepository winningNumberRepository = new WinningNumberRepositoryInMemory();
     private final TimeGeneratorFacade mockedTimeGeneratorFacade = createMockedTimeGeneratorFacadeWithDefaultDates();
     private final WinningNumberGeneratorConfiguration winningNumberGeneratorConfig = new WinningNumberGeneratorConfiguration();
-    private final WinningNumberGeneratorFacade winningNumberGeneratorFacade = winningNumberGeneratorConfig.createForTests(randomGenerator, mockedTimeGeneratorFacade, winningNumberRepository);
+    private final WinningNumberGeneratorFacade winningNumberGeneratorFacade = winningNumberGeneratorConfig.createForTests(randomNumbersGenerator, mockedTimeGeneratorFacade, winningNumberRepository);
 
     @AfterEach
     void tearDown() {
@@ -33,10 +33,10 @@ class WinningNumberGeneratorFacadeTest implements MockedTimeGeneratorFacade, Moc
     void getWinningNumbersForDate_givenDrawDate_shouldReturnWinningNumbers() {
         // given
         List<Integer> expectedWinningNumbers = List.of(1, 2, 3, 4, 5, 6);
-        RandomGenerator mockedRandomGenerator = getMockedNumberGenerator(expectedWinningNumbers);
+        RandomNumbersGenerator mockedRandomNumbersGenerator = getMockedNumberGenerator(expectedWinningNumbers);
         WinningNumberGeneratorFacade winningNumberGeneratorFacade = winningNumberGeneratorConfig
-                .createForTests(mockedRandomGenerator, mockedTimeGeneratorFacade, winningNumberRepository);
-        winningNumberGeneratorFacade.runLottery();
+                .createForTests(mockedRandomNumbersGenerator, mockedTimeGeneratorFacade, winningNumberRepository);
+        winningNumberGeneratorFacade.generateWinningNumbers(sampleDrawDate);
 
         // when
         WinningNumbersDto actualWinningNumbersDto = winningNumberGeneratorFacade.getWinningNumbersForDate(sampleDrawDate);
@@ -45,7 +45,7 @@ class WinningNumberGeneratorFacadeTest implements MockedTimeGeneratorFacade, Moc
         assertThat(actualWinningNumbersDto).isNotNull();
         assertThat(actualWinningNumbersDto.drawDate()).isEqualTo(sampleDrawDate);
         assertThat(actualWinningNumbersDto.winningNumbers()).isEqualTo(expectedWinningNumbers);
-        assertThat(actualWinningNumbersDto.status()).isEqualTo(WinNumberStatus.OK);
+        assertThat(actualWinningNumbersDto.status()).isEqualTo(WinNumberStatus.SAVED);
 
     }
 
@@ -53,7 +53,7 @@ class WinningNumberGeneratorFacadeTest implements MockedTimeGeneratorFacade, Moc
     @DisplayName("should return not found dto when draw date is provided which is not in the database")
     void getWinningNumbersForDate_givenInvalidDrawDate_shouldReturnNotFound(){
         // given
-        winningNumberGeneratorFacade.runLottery();
+        winningNumberGeneratorFacade.generateWinningNumbers(sampleDrawDate);
 
         // when
         WinningNumbersDto actualWinningNumbersDto = winningNumberGeneratorFacade.getWinningNumbersForDate(LocalDateTime.of(1900,1,1,1,1,1));
@@ -67,18 +67,18 @@ class WinningNumberGeneratorFacadeTest implements MockedTimeGeneratorFacade, Moc
     @DisplayName("should return the same generated winning numbers when numbers was previously drawn before but they are still valid")
     void getLastWinningNumbers_givenCurrentDateBeforeDrawDateNumbersWereGeneratedBefore_returnsWinningNumbers() {
         // given
-        boolean statusOfFirstRun = winningNumberGeneratorFacade.runLottery();
-        WinningNumbersDto previousWinningNumbersDto = winningNumberGeneratorFacade.getLastWinningNumbers();
+        boolean statusOfFirstRun = winningNumberGeneratorFacade.generateWinningNumbers(sampleDrawDate);
+        WinningNumbersDto previousWinningNumbersDto = winningNumberGeneratorFacade.getWinningNumbersForDate(sampleDrawDate);
         LocalDateTime dayLater = sampleCurrentDateTime.plusDays(1);
         when(mockedTimeGeneratorFacade.getCurrentDateAndTime()).thenReturn(dayLater);
-        boolean statusOfSecondRun = winningNumberGeneratorFacade.runLottery();
+        boolean statusOfSecondRun = winningNumberGeneratorFacade.generateWinningNumbers(sampleDrawDate);
 
         // when
-        WinningNumbersDto actualWinningNumbersDto = winningNumberGeneratorFacade.getLastWinningNumbers();
+        WinningNumbersDto actualWinningNumbersDto = winningNumberGeneratorFacade.getWinningNumbersForDate(sampleDrawDate);
 
         // then
         assertThat(previousWinningNumbersDto).isEqualTo(actualWinningNumbersDto);
-        assertThat(actualWinningNumbersDto.status()).isEqualTo(WinNumberStatus.OK);
+        assertThat(actualWinningNumbersDto.status()).isEqualTo(WinNumberStatus.SAVED);
         assertThat(statusOfFirstRun).isTrue();
         assertThat(statusOfSecondRun).isFalse();
 
@@ -88,21 +88,21 @@ class WinningNumberGeneratorFacadeTest implements MockedTimeGeneratorFacade, Moc
     @DisplayName("should generate new winning numbers when given date is after a draw date")
     void getLastWinningNumbers_givenCurrentDateAfterDrawDateNumbersWereGeneratedBefore_returnsNewWinningNumbers() {
         // given
-        winningNumberGeneratorFacade.runLottery();
-        WinningNumbersDto previousWinningNumbersDto = winningNumberGeneratorFacade.getLastWinningNumbers();
+        winningNumberGeneratorFacade.generateWinningNumbers(sampleDrawDate);
+        WinningNumbersDto previousWinningNumbersDto = winningNumberGeneratorFacade.getWinningNumbersForDate(sampleDrawDate);
         // advancing in time by 10 days
         LocalDateTime tenDaysLater = sampleCurrentDateTime.plusDays(10);
         LocalDateTime laterDrawDate = sampleDrawDate.plusDays(14);
         when(mockedTimeGeneratorFacade.getCurrentDateAndTime()).thenReturn(tenDaysLater);
         when(mockedTimeGeneratorFacade.getDrawDateAndTime()).thenReturn(laterDrawDate);
-        winningNumberGeneratorFacade.runLottery();
+        winningNumberGeneratorFacade.generateWinningNumbers(laterDrawDate);
 
         // when
-        WinningNumbersDto actualWinningNumbersDto = winningNumberGeneratorFacade.getLastWinningNumbers();
+        WinningNumbersDto actualWinningNumbersDto = winningNumberGeneratorFacade.getWinningNumbersForDate(laterDrawDate);
 
         // then
         assertThat(actualWinningNumbersDto).isNotEqualTo(previousWinningNumbersDto);
-        assertThat(actualWinningNumbersDto.status()).isEqualTo(WinNumberStatus.OK);
+        assertThat(actualWinningNumbersDto.status()).isEqualTo(WinNumberStatus.SAVED);
 
     }
 
@@ -111,7 +111,7 @@ class WinningNumberGeneratorFacadeTest implements MockedTimeGeneratorFacade, Moc
     void getLastWinningNumbers_givenDrawDate_shouldReturnNotFoundDto(){
         // given
         // when
-        WinningNumbersDto actualWinningNumbersDto = winningNumberGeneratorFacade.getLastWinningNumbers();
+        WinningNumbersDto actualWinningNumbersDto = winningNumberGeneratorFacade.getWinningNumbersForDate(sampleDrawDate);
 
         // then
         assertThat(actualWinningNumbersDto).isNotNull();
@@ -122,7 +122,7 @@ class WinningNumberGeneratorFacadeTest implements MockedTimeGeneratorFacade, Moc
     @DisplayName("should remove winning numbers from repository for a specified draw date when draw date is provided")
     void deleteWinningNumbersForDate_givenDrawDate_shouldRemoveWinningNumbersFromDb() {
         // given
-        winningNumberGeneratorFacade.runLottery();
+        winningNumberGeneratorFacade.generateWinningNumbers(sampleDrawDate);
 
         // when
         WinningNumbersDto actualDeletedListOfWinningNumbers = winningNumberGeneratorFacade.deleteWinningNumbersForDate(sampleDrawDate);
@@ -139,19 +139,19 @@ class WinningNumberGeneratorFacadeTest implements MockedTimeGeneratorFacade, Moc
     @DisplayName("should return all winning number for each draw date")
     void getAllWinningNumbers_shouldReturnAllWinningNumbersForEachDrawDate(){
         // given
-        winningNumberGeneratorFacade.runLottery();
+        winningNumberGeneratorFacade.generateWinningNumbers(sampleDrawDate);
 
         LocalDateTime oneWeekLaterSampleTime = sampleCurrentDateTime.plusDays(7);
         LocalDateTime oneWeekLaterDrawTime = sampleDrawDate.plusDays(7);
         when(mockedTimeGeneratorFacade.getCurrentDateAndTime()).thenReturn(oneWeekLaterSampleTime);
         when(mockedTimeGeneratorFacade.getDrawDateAndTime()).thenReturn(oneWeekLaterDrawTime);
-        winningNumberGeneratorFacade.runLottery();
+        winningNumberGeneratorFacade.generateWinningNumbers(oneWeekLaterDrawTime);
 
         LocalDateTime twoWeekLaterSampleTime = sampleCurrentDateTime.plusDays(14);
         LocalDateTime twoWeekLaterDrawTime = sampleDrawDate.plusDays(14);
         when(mockedTimeGeneratorFacade.getCurrentDateAndTime()).thenReturn(twoWeekLaterSampleTime);
         when(mockedTimeGeneratorFacade.getDrawDateAndTime()).thenReturn(twoWeekLaterDrawTime);
-        winningNumberGeneratorFacade.runLottery();
+        winningNumberGeneratorFacade.generateWinningNumbers(twoWeekLaterDrawTime);
 
         // when
         List<WinningNumbersDto> allWinningNumbersDto = winningNumberGeneratorFacade.getAllWinningNumbers();
@@ -160,7 +160,7 @@ class WinningNumberGeneratorFacadeTest implements MockedTimeGeneratorFacade, Moc
         int expectedWinningNumberSets = 3;
         assertThat(allWinningNumbersDto).isNotNull();
         assertThat(allWinningNumbersDto).hasSize(expectedWinningNumberSets);
-        assertThat(allWinningNumbersDto).allMatch(winningDto -> winningDto.status() == WinNumberStatus.OK);
+        assertThat(allWinningNumbersDto).allMatch(winningDto -> winningDto.status() == WinNumberStatus.SAVED);
     }
 
     @Test

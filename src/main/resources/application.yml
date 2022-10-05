@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: integration
+   active: integration
   data:
     mongodb:
       uuid-representation: standard
@@ -8,20 +8,24 @@ spring:
       host: localhost
   cache:
     redis:
-      time-to-live: 60
+      time-to-live: 60  # minutes of ttl for cached item
 
 lotto:
   input:
     minNumber: 1
     maxNumber: 99
     numberCount: 6
+  time:
+    drawDayOfWeek: 6
+    drawHour: 12
+    drawMinutes: 0
+    drawSeconds: 0
+    drawTime: "${lotto.time.drawHour}:${lotto.time.drawMinutes}:${lotto.time.drawSeconds}"
+    expirationInDays: 930
   winning:
     minWinNumber: ${lotto.input.minNumber}
     maxWinNumber: ${lotto.input.maxNumber}
-    winNumberCount: ${lotto.input.numberCount}
-  time:
-    drawDayOfWeek: SATURDAY
-    drawHour: "12:00:00"
-    expirationInDays: 930
+    winNumberCount: ${lotto.input.numberCount}                                #second minute hour day-of-month month day-of-week
+    lotteryRunOccurrence: "${lotto.time.drawSeconds} ${lotto.time.drawMinutes} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
   checker:
     matchedNumbersToWin: 3

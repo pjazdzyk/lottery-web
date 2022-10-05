@@ -18,8 +18,8 @@ public class TimeGeneratorConfigurationIntegration {
     private final ZoneId zoneId = ZoneId.systemDefault();
 
     @Bean("adjustableClock")
-    public Clock createAdjustableClock() {
-        return AdjustableClock.ofLocalDateAndLocalTime(initialDate, initialTime, zoneId);
+    public Clock createProgressingAdjustableClock() {
+        return ProgressingAdjustableClock.ofLocalDateAndLocalTime(initialDate, initialTime, zoneId);
     }
 
 }

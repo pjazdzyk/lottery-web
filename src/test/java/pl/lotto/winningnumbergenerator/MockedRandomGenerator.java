@@ -6,10 +6,10 @@ import java.util.List;
 
 interface MockedRandomGenerator {
 
-    default RandomGenerator getMockedNumberGenerator(List<Integer> overrideNumbers){
-        RandomGenerator mockedRandomGenerator = Mockito.mock(RandomGenerator.class);
-        Mockito.when(mockedRandomGenerator.generateWinningNumbers()).thenReturn(overrideNumbers);
-        return mockedRandomGenerator;
+    default RandomNumbersGenerator getMockedNumberGenerator(List<Integer> overrideNumbers){
+        RandomNumbersGenerator mockedRandomNumbersGenerator = Mockito.mock(RandomNumbersGenerator.class);
+        Mockito.when(mockedRandomNumbersGenerator.generateWinningNumbers()).thenReturn(overrideNumbers);
+        return mockedRandomNumbersGenerator;
     }
 
 }

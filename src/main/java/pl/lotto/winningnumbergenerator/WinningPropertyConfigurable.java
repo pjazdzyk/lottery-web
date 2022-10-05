@@ -1,6 +1,6 @@
 package pl.lotto.winningnumbergenerator;
 
-interface WinningConfigurable {
+interface WinningPropertyConfigurable {
 
     int getMinWinNumber();
 

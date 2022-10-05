@@ -14,7 +14,7 @@ import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.ReceiverDto;
 import pl.lotto.resultsannouncer.ResultsAnnouncerFacade;
 import pl.lotto.resultschecker.ResultsCheckerFacade;
-import pl.lotto.timegenerator.AdjustableClock;
+import pl.lotto.timegenerator.ProgressingAdjustableClock;
 import pl.lotto.timegenerator.TimeGeneratorFacade;
 import pl.lotto.winningnumbergenerator.WinningNumberGeneratorFacade;
 
@@ -27,7 +27,7 @@ public class BaseIntegrationSpec {
     @Autowired
     public ApplicationContext appContext;
     @Autowired
-    public AdjustableClock adjustableClock;
+    public ProgressingAdjustableClock adjustableClock;
     @Autowired
     public TimeGeneratorFacade timeGeneratorFacade;
     @Autowired

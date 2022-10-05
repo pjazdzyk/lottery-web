@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
-class RandomGenerator {
+class RandomNumbersGenerator {
 
-    private final WinningConfigurable winningNumbersConfig;
+    private final WinningPropertyConfigurable winningNumbersConfig;
 
-    public RandomGenerator(WinningConfigurable winningNumbersConfig) {
+    public RandomNumbersGenerator(WinningPropertyConfigurable winningNumbersConfig) {
         this.winningNumbersConfig = winningNumbersConfig;
     }
 
