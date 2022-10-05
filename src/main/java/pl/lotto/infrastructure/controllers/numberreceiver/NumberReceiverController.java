@@ -1,11 +1,11 @@
-package pl.lotto.numberreceiver;
+package pl.lotto.infrastructure.controllers.numberreceiver;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.lotto.numberreceiver.dto.ReceiverDto;
-
-import java.util.List;
+import pl.lotto.numberreceiver.NumberReceiverFacade;
+import pl.lotto.numberreceiver.dto.ReceiverRequestDto;
+import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 
 @RestController
 class NumberReceiverController {
@@ -17,8 +17,8 @@ class NumberReceiverController {
     }
 
     @GetMapping("/receiver")
-    ReceiverDto inputNumbers(@RequestParam(value = "typedNumbers") List<Integer> typedNumbers){
-        return numberReceiverFacade.inputNumbers(typedNumbers);
+    ReceiverResponseDto inputNumbers(@RequestParam(value = "typedNumbers") ReceiverRequestDto requestDto){
+        return numberReceiverFacade.inputNumbers(requestDto.typedNumbers());
     }
 
 

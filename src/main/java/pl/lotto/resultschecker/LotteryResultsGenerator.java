@@ -1,6 +1,6 @@
 package pl.lotto.resultschecker;
 
-import pl.lotto.numberreceiver.dto.ReceiverDto;
+import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 
 import java.util.List;
 
@@ -12,15 +12,15 @@ class LotteryResultsGenerator {
         this.resultsChecker = resultsChecker;
     }
 
-    List<LotteryResults> getListOfLotteryResults(List<ReceiverDto> couponSubListForDrawDate, List<Integer> winningNumbers) {
+    List<LotteryResults> getListOfLotteryResults(List<ReceiverResponseDto> couponSubListForDrawDate, List<Integer> winningNumbers) {
         return couponSubListForDrawDate.stream().map(coupon -> createLotteryResult(coupon, winningNumbers)).toList();
     }
 
-    private LotteryResults createLotteryResult(ReceiverDto receiverDto, List<Integer> winningNumbers) {
-        List<Integer> userTypedNumbers = receiverDto.typedNumbers();
+    private LotteryResults createLotteryResult(ReceiverResponseDto receiverResponseDto, List<Integer> winningNumbers) {
+        List<Integer> userTypedNumbers = receiverResponseDto.typedNumbers();
         List<Integer> matchedNumbers = resultsChecker.getMatchedNumbers(userTypedNumbers, winningNumbers);
         boolean isWinner = resultsChecker.checkIfIsWinner(matchedNumbers);
-        return new LotteryResults(receiverDto.uuid(), receiverDto.drawDateTime(), receiverDto.typedNumbers(), winningNumbers, matchedNumbers, isWinner);
+        return new LotteryResults(receiverResponseDto.uuid(), receiverResponseDto.drawDateTime(), receiverResponseDto.typedNumbers(), winningNumbers, matchedNumbers, isWinner);
     }
 
 }

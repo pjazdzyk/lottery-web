@@ -1,27 +1,34 @@
-package pl.lotto.winningnumbergenerator;
+package pl.lotto.infrastructure.schedulers;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import pl.lotto.resultschecker.ResultsCheckerFacade;
 import pl.lotto.timegenerator.TimeGeneratorFacade;
+import pl.lotto.winningnumbergenerator.WinningNumberGeneratorFacade;
 
 import java.time.LocalDateTime;
 
 @Service
-public class WinningSchedulerConfiguration {
+class LotteryScheduler {
 
     private final WinningNumberGeneratorFacade winningNumberGeneratorFacade;
+    private final ResultsCheckerFacade resultsCheckerFacade;
     private final TimeGeneratorFacade timeGeneratorFacade;
     private LocalDateTime drawDate;
 
-    WinningSchedulerConfiguration(WinningNumberGeneratorFacade winningNumberGeneratorFacade, TimeGeneratorFacade timeGeneratorFacade) {
+    public LotteryScheduler(WinningNumberGeneratorFacade winningNumberGeneratorFacade, ResultsCheckerFacade resultsCheckerFacade,
+                            TimeGeneratorFacade timeGeneratorFacade) {
+
         this.winningNumberGeneratorFacade = winningNumberGeneratorFacade;
+        this.resultsCheckerFacade = resultsCheckerFacade;
         this.timeGeneratorFacade = timeGeneratorFacade;
         this.drawDate = timeGeneratorFacade.getDrawDateAndTime();
     }
 
     @Scheduled(cron = "${lotto.winning.lotteryRunOccurrence}")
-    void generateNextWinningNumbers(){
+    void runLottery(){
         winningNumberGeneratorFacade.generateWinningNumbers(drawDate);
+        resultsCheckerFacade.generateLotteryResultsForDrawDate(drawDate);
         drawDate = timeGeneratorFacade.getDrawDateAndTime();
     }
 

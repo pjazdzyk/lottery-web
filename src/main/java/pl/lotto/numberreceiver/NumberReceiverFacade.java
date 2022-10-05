@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import pl.lotto.numberreceiver.dto.InputStatus;
-import pl.lotto.numberreceiver.dto.ReceiverDto;
+import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 
 public class NumberReceiverFacade {
 
@@ -22,7 +22,7 @@ public class NumberReceiverFacade {
         this.inputValidator = inputValidator;
     }
 
-    public ReceiverDto inputNumbers(List<Integer> numbersFromUser) {
+    public ReceiverResponseDto inputNumbers(List<Integer> numbersFromUser) {
         InputStatus inputStatus = inputValidator.validateInput(numbersFromUser);
         if (inputStatus == InputStatus.INVALID) {
             return invalidDto(numbersFromUser, inputStatus);
@@ -32,7 +32,7 @@ public class NumberReceiverFacade {
         return CouponMapper.toDto(coupon, InputStatus.SAVED);
     }
 
-    public ReceiverDto getUserCouponByUUID(UUID uuid) {
+    public ReceiverResponseDto getUserCouponByUUID(UUID uuid) {
         Optional<Coupon> couponOptional = userCouponCouponRepository.findById(uuid);
         if (couponOptional.isEmpty()) {
             return notFoundDto();
@@ -40,12 +40,12 @@ public class NumberReceiverFacade {
         return CouponMapper.toDto(couponOptional.get(), InputStatus.SAVED);
     }
 
-    public List<ReceiverDto> getUserCouponListForDrawDate(LocalDateTime drawDate) {
+    public List<ReceiverResponseDto> getUserCouponListForDrawDate(LocalDateTime drawDate) {
         List<Coupon> coupons = userCouponCouponRepository.findByDrawDate(drawDate);
         return CouponMapper.toDtoList(coupons, InputStatus.SAVED);
     }
 
-    public ReceiverDto deleteUserCouponByUUID(UUID uuid) {
+    public ReceiverResponseDto deleteUserCouponByUUID(UUID uuid) {
         Optional<Coupon> couponOptional = userCouponCouponRepository.findById(uuid);
         if (couponOptional.isEmpty()) {
             return notFoundDto();
@@ -54,17 +54,17 @@ public class NumberReceiverFacade {
         return CouponMapper.toDto(couponOptional.get(), InputStatus.DELETED);
     }
 
-    public List<ReceiverDto> getAllCoupons() {
+    public List<ReceiverResponseDto> getAllCoupons() {
         List<Coupon> coupons = userCouponCouponRepository.findAll();
         return CouponMapper.toDtoList(coupons, InputStatus.SAVED);
     }
 
-    private ReceiverDto invalidDto(List<Integer> numbersFromUser, InputStatus status) {
-        return new ReceiverDto(null, null, null, null, numbersFromUser, status);
+    private ReceiverResponseDto invalidDto(List<Integer> numbersFromUser, InputStatus status) {
+        return new ReceiverResponseDto(null, null, null, null, numbersFromUser, status);
     }
 
-    private ReceiverDto notFoundDto() {
-        return new ReceiverDto(null, null, null, null, null, InputStatus.NOT_FOUND);
+    private ReceiverResponseDto notFoundDto() {
+        return new ReceiverResponseDto(null, null, null, null, null, InputStatus.NOT_FOUND);
     }
 }
 

@@ -2,7 +2,7 @@ package pl.lotto.feat;
 
 import org.junit.jupiter.api.Test;
 import pl.lotto.BaseIntegrationSpec;
-import pl.lotto.numberreceiver.dto.ReceiverDto;
+import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 import pl.lotto.resultsannouncer.dto.AnnouncerStatus;
 import pl.lotto.resultsannouncer.dto.PublishedResultsDto;
 import pl.lotto.resultschecker.dto.CheckerDto;
@@ -23,7 +23,7 @@ class DraftTests extends BaseIntegrationSpec {
     @Test
     void draftFacadeTests() {
         // initial date: (2022.08.08 - monday)
-        List<ReceiverDto> userInputs = seedFiveRandomUserInputs();
+        List<ReceiverResponseDto> userInputs = seedFiveRandomUserInputs();
         UUID trackedUuid = userInputs.get(0).uuid();
         // going to date: (2022.08.11 - thursday)
         adjustableClock.plusDays(3);

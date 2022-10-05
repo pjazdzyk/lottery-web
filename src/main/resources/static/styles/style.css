@@ -78,20 +78,22 @@ a{
 }
 
 .submit-btn:hover {
-    background-color: rgb(202, 230, 246);
+    background-color: #cae6f6;
 }
 
-.input-cell:valid {
+.input-num-cell:valid {
     background-color: #d0e5ff;
-    border-color: rgb(6, 103, 141);
+    border-color: #06678d;
 }
 
-.input-cell:focus{
-    border-color: rgb(139, 194, 226);
+.input-text-cell:focus,
+.input-num-cell:focus{
+    border-color: #8bc2e2;
 }
 
-input:hover {
-    border-color: rgb(202, 230, 246);
+.input-text-cell:hover,
+.input-num-cell:hover{
+    border-color: #cae6f6;
 }
 
 input::-webkit-outer-spin-button,

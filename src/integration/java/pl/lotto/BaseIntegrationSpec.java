@@ -11,7 +11,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
-import pl.lotto.numberreceiver.dto.ReceiverDto;
+import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 import pl.lotto.resultsannouncer.ResultsAnnouncerFacade;
 import pl.lotto.resultschecker.ResultsCheckerFacade;
 import pl.lotto.timegenerator.ProgressingAdjustableClock;
@@ -53,7 +53,7 @@ public class BaseIntegrationSpec {
         registry.add("spring.redis.port", () -> redis.getMappedPort(6379).toString());
     }
 
-    protected List<ReceiverDto> seedFiveRandomUserInputs() {
+    protected List<ReceiverResponseDto> seedFiveRandomUserInputs() {
         numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
         numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 50, 60));
         numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 40, 50, 60));

@@ -1,7 +1,7 @@
 package pl.lotto.resultschecker;
 
 import pl.lotto.numberreceiver.NumberReceiverFacade;
-import pl.lotto.numberreceiver.dto.ReceiverDto;
+import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 import pl.lotto.resultschecker.dto.CheckerDto;
 import pl.lotto.resultschecker.dto.CheckerStatus;
 import pl.lotto.winningnumbergenerator.WinningNumberGeneratorFacade;
@@ -32,8 +32,8 @@ public class ResultsCheckerFacade {
         if (winningNumbersDto.status() != WinNumberStatus.SAVED) {
             return generatedResultsCount;
         }
-        List<ReceiverDto> receiverDtoForDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(drawDate);
-        List<LotteryResults> listOfLotteryResults = lotteryResultsGenerator.getListOfLotteryResults(receiverDtoForDrawDate,
+        List<ReceiverResponseDto> receiverResponseDtoForDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(drawDate);
+        List<LotteryResults> listOfLotteryResults = lotteryResultsGenerator.getListOfLotteryResults(receiverResponseDtoForDrawDate,
                 winningNumbersDto.winningNumbers());
         resultsCheckerRepository.saveAll(listOfLotteryResults);
         generatedResultsCount = listOfLotteryResults.size();

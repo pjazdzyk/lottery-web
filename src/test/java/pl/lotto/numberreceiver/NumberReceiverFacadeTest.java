@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.lotto.numberreceiver.dto.InputStatus;
-import pl.lotto.numberreceiver.dto.ReceiverDto;
+import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 import pl.lotto.timegenerator.TimeGeneratorFacade;
 
 import java.time.LocalDateTime;
@@ -39,8 +39,8 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         List<Integer> inputNumbers = null;
 
         // when
-        ReceiverDto actualDto = numberReceiverFacade.inputNumbers(inputNumbers);
-        List<ReceiverDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
+        ReceiverResponseDto actualDto = numberReceiverFacade.inputNumbers(inputNumbers);
+        List<ReceiverResponseDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
 
         // then
         assertThat(actualDto.status()).isEqualTo(InputStatus.INVALID);
@@ -55,9 +55,9 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         List<Integer> toManyNumbers = List.of(1, 2, 3, 4, 5, 6, 7);
 
         // when
-        ReceiverDto actualNotEnough = numberReceiverFacade.inputNumbers(notEnoughNumbers);
-        ReceiverDto actualToMany = numberReceiverFacade.inputNumbers(toManyNumbers);
-        List<ReceiverDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
+        ReceiverResponseDto actualNotEnough = numberReceiverFacade.inputNumbers(notEnoughNumbers);
+        ReceiverResponseDto actualToMany = numberReceiverFacade.inputNumbers(toManyNumbers);
+        List<ReceiverResponseDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
 
         // then
         assertThat(actualNotEnough.uuid()).isNull();
@@ -74,8 +74,8 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         List<Integer> inputNumbers = List.of(1, 2, -3, 4, 5, 6);
 
         // when
-        ReceiverDto actualDto = numberReceiverFacade.inputNumbers(inputNumbers);
-        List<ReceiverDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
+        ReceiverResponseDto actualDto = numberReceiverFacade.inputNumbers(inputNumbers);
+        List<ReceiverResponseDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
 
         // then
         assertThat(actualDto.status()).isEqualTo(InputStatus.INVALID);
@@ -90,9 +90,9 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         List<Integer> withNumberAboveLimit = List.of(1, 2, 3, 4, 100, 6);
 
         // when
-        ReceiverDto actualBelowLimitDto = numberReceiverFacade.inputNumbers(withNumberBelowLimit);
-        ReceiverDto actualAboveLimitDto = numberReceiverFacade.inputNumbers(withNumberAboveLimit);
-        List<ReceiverDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
+        ReceiverResponseDto actualBelowLimitDto = numberReceiverFacade.inputNumbers(withNumberBelowLimit);
+        ReceiverResponseDto actualAboveLimitDto = numberReceiverFacade.inputNumbers(withNumberAboveLimit);
+        List<ReceiverResponseDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
 
         // then
         assertThat(actualBelowLimitDto.uuid()).isNull();
@@ -109,11 +109,11 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
 
         // when
-        ReceiverDto actualCoupon = numberReceiverFacade.inputNumbers(numbersFromUser);
+        ReceiverResponseDto actualCoupon = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         // then
-        ReceiverDto expectedReceiverDto = numberReceiverFacade.getUserCouponByUUID(actualCoupon.uuid());
-        assertThat(actualCoupon).isEqualTo(expectedReceiverDto);
+        ReceiverResponseDto expectedReceiverResponseDto = numberReceiverFacade.getUserCouponByUUID(actualCoupon.uuid());
+        assertThat(actualCoupon).isEqualTo(expectedReceiverResponseDto);
         assertThat(actualCoupon.status()).isEqualTo(InputStatus.SAVED);
     }
 
@@ -121,14 +121,14 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
     @DisplayName("should return list of coupons for specific draw date when draw date is provided")
     void getUserCouponsListForDrawDate_givenDrawDate_returnsUserCouponForExpectedDrawDate() {
         // given (8 August by default)
-        List<ReceiverDto> initialCoupons = seedSomeCouponsToTestDB(numberReceiverFacade, 1);
+        List<ReceiverResponseDto> initialCoupons = seedSomeCouponsToTestDB(numberReceiverFacade, 1);
         // Time has passed, new draw date is
         LocalDateTime laterDrawDate = sampleDrawDate.plusDays(7);
         when(mockedTimeGeneratorFacade.getDrawDateAndTime()).thenReturn(laterDrawDate);
         seedSomeCouponsToTestDB(numberReceiverFacade, 1);
 
         // when
-        List<ReceiverDto> actualCouponsForSpecifiedDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(laterDrawDate);
+        List<ReceiverResponseDto> actualCouponsForSpecifiedDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(laterDrawDate);
 
         // then
         assertThat(actualCouponsForSpecifiedDrawDate).doesNotContainAnyElementsOf(initialCoupons);
@@ -145,11 +145,11 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
 
         // when
-        ReceiverDto actualReceiverDto = numberReceiverFacade.getUserCouponByUUID(uuidForMocks);
+        ReceiverResponseDto actualReceiverResponseDto = numberReceiverFacade.getUserCouponByUUID(uuidForMocks);
 
         // then
-        assertThat(actualReceiverDto.uuid()).isEqualTo(uuidForMocks);
-        assertThat(actualReceiverDto.status()).isEqualTo(InputStatus.SAVED);
+        assertThat(actualReceiverResponseDto.uuid()).isEqualTo(uuidForMocks);
+        assertThat(actualReceiverResponseDto.status()).isEqualTo(InputStatus.SAVED);
     }
 
     @Test
@@ -160,18 +160,18 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
 
         // when
-        ReceiverDto actualDeletedReceiverDto = numberReceiverFacade.deleteUserCouponByUUID(uuidForMocks);
+        ReceiverResponseDto actualDeletedReceiverResponseDto = numberReceiverFacade.deleteUserCouponByUUID(uuidForMocks);
 
         // then
-        assertThat(actualDeletedReceiverDto.uuid()).isEqualTo(uuidForMocks);
-        assertThat(actualDeletedReceiverDto.status()).isEqualTo(InputStatus.DELETED);
+        assertThat(actualDeletedReceiverResponseDto.uuid()).isEqualTo(uuidForMocks);
+        assertThat(actualDeletedReceiverResponseDto.status()).isEqualTo(InputStatus.DELETED);
     }
 
-    private List<ReceiverDto> seedSomeCouponsToTestDB(NumberReceiverFacade numberReceiverFacade, int amount) {
-        List<ReceiverDto> coupons = new ArrayList<>(amount);
+    private List<ReceiverResponseDto> seedSomeCouponsToTestDB(NumberReceiverFacade numberReceiverFacade, int amount) {
+        List<ReceiverResponseDto> coupons = new ArrayList<>(amount);
         for (int i = 0; i < amount; i++) {
-            ReceiverDto receiverDto = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
-            coupons.add(receiverDto);
+            ReceiverResponseDto receiverResponseDto = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
+            coupons.add(receiverResponseDto);
         }
         return coupons;
     }
