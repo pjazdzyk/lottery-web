@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import pl.lotto.BaseIntegrationSpec;
 import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 import pl.lotto.resultsannouncer.dto.AnnouncerStatus;
-import pl.lotto.resultsannouncer.dto.PublishedResultsDto;
+import pl.lotto.resultsannouncer.dto.AnnouncerResponseDto;
 import pl.lotto.resultschecker.dto.CheckerDto;
 import pl.lotto.winningnumbergenerator.dto.WinNumberStatus;
 import pl.lotto.winningnumbergenerator.dto.WinningNumbersDto;
@@ -37,7 +37,7 @@ class DraftTests extends BaseIntegrationSpec {
         // results checker should automatically process the results
 
         // when
-        PublishedResultsDto resultsForId = resultsAnnouncerFacade.getResultsForId(trackedUuid);
+        AnnouncerResponseDto resultsForId = resultsAnnouncerFacade.getResultsForId(trackedUuid);
         WinningNumbersDto winningNumbersForDate = winningNumberGeneratorFacade.getWinningNumbersForDate(expectedDrawDate);
         List<CheckerDto> lotteryResultsForDrawDate = resultsCheckerFacade.getLotteryResultsForDrawDate(expectedDrawDate);
 

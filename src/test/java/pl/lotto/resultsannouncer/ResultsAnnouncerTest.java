@@ -3,7 +3,7 @@ package pl.lotto.resultsannouncer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.lotto.resultsannouncer.dto.AnnouncerStatus;
-import pl.lotto.resultsannouncer.dto.PublishedResultsDto;
+import pl.lotto.resultsannouncer.dto.AnnouncerResponseDto;
 import pl.lotto.resultschecker.ResultsCheckerFacade;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,7 +20,7 @@ class ResultsAnnouncerTest implements MockedResultsChecker{
     void getResultsForId_givenUuid_returnsAnnouncerDto() {
         // given
         // when
-        PublishedResultsDto actualAnnouncerDto = resultsAnnouncerFacade.getResultsForId(sampleUuid);
+        AnnouncerResponseDto actualAnnouncerDto = resultsAnnouncerFacade.getResultsForId(sampleUuid);
 
         // then
         assertThat(actualAnnouncerDto.uuid()).isEqualTo(sampleUuid);
@@ -32,7 +32,7 @@ class ResultsAnnouncerTest implements MockedResultsChecker{
     void getResultsForId_givenInvalidUuid_returnsNotFoundDto() {
         // given
         // when
-        PublishedResultsDto actualAnnouncerDto = resultsAnnouncerFacade.getResultsForId(nonExistingUUid);
+        AnnouncerResponseDto actualAnnouncerDto = resultsAnnouncerFacade.getResultsForId(nonExistingUUid);
 
         // then
         assertThat(actualAnnouncerDto.status()).isEqualTo(AnnouncerStatus.NOT_FOUND);
@@ -43,7 +43,7 @@ class ResultsAnnouncerTest implements MockedResultsChecker{
     void getResultsForId_givenNullAsUUid_returnsNotFoundDto() {
         // given
         // when
-        PublishedResultsDto actualAnnouncerDto = resultsAnnouncerFacade.getResultsForId(null);
+        AnnouncerResponseDto actualAnnouncerDto = resultsAnnouncerFacade.getResultsForId(null);
 
         // then
         assertThat(actualAnnouncerDto.status()).isEqualTo(AnnouncerStatus.NOT_FOUND);
