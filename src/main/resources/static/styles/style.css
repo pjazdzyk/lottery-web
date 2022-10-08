@@ -1,103 +1,70 @@
-* {
-    font-family: Arial, Helvetica, sans-serif;
+:root {
+    --primary-color: #ef8614;
+    --primary-color-hover: #efb814;
+    --secondary-color: #ffffff;
+    --secondary-color-hover: #fff700;
+    --hover-color: #9fc2ff;
+    --primary-color-highlight: #233D54;
+    --bs-body-font-family: 'Montserrat', sans-serif;
 }
 
-body {
-    background-color: white;
-    font-size: 12px;
-    padding: 5em;
-    margin: auto;
+.gap{
+    margin: 1rem;;
 }
 
-h2 {
-    font-size: 2em;
-    word-spacing: 0.1em;
-    letter-spacing: 0.1em;
+body{
+    padding: 10px 40px 40px 40px;
 }
 
-label{
-    font-size: medium;
-}
-
-input{
-    background-color: rgb(249, 249, 249);
-    outline: 0;
-}
-
-a{
-    display: block;
-    font-size: large;
-}
-
-.input-num-cell {
-    min-width: 3em;
-    min-height: 3em;
-    font-size: 2em;
-    font-weight: 600;
-
-}
-
-.input-text-cell {
-    min-width: 21em;
-    min-height: 1.5em;
-    font-size: 2em;
-    font-weight: 400;
-}
-
-.solid-border {
-    border-style: solid;
-    border-width: 3px;
-    border-color: black;
-}
-
-.padding-sm {
-    padding: 1.0em 1em;
-}
-
-.padding-md {
-    padding: 1.5em 2em;
-}
-
-.margin-sm {
-    margin: 0.2em;
-}
-
-.margin-md {
-    margin: 1.5em;
-}
-
-.centered {
+td{
     text-align: center;
+    vertical-align: middle;
 }
 
-.submit-btn {
-    line-height: 0px;
-    font-size: 1.8em;
+.navbar-custom {
+    background-color: var(--primary-color);
+    min-height: 90px;
+}
+
+.custom-nav-text {
+    color: var(--secondary-color);
     font-weight: 600;
-    letter-spacing: 0.2em;
+    font-size: 1.1rem;
+    margin: 0.20rem;
 }
 
-.submit-btn:hover {
-    background-color: #cae6f6;
+.custom-nav-text:hover {
+    transition-duration: 300ms;
+    font-style: italic;
+    padding: 0.2rem;
+    margin: 0.2rem;
 }
 
-.input-num-cell:valid {
-    background-color: #d0e5ff;
-    border-color: #06678d;
+.custom-text-logo{
+    text-decoration: none;
+    color: var(--secondary-color);
+    margin-right: 1.25rem;
+    padding: 0.5rem;
+    border-style: solid;
 }
 
-.input-text-cell:focus,
-.input-num-cell:focus{
-    border-color: #8bc2e2;
+.custom-text-logo:hover{
+    transition-duration: 1000ms;
+    padding: 0.7rem;
 }
 
-.input-text-cell:hover,
-.input-num-cell:hover{
-    border-color: #cae6f6;
+.anchor-as-button{
+    text-decoration: none;
+    color: var(--secondary-color);
+    font-weight: 600;
+    background-color: var(--primary-color);
+    border-radius: 0.2rem;
+    padding: 0.4rem;
+    margin: 0.2rem;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.anchor-as-button:hover{
+   transition-duration: 200ms;
+   color: var(--secondary-color);
+   background-color: var(--primary-color-hover);     
 }

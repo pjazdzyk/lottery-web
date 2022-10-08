@@ -1,19 +1,155 @@
-<!DOCTYPE html>
-<html lang="EN-EN">
+<!doctype html>
+<html lang="en">
 
 <head>
-    <title>Lotto by Piotr Jażdżyk</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/styles/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lotto|Web</title>
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="styles/style.css">
+  <!-- Bootstrap stylesheet -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <!-- Bootstrap icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  <!-- Bootstrap JS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <main class="centered">
-        <h2>LOTTO MENU:</h2>
-        <a href="/receiver.html">1. Input your numbers</a><br>
-        <a href="/announcer.html">2. Check your result</a>
-    </main>
+  <!-- Navbar config -->
+  <header class="container">
+
+    <nav class="navbar navbar-custom navbar-expand-sm navbar-dark p-3">
+
+      <a href="index.html" class="fs-5 fw-bold custom-text-logo">Lotto|Web</a>
+
+      <button type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" class="navbar-toggler"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a href="index.html" class="nav-link"><span class="custom-nav-text">Home</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="receiver.html" class="nav-link"><span class="custom-nav-text">Lottery</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="announcer.html" class="nav-link"><span class="custom-nav-text">Results</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="aboutme.html" class="nav-link"><span class="custom-nav-text">AboutMe</span></a>
+          </li>
+        </ul>
+      </div>
+
+    </nav>
+  </header><br>
+  <!-- Navbar end -->
+
+  <section class="container">
+    <h3>Do not miss your lifetime opportunity to win a big reward! $$$</h3>
+    <p>Try out our brand new and unique lottery game you have never seen before.
+      Do not be discouraged if numbers won't listen to you at first attempt, they need some time
+      to adjust. In such case, do not hesitate to try again! We are more than happy
+      to sell you more coupons!</p>
+  </section>
+
+  <section class="container">
+
+    <div class="row">
+        <div class="card-group">
+          <div class="card">
+            <div class="card-header">
+              <h5>HOW TO PLAY</h5>
+            </div>
+            <div class="card-body">
+              <div class="card-text">
+                <p>Eager to play, are you not?</p>
+                <ul>
+                  <li>Try to relax and indulge yourself with a pint of decent quality beer.</li>
+                  <li>Think of 6 lucky numbers, from 1 to 99.</li>
+                  <li>Numbers must be distinct.</li>
+                  <li>Go stright to the lottery page, and input your lucky numbers.</li>
+                  <li>Note your coupon identifier and wait for the winning numbers draw date!</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card-footer"><a href="receiver.html" class="anchor-as-button">I WANT TO PLAY!</a></div>
+          </div>
+          <p class="d-flex gap"></p>
+          <div class="card">
+            <div class="card-header">
+              <h5>DID I WIN?</h5>
+            </div>
+            <div class="card-body">
+              <div class="card-text">
+                <p>Already picked a Hawai island?</p>
+                <ul>
+                  <li>Make sure that the draw date for your coupon has passed.</li>
+                  <li>Get your unique lotery id and go to the result checking page.</li>
+                  <li>Paste your unique lottery number to a form.</li>
+                  <li>If you scored 3 or more matches, you are a winner!</li>
+                  <li>If you scored 6 matches, the universe has smiled upon you!</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card-footer"><a href="announcer.html" class="anchor-as-button">CHECK RESULTS</a></div>
+          </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="card">
+      <div class="card-header">
+        <h5>REWARDS</h5>
+      </div>
+      <div class="card-body">
+        <div class="card-text">
+          <p>Your reward is an unique opportunity to do something good. For each level of win, you can support animal
+            shelters!</p>
+          <table class="table">
+            <thead class="thead-dark text-center">
+              <tr>
+                <th scope="col">MATCHES</th>
+                <th scope="col">DONATION</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>&lt; 3</td>
+                <td>1% of your tax</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>10 PLN</td>
+              <tr>
+                <td>4</td>
+                <td>100 PLN</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>1000 PLN</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>You adopt an animal and take a good care of it!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer"><a href="https://www.schroniskowroclaw.pl/pomoc-finansowa"
+          class="anchor-as-button">DONATE HERE</a></div>
+    </div>
+  </section>
+
 </body>
 
 </html>
