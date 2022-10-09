@@ -1,6 +1,8 @@
 :root {
     --primary-color: #ef8614;
     --primary-color-hover: #efb814;
+    --valid-color-backlight: #fff8e5;
+    --valid-color-border-green: #00ff2f;
     --secondary-color: #ffffff;
     --secondary-color-hover: #fff700;
     --hover-color: #9fc2ff;
@@ -14,6 +16,12 @@
 
 body{
     padding: 10px 40px 40px 40px;
+}
+
+.btn-primary{
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    margin-top: 1em;
 }
 
 td{
@@ -50,6 +58,7 @@ td{
 
 .custom-text-logo:hover{
     transition-duration: 1000ms;
+    color: var(--secondary-color-hover);
     padding: 0.7rem;
 }
 
@@ -63,8 +72,35 @@ td{
     margin: 0.2rem;
 }
 
-.anchor-as-button:hover{
+.anchor-as-button:hover, .btn-primary:hover{
    transition-duration: 200ms;
    color: var(--secondary-color);
    background-color: var(--primary-color-hover);     
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.number-input-cell{
+    border: none;
+    border-style: solid;
+    min-width: 3em;
+    min-height: 3em;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 0.2em;;
+    border-collapse: collapse;
+    border-color: var(--primary-color);
+}
+
+.number-input-cell:valid {
+    background-color: var(--valid-color-backlight);
+    border-color:  var(--valid-color-border-green);
+}
+
+.duplicate{
+    background-color: var(--secondary-color-hover);
 }

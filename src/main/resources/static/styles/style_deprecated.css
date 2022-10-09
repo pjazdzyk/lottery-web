@@ -1,0 +1,103 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: white;
+    font-size: 12px;
+    padding: 5em;
+    margin: auto;
+}
+
+h2 {
+    font-size: 2em;
+    word-spacing: 0.1em;
+    letter-spacing: 0.1em;
+}
+
+label{
+    font-size: medium;
+}
+
+input{
+    background-color: rgb(249, 249, 249);
+    outline: 0;
+}
+
+a{
+    display: block;
+    font-size: large;
+}
+
+.input-num-cell {
+    min-width: 3em;
+    min-height: 3em;
+    font-size: 2em;
+    font-weight: 600;
+
+}
+
+.input-text-cell {
+    min-width: 21em;
+    min-height: 1.5em;
+    font-size: 2em;
+    font-weight: 400;
+}
+
+.solid-border {
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+}
+
+.padding-sm {
+    padding: 1.0em 1em;
+}
+
+.padding-md {
+    padding: 1.5em 2em;
+}
+
+.margin-sm {
+    margin: 0.2em;
+}
+
+.margin-md {
+    margin: 1.5em;
+}
+
+.centered {
+    text-align: center;
+}
+
+.submit-btn {
+    line-height: 0px;
+    font-size: 1.8em;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+}
+
+.submit-btn:hover {
+    background-color: #cae6f6;
+}
+
+.input-num-cell:valid {
+    background-color: #d0e5ff;
+    border-color: #06678d;
+}
+
+.input-text-cell:focus,
+.input-num-cell:focus{
+    border-color: #8bc2e2;
+}
+
+.input-text-cell:hover,
+.input-num-cell:hover{
+    border-color: #cae6f6;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
