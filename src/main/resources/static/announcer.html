@@ -21,14 +21,17 @@
             <h2>Input your unique coupon ID:</h2>
         </section>
         <section>
-            <form action="/results" method="get">
-                <label for="uuid">Coupon id:</label><br>
-                <input name="requestUuid" class="input-text-cell centered" id="uuid" type="text">
+            <form action="/results" method="post">
+                <label for="requestUuidForm">Coupon id:</label><br>
+                <input name="requestUuid" class="input-text-cell text-center" id="requestUuidForm" type="text">
                 <div>
-                    <button class="solid-border submit-btn margin-md padding-sm" type="submit">CHECK RESULT</button>
+                    <button class="btn btn-primary" type="submit">CHECK RESULT</button>
+                    <button class="btn btn-primary" type="button" id="anouncerClearBtn">CLEAR</button>
                 </div>
             </form>
+            <script src="scripts/announcerBtnConfig.js" type="module"></script>
         </section>
+        </main>
 </body>
 
 </html>

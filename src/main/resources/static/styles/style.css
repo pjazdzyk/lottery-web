@@ -104,3 +104,10 @@ input::-webkit-inner-spin-button {
 .duplicate{
     background-color: var(--secondary-color-hover);
 }
+
+.input-text-cell {
+    width: 100%;
+    min-height: 1.5em;
+    font-size: 2em;
+    font-weight: 400;
+}
