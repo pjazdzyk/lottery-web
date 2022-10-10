@@ -1,6 +1,5 @@
-package pl.lotto.infrastructure.controllers.resultsannouncer;
+package pl.lotto.infrastructure.controllers.restapi;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.lotto.resultsannouncer.ResultsAnnouncerFacade;
@@ -8,16 +7,16 @@ import pl.lotto.resultsannouncer.dto.AnnouncerRequestDto;
 import pl.lotto.resultsannouncer.dto.AnnouncerResponseDto;
 
 @RestController
-class ResultsAnnouncerController {
+public class ResultsAnnouncerRestController {
 
     private final ResultsAnnouncerFacade resultsAnnouncerFacade;
 
-    public ResultsAnnouncerController(ResultsAnnouncerFacade resultsAnnouncerFacade) {
+    public ResultsAnnouncerRestController(ResultsAnnouncerFacade resultsAnnouncerFacade) {
         this.resultsAnnouncerFacade = resultsAnnouncerFacade;
     }
 
-    @PostMapping("/results")
-    AnnouncerResponseDto getResultsForUuid(AnnouncerRequestDto announcerRequestDto){
+    @PostMapping("/api/v1/results")
+    public AnnouncerResponseDto getResultsForUuid(AnnouncerRequestDto announcerRequestDto){
         return resultsAnnouncerFacade.getResultsForId(announcerRequestDto.getRequestUuid());
     }
 

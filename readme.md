@@ -44,7 +44,7 @@ Front:<br>
 
 ## Installation
 
-Lotto|Web requires [Docker](https://www.docker.com/products/docker-desktop/) to run.
+Lotto|Web requires [Docker](https://www.docker.com/products/docker-desktop/).
 
 [TODO]
 

@@ -12,4 +12,10 @@ public final class ReceiverRequestDto {
         return typedNumbers;
     }
 
+    @Override
+    public String toString() {
+        return "ReceiverRequestDto{" +
+                "typedNumbers=" + typedNumbers +
+                '}';
+    }
 }

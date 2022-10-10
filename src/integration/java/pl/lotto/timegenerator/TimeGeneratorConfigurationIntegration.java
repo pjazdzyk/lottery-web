@@ -9,8 +9,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 
-@Profile("integration")
 @Configuration
+@Profile("integration")
 public class TimeGeneratorConfigurationIntegration {
 
     private final LocalDate initialDate = LocalDate.of(2022, 8, 8);

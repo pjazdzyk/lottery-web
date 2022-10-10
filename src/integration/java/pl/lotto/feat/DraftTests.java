@@ -1,51 +1,38 @@
 package pl.lotto.feat;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.lotto.BaseIntegrationSpec;
+import pl.lotto.numberreceiver.dto.ReceiverRequestDto;
 import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
-import pl.lotto.resultsannouncer.dto.AnnouncerStatus;
-import pl.lotto.resultsannouncer.dto.AnnouncerResponseDto;
-import pl.lotto.resultschecker.dto.CheckerDto;
-import pl.lotto.winningnumbergenerator.dto.WinNumberStatus;
-import pl.lotto.winningnumbergenerator.dto.WinningNumbersDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class DraftTests extends BaseIntegrationSpec {
 
+    private final ReceiverRequestDto receiverRequestDto = new ReceiverRequestDto(List.of(1, 2, 3, 4, 5, 6));
 
-    //TODO - in progress
     @Test
-    void draftFacadeTests() {
-        // initial date: (2022.08.08 - monday)
-        List<ReceiverResponseDto> userInputs = seedFiveRandomUserInputs();
-        UUID trackedUuid = userInputs.get(0).uuid();
-        // going to date: (2022.08.11 - thursday)
-        adjustableClock.plusDays(3);
-        seedFiveRandomUserInputs();
-        LocalDateTime expectedDrawDate = timeGeneratorFacade.getDrawDateAndTime();
+    public void testHomePage() throws Exception {
 
-        // getting to the draw day (2022.08.13 - Saturday)
-        //TODO advance in time somehow
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/receiver")
+                        .content(receiverRequestDto.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
 
-        // winning numbers should be automatically generated
-        // results checker should automatically process the results
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+        ReceiverResponseDto numberReceiverResultDto =
+                objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ReceiverResponseDto.class);
 
-        // when
-        AnnouncerResponseDto resultsForId = resultsAnnouncerFacade.getResultsForId(trackedUuid);
-        WinningNumbersDto winningNumbersForDate = winningNumberGeneratorFacade.getWinningNumbersForDate(expectedDrawDate);
-        List<CheckerDto> lotteryResultsForDrawDate = resultsCheckerFacade.getLotteryResultsForDrawDate(expectedDrawDate);
-
-        // then
-        assertThat(winningNumbersForDate.status()).isNotEqualTo(WinNumberStatus.NOT_FOUND);
-        assertThat(lotteryResultsForDrawDate).isNotEmpty();
-        assertThat(resultsForId.status()).isNotEqualTo(AnnouncerStatus.NOT_FOUND);
-
+        assertThat(numberReceiverResultDto.uuid()).isNotNull();
     }
+
 
 }

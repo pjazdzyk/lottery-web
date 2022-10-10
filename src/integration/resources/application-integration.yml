@@ -1,0 +1,3 @@
+lotto:
+  winning:
+    lotteryRunOccurrence: "2 * * * * *"

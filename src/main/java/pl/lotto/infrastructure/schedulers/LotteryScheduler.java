@@ -27,6 +27,7 @@ class LotteryScheduler {
 
     @Scheduled(cron = "${lotto.winning.lotteryRunOccurrence}")
     void runLottery(){
+        System.out.println("Test");
         winningNumberGeneratorFacade.generateWinningNumbers(drawDate);
         resultsCheckerFacade.generateLotteryResultsForDrawDate(drawDate);
         drawDate = timeGeneratorFacade.getDrawDateAndTime();
