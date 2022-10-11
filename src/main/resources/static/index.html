@@ -2,20 +2,26 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="http://www.w3schools.com/lib/w3data.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script
+          src="https://code.jquery.com/jquery-3.3.1.js"
+          integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+          crossorigin="anonymous">
+  </script>
+  <script>
+    $(function () {
+      $("#header").load("navbar-template.html");
+    });
+  </script>
     <title>Lotto|Web - Online number lottery</title>
 </head>
 
 <body>
-    <!-- Navbar injection -->
-    <div w3-include-html="navbar-template.html"></div>
-    <script>
-        w3IncludeHTML();
-    </script>
-    <!-- Navbar end -->
+<!-- Navbar-template injection -->
+<div id="header"></div>
+<!-- Navbar-template end -->
 
   <section class="container">
     <h3>Do not miss your lifetime opportunity to win a big reward! $$$</h3>
@@ -77,7 +83,7 @@
       </div>
       <div class="card-body">
         <div class="card-text">
-          <p>Your reward is an unique opportunity to do something good. For each level of win, you can support animal
+          <p>Your reward is a unique opportunity to do something good. For each level of win, you can support animal
             shelters!</p>
           <table class="table">
             <thead class="thead-dark text-center">

@@ -3,6 +3,7 @@ package pl.lotto.infrastructure.controllers.restapi;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.ReceiverRequestDto;
@@ -18,8 +19,8 @@ public class NumberReceiverRestController {
     }
 
     @PostMapping(value = "/api/v1/receiver")
-    public ResponseEntity<ReceiverResponseDto> inputNumbers(ReceiverRequestDto receiverRequestDto){
-        ReceiverResponseDto receiverResponseDto = numberReceiverFacade.inputNumbers(receiverRequestDto.getUserTypedNumbers());
+    public ResponseEntity<ReceiverResponseDto> inputNumbers(@RequestBody ReceiverRequestDto receiverRequestDto){
+        ReceiverResponseDto receiverResponseDto = numberReceiverFacade.inputNumbers(receiverRequestDto.getTypedNumbers());
         return new ResponseEntity<>(receiverResponseDto, HttpStatus.OK);
     }
 

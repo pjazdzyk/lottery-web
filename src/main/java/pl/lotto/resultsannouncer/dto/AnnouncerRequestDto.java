@@ -4,7 +4,10 @@ import java.util.UUID;
 
 public class AnnouncerRequestDto {
 
-    private final UUID requestUuid;
+    private UUID requestUuid;
+
+    public AnnouncerRequestDto() {
+    }
 
     public AnnouncerRequestDto(UUID formUuid) {
         this.requestUuid = formUuid;
@@ -12,5 +15,9 @@ public class AnnouncerRequestDto {
 
     public UUID getRequestUuid() {
         return requestUuid;
+    }
+
+    public void setRequestUuid(UUID requestUuid) {
+        this.requestUuid = requestUuid;
     }
 }
