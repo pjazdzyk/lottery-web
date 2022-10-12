@@ -78,7 +78,7 @@ public class BaseIntegrationSpec {
     protected ReceiverResponseDto sendOneCouponToReceiverApi(List<Integer> typedNumbers) {
         try {
             String jsonRequest = convertListOfNumbersToRequestDtoAsJson(typedNumbers);
-            MvcResult mvcResult = getMvcResponseResult("/api/v1/receiver", jsonRequest);
+            MvcResult mvcResult = makeControllerCall("/api/v1/receiver", jsonRequest);
             String contentAsString = mvcResult.getResponse().getContentAsString();
             return objectMapper.readValue(contentAsString, ReceiverResponseDto.class);
         } catch (Exception e) {
@@ -89,7 +89,7 @@ public class BaseIntegrationSpec {
     protected AnnouncerResponseDto retrieveResultsFromAnnouncerApiFromUuid(UUID uuid) {
         try {
             String requestAsJson = convertUuidToRequestDtoAsJson(uuid);
-            MvcResult mvcCallResult = getMvcResponseResult("/api/v1/results", requestAsJson);
+            MvcResult mvcCallResult = makeControllerCall("/api/v1/results", requestAsJson);
             String contentAsString = mvcCallResult.getResponse().getContentAsString();
             return objectMapper.readValue(contentAsString, AnnouncerResponseDto.class);
         } catch (Exception e) {
@@ -108,8 +108,8 @@ public class BaseIntegrationSpec {
     }
 
     @NotNull
-    private MvcResult getMvcResponseResult(String urlTemplate, String callContentAsJson) throws Exception {
-        return mockMvc.perform(post(urlTemplate)
+    private MvcResult makeControllerCall(String controllerUrl, String callContentAsJson) throws Exception {
+        return mockMvc.perform(post(controllerUrl)
                         .content(callContentAsJson)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())

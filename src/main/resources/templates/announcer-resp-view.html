@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -19,13 +19,62 @@
 </head>
 
 <body>
-    <!-- Navbar-template injection -->
-    <div id="header"></div>
-    <!-- Navbar-template end -->
+<!-- Navbar-template injection -->
+<div id="header"></div>
+<!-- Navbar-template end -->
 
-    <main class="container">
-        <p>Test</p>
-    </main>
+<main class="container">
+    <div class="card">
+        <div class="card-header">
+            <h5>Thank you for playing. Below are the results for your coupon:</h5>
+        </div>
+        <div class="card-body">
+            <div class="card-text">
+                <table class="table">
+                    <thead class="thead-dark text-center">
+                    <tr>
+                        <th scope="col">TITLE</th>
+                        <th scope="col">COUPON DATA</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Coupon unique ID:</td>
+                        <td th:text="${announcerResponseDto.uuid()}"></td>
+                    </tr>
+                    <tr>
+                        <td>Draw date:</td>
+                        <td th:text="${announcerResponseDto.drawDate()}"></td>
+                    <tr>
+                        <td>Your typed numbers:</td>
+                        <td th:text="${announcerResponseDto.typedNumbers()}"></td>
+                    </tr>
+                    <tr>
+                        <td>Winning numbers:</td>
+                        <td th:text="${announcerResponseDto.winningNumbers()}"></td>
+                    </tr>
+                    <tr>
+                        <td>Your matched numbers:</td>
+                        <td th:text="${announcerResponseDto.matchedNumbers()}"></td>
+                    </tr>
+                    <tr>
+                        <td>Scored matches:</td>
+                        <td th:text="${announcerResponseDto.matchedNumbers().size()}"></td>
+                    </tr>
+                    <tr>
+                        <td>Your lottery status:</td>
+                        <td th:text="${announcerResponseDto.isWinner()} ? 'YOU HAVE WON!' : 'You have lost...'"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h5>If you have won, don't forget about the reward! Go back to home-page for more details.</h5>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="/index.html" class="anchor-as-button">HOME</a></div>
+    </div>
+
+</main>
 </body>
 
 </html>

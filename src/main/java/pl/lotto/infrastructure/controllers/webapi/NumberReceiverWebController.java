@@ -1,9 +1,11 @@
 package pl.lotto.infrastructure.controllers.webapi;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.ReceiverRequestDto;
+import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 
 @Controller
 public class NumberReceiverWebController {
@@ -15,8 +17,9 @@ public class NumberReceiverWebController {
     }
 
     @PostMapping("/receiver")
-    public String getInputNumbersFromUser(ReceiverRequestDto receiverRequestDto) {
-        numberReceiverFacade.inputNumbers(receiverRequestDto.getTypedNumbers());
+    public String getInputNumbersFromUser(ReceiverRequestDto receiverRequestDto, Model model) {
+        ReceiverResponseDto receiverResponseDto = numberReceiverFacade.inputNumbers(receiverRequestDto.getTypedNumbers());
+        model.addAttribute("receiverResponseDto", receiverResponseDto);
         return "receiver-resp-view";
     }
 

@@ -1,31 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script
-            src="https://code.jquery.com/jquery-3.3.1.js"
-            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-            crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous">
     </script>
-    <script>
-        $(function () {
-            $("#header").load("navbar-template.html");
-        });
-    </script>
-    <title>Lotto|Web - Number input status</title>
+  <script>
+    $(function () {
+      $("#header").load("navbar-template.html");
+    });
+  </script>
+  <title>Lotto|Web - Number input status</title>
 </head>
 
 <body>
-    <!-- Navbar-template injection -->
-    <div id="header"></div>
-    <!-- Navbar-template end -->
+  <!-- Navbar-template injection -->
+  <div id="header"></div>
+  <!-- Navbar-template end -->
 
-    <main class="container">
-        <p>Test</p>
-    </main>
+  <main class="container">
+    <div class="card">
+      <div class="card-header">
+        <h5>Thank you for playing. Here is your coupon summary:</h5>
+      </div>
+      <div class="card-body">
+        <div class="card-text">
+          <table class="table">
+            <thead class="thead-dark text-center">
+              <tr>
+                <th scope="col">TITLE</th>
+                <th scope="col">COUPON DATA</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Coupon unique ID:</td><td th:text="${receiverResponseDto.uuid()}"></td>
+            </tr>
+              <tr>
+                <td>Creation timestamp:</td><td th:text="${receiverResponseDto.creationDateTime()}"></td>
+              </tr>
+              <tr>
+                <td>Next draw date:</td><td th:text="${receiverResponseDto.drawDateTime()}"></td>
+              <tr>
+                <td>Expiration date:</td><td th:text="${receiverResponseDto.expirationDateTime()}"></td>
+              </tr>
+              <tr>
+                <td>Your typed numbers:</td><td th:text="${receiverResponseDto.typedNumbers()}"></td>
+              </tr>
+              <tr>
+                <td>Status:</td><td th:text="${receiverResponseDto.status()}"></td>
+              </tr>
+            </tbody>
+          </table>
+          <h5>IMPORTANT: Please save your coupon Id, you need it to check the lottery results.</h5>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="/index.html" class="anchor-as-button">HOME</a></div>
+    </div>
+  </main>
 </body>
 
 </html>

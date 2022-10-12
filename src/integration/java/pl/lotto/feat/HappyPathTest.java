@@ -47,7 +47,6 @@ class HappyPathTest extends BaseIntegrationSpec {
         // then
         UUID expectedWinnerUuid = winnerReceiverDto.uuid();
         AnnouncerResponseDto announcerResponseDto = retrieveResultsFromAnnouncerApiFromUuid(expectedWinnerUuid);
-
     }
 
     private Callable<Boolean> checkIfResultsCheckerRepositoryContainsWinners(int winnersCount) {
