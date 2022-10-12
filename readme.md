@@ -3,14 +3,14 @@
 
 Lotto|Web is a web port of the popular number lottery game. User provides 6 distinct numbers from 1 to 99 and receives unique coupon identifier. Winning numbers are drawn once per week and all coupons are processed to determine winners. To become a winner user must score at least 3 matched numbers in lottery. User can retrieve lottery results anytime using his unique copupon identifier.
 
-> VERSION: 1.0.0 - SNAPSHOT <br>
+> VERSION: 1.0 - SNAPSHOT <br>
 > AUTHOR: PIOTR JAŻDŻYK <br>
 > LINKEDIN: https://www.linkedin.com/in/pjazdzyk <br>
 
 ## Specification
 
 - Spring boot, web application
-- modular monolith architecture + facade design pattern
+- modular monolith hexagonal architecture + facade design pattern
 - noSQL databases (MongoDB) for coupon and results repositories
 - Docker containers used for DB
 - Redis cache for optimized results queries
