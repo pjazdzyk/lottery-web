@@ -25,7 +25,6 @@ public class ResultsCheckerFacade {
         this.resultsCheckerRepository = resultsCheckerRepository;
     }
 
-    //TODO: implement scheduled call
     public int generateLotteryResultsForDrawDate(LocalDateTime drawDate) {
         WinningNumbersDto winningNumbersDto = winningNumbersFacade.getWinningNumbersForDate(drawDate);
         int generatedResultsCount = 0;
@@ -63,8 +62,7 @@ public class ResultsCheckerFacade {
     }
 
     public List<CheckerDto> getLotteryResultsDrawDateWinnersOnly(LocalDateTime drawDate) {
-        boolean isWinner = true;
-        List<LotteryResults> lotteryResults = resultsCheckerRepository.findByDrawDateAndWinner(drawDate, isWinner);
+        List<LotteryResults> lotteryResults = resultsCheckerRepository.findByDrawDateAndIsWinner(drawDate, true);
         return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.OK);
     }
 
@@ -76,7 +74,5 @@ public class ResultsCheckerFacade {
     private CheckerDto notFoundDto() {
         return new CheckerDto(null, null, null, null, null, false, CheckerStatus.NOT_FOUND);
     }
-
-
 
 }

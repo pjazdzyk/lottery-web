@@ -11,8 +11,7 @@ import java.util.UUID;
 interface ResultsCheckerRepository extends MongoRepository<LotteryResults, UUID> {
 
     List<LotteryResults> findByDrawDate(LocalDateTime drawDate);
-    List<LotteryResults> findByDrawDateAndWinner(LocalDateTime drawDate, boolean winner);
-
+    List<LotteryResults> findByDrawDateAndIsWinner(LocalDateTime drawDate, boolean isWinner);
 
 }
 

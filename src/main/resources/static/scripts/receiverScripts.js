@@ -13,7 +13,7 @@ import {
 // FILL RANDOM BUTTON CONFIG
 function getRandomLotteryNumber(minNum, maxNum) {
     let randomNumber = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
-    if (randomNumber != 0) {
+    if (randomNumber !== 0) {
         return randomNumber;
     } else {
         getRandomLotteryNumber();
@@ -21,7 +21,7 @@ function getRandomLotteryNumber(minNum, maxNum) {
 }
 
 function generateRandomDistinctLotteryNumbers() {
-    let distinctNumberArray = new Array();
+    let distinctNumberArray = [];
     while (distinctNumberArray.length < totalNumbers) {
         let generatedNumber = getRandomLotteryNumber(minNumber, maxNumber);
         if (!distinctNumberArray.includes(generatedNumber)) {

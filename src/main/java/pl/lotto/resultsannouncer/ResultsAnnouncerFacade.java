@@ -7,6 +7,7 @@ import pl.lotto.resultschecker.ResultsCheckerFacade;
 import pl.lotto.resultschecker.dto.CheckerDto;
 import pl.lotto.resultschecker.dto.CheckerStatus;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -36,6 +37,5 @@ public class ResultsAnnouncerFacade {
     private AnnouncerResponseDto notFoundDto() {
         return new AnnouncerResponseDto(null, null, null, null, null, false, AnnouncerStatus.NOT_FOUND);
     }
-
 
 }

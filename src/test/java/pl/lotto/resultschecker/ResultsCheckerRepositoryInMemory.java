@@ -25,11 +25,11 @@ class ResultsCheckerRepositoryInMemory implements ResultsCheckerRepository {
     }
 
     @Override
-    public List<LotteryResults> findByDrawDateAndWinner(LocalDateTime drawDate, boolean winner) {
+    public List<LotteryResults> findByDrawDateAndIsWinner(LocalDateTime drawDate, boolean isWinner) {
         return databaseInMemory.values()
                 .stream()
                 .filter(lotteryResult -> drawDate.isEqual(lotteryResult.drawDate()))
-                .filter(lotteryResults -> lotteryResults.isWinner() == winner)
+                .filter(lotteryResults -> lotteryResults.isWinner() == isWinner)
                 .collect(Collectors.toList());
     }
 
