@@ -1,7 +1,8 @@
-package pl.lotto.numberreceiver;
+package pl.lotto.infrastructure.numberreceiver.propertyreadconfig;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import pl.lotto.numberreceiver.InputConfigurable;
 
 @Configuration
 @ConfigurationProperties(prefix = "lotto.input")

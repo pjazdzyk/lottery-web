@@ -1,6 +1,6 @@
 package pl.lotto.resultschecker;
 
-interface CheckerConfigurable {
+public interface CheckerConfigurable {
     int getMatchedNumbersToWin();
     void setMatchedNumbersToWin(int matchedNumbersToWin);
 }

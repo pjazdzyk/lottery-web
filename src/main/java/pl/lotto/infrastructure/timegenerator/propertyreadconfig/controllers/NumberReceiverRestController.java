@@ -1,4 +1,4 @@
-package pl.lotto.infrastructure.controllers.restapi;
+package pl.lotto.infrastructure.timegenerator.propertyreadconfig.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

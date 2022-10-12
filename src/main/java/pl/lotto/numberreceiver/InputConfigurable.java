@@ -1,6 +1,6 @@
 package pl.lotto.numberreceiver;
 
-interface InputConfigurable {
+public interface InputConfigurable {
     int getMinNumber();
 
     void setMinNumber(int minNumber);

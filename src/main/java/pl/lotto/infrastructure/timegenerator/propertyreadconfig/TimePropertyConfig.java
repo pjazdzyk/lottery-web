@@ -1,7 +1,8 @@
-package pl.lotto.timegenerator;
+package pl.lotto.infrastructure.timegenerator.propertyreadconfig;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import pl.lotto.timegenerator.TimeConfigurable;
 
 import java.time.*;
 

@@ -1,4 +1,4 @@
-package pl.lotto.infrastructure.controllers.webapi;
+package pl.lotto.infrastructure.timegenerator.propertyreadconfig.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

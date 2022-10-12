@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pl.lotto.BaseIntegrationSpec;
 import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 import pl.lotto.resultsannouncer.dto.AnnouncerResponseDto;
+import pl.lotto.resultsannouncer.dto.AnnouncerStatus;
 import pl.lotto.resultschecker.ResultsCheckerFacade;
+import pl.lotto.testutils.MockMvcAnnouncerCaller;
+import pl.lotto.testutils.MockMvcReceiverCaller;
+import pl.lotto.testutils.TestConstants;
 
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -21,12 +21,12 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-class HappyPathTest extends BaseIntegrationSpec {
+class HappyPathTest extends BaseIntegrationSpec implements TestConstants {
 
-    private final List<Integer> winnersTypesNumbers = List.of(1, 2, 3, 4, 5, 6);
-    private final List<Integer> losersTypesNumbers = List.of(20, 30, 40, 50, 60, 70);
-    private final LocalDateTime DRAW_DATE = LocalDateTime.of(2022, 8, 13, 12, 0);
-
+    @Autowired
+    MockMvcAnnouncerCaller mockMvcAnnouncerCaller;
+    @Autowired
+    MockMvcReceiverCaller mockMvcReceiverCaller;
     @Autowired
     ResultsCheckerFacade resultsCheckerFacade;
 
@@ -34,21 +34,22 @@ class HappyPathTest extends BaseIntegrationSpec {
     @DisplayName("should user win when he inputs 6 winning numbers and retrieves results after the draw date")
     public void happyPath_shouldUserInputNumbers_andWin() {
         // given (date: 2022.08.08 - Monday)
-        ReceiverResponseDto winnerReceiverDto = sendOneCouponToReceiverApi(winnersTypesNumbers);
-        sendSomeCouponsToReceiverApi(10, losersTypesNumbers);
-        // advancing to 5 seconds before draw date. (date: 2022.08.13 - Saturday)
-        adjustableClock.setClockToLocalDate(LocalDate.of(2022, 8, 13));
-        adjustableClock.setClockToLocalTime(LocalTime.of(15, 14, 55));
+        ReceiverResponseDto winnerReceiverDto = mockMvcReceiverCaller.sendOneCouponToReceiverApi(WINNERS_TYPED_NUMBERS);
+        UUID winnerUuid = winnerReceiverDto.uuid();
+        mockMvcReceiverCaller.sendSomeCouponsToReceiverApi(5, LOSERS_TYPED_NUMBERS);
 
         // when
         Awaitility.setDefaultPollInterval(Duration.ofSeconds(2));
-        await().atMost(65, TimeUnit.SECONDS)
+        await().atMost(10, TimeUnit.SECONDS)
                 .until(checkIfResultsCheckerRepositoryContainsWinners(1));
+        AnnouncerResponseDto announcerResponseDto = mockMvcAnnouncerCaller.retrieveResultsFromAnnouncerApi(winnerUuid);
 
         // then
-        UUID expectedWinnerUuid = winnerReceiverDto.uuid();
-        AnnouncerResponseDto announcerResponseDto = retrieveResultsFromAnnouncerApiFromUuid(expectedWinnerUuid);
-        assertThat(announcerResponseDto.uuid()).isEqualTo(expectedWinnerUuid);
+        AnnouncerStatus expectedStatus = AnnouncerStatus.PUBLISHED;
+        assertThat(announcerResponseDto.uuid()).isEqualTo(winnerUuid);
+        assertThat(announcerResponseDto.drawDate()).isEqualTo(DRAW_DATE);
+        assertThat(announcerResponseDto.status()).isEqualTo(expectedStatus);
+        assertThat(announcerResponseDto.typedNumbers()).isEqualTo(WINNERS_TYPED_NUMBERS);
 
     }
 

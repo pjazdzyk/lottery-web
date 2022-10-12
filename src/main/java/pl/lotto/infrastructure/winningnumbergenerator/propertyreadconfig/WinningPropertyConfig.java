@@ -1,7 +1,8 @@
-package pl.lotto.winningnumbergenerator;
+package pl.lotto.infrastructure.winningnumbergenerator.propertyreadconfig;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import pl.lotto.winningnumbergenerator.WinningPropertyConfigurable;
 
 @Configuration
 @ConfigurationProperties(prefix = "lotto.winning")

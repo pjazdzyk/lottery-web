@@ -1,4 +1,4 @@
-package pl.lotto.infrastructure.schedulers;
+package pl.lotto.infrastructure.resultschecker.schedulers;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

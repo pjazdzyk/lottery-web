@@ -14,7 +14,6 @@ class ResultsAnnouncerTest implements MockedResultsChecker{
     ResultsAnnouncerConfiguration resultsAnnouncerConfig = new ResultsAnnouncerConfiguration();
     ResultsAnnouncerFacade resultsAnnouncerFacade = resultsAnnouncerConfig.createForTests(mockedResultsCheckerFacade);
 
-
     @Test
     @DisplayName("should return announcer dto, when uuid is provided")
     void getResultsForId_givenUuid_returnsAnnouncerDto() {

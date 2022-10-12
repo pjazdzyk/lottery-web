@@ -1,7 +1,8 @@
-package pl.lotto.resultschecker;
+package pl.lotto.infrastructure.resultschecker.propertyreadconfig;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import pl.lotto.resultschecker.CheckerConfigurable;
 
 @Configuration
 @ConfigurationProperties(prefix = "lotto.checker")

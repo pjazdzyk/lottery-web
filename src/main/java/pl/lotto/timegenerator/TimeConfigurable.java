@@ -2,7 +2,7 @@ package pl.lotto.timegenerator;
 
 import java.time.*;
 
-interface TimeConfigurable {
+public interface TimeConfigurable {
     DayOfWeek getDrawDayOfWeek();
 
     void setDrawDayOfWeek(DayOfWeek drawDayOfWeek);
