@@ -18,6 +18,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 class HappyPathTest extends BaseIntegrationSpec {
@@ -47,6 +48,8 @@ class HappyPathTest extends BaseIntegrationSpec {
         // then
         UUID expectedWinnerUuid = winnerReceiverDto.uuid();
         AnnouncerResponseDto announcerResponseDto = retrieveResultsFromAnnouncerApiFromUuid(expectedWinnerUuid);
+        assertThat(announcerResponseDto.uuid()).isEqualTo(expectedWinnerUuid);
+
     }
 
     private Callable<Boolean> checkIfResultsCheckerRepositoryContainsWinners(int winnersCount) {
