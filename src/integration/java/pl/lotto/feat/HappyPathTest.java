@@ -39,7 +39,6 @@ class HappyPathTest extends BaseIntegrationSpec implements TestConstants {
         mockMvcReceiverCaller.sendSomeCouponsToReceiverApi(5, LOSERS_TYPED_NUMBERS);
 
         // when
-        Awaitility.setDefaultPollInterval(Duration.ofSeconds(2));
         await().atMost(10, TimeUnit.SECONDS)
                 .until(checkIfResultsCheckerRepositoryContainsWinners(1));
         AnnouncerResponseDto announcerResponseDto = mockMvcAnnouncerCaller.retrieveResultsFromAnnouncerApi(winnerUuid);
