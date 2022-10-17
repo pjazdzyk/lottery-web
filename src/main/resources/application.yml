@@ -1,6 +1,6 @@
 spring:
   profiles:
-   active: production
+   active: integration
   data:
     mongodb:
       uuid-representation: standard
@@ -26,6 +26,7 @@ lotto:
     minWinNumber: ${lotto.input.minNumber}
     maxWinNumber: ${lotto.input.maxNumber}
     winNumberCount: ${lotto.input.numberCount}
-    lotteryRunOccurrence: "${lotto.time.drawSeconds} ${lotto.time.drawMinutes} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
+    #lotteryRunOccurrence: "${lotto.time.drawSeconds} ${lotto.time.drawMinutes} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
+    lotteryRunOccurrence: "*/2 * * * * *"
   checker:
     matchedNumbersToWin: 3

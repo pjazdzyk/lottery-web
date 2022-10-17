@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -37,7 +36,7 @@ public class MockMvcReceiverCaller{
     public ReceiverResponseDto sendOneCouponToReceiverApi(List<Integer> typedNumbers) {
         try {
             String jsonRequest = convertListOfNumbersToRequestDtoAsJson(typedNumbers);
-            MvcResult mvcResult = mockMcvCaller.makeControllerCall(API_URL, jsonRequest);
+            MvcResult mvcResult = mockMcvCaller.makePostControllerCall(API_URL, jsonRequest);
             String contentAsString = mvcResult.getResponse().getContentAsString();
             return objectMapper.readValue(contentAsString, ReceiverResponseDto.class);
         } catch (Exception e) {

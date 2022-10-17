@@ -24,7 +24,7 @@ public class MockMvcAnnouncerCaller{
     public AnnouncerResponseDto retrieveResultsFromAnnouncerApi(UUID uuid) {
         try {
             String requestAsJson = convertUuidToRequestDtoAsJson(uuid);
-            MvcResult mvcCallResult = mockMcvCaller.makeControllerCall(API_URL, requestAsJson);
+            MvcResult mvcCallResult = mockMcvCaller.makeGetControllerCall(API_URL, requestAsJson);
             String contentAsString = mvcCallResult.getResponse().getContentAsString();
             return objectMapper.readValue(contentAsString, AnnouncerResponseDto.class);
         } catch (Exception e) {
