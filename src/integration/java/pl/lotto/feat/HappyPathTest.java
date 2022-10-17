@@ -1,6 +1,5 @@
 package pl.lotto.feat;
 
-import org.awaitility.Awaitility;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import pl.lotto.testutils.MockMvcAnnouncerCaller;
 import pl.lotto.testutils.MockMvcReceiverCaller;
 import pl.lotto.testutils.TestConstants;
 
-import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;

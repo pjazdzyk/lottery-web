@@ -14,7 +14,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import pl.lotto.infrastructure.resultsannouncer.controllers.ResultsAnnouncerRestController;
-import pl.lotto.infrastructure.timegenerator.propertyreadconfig.controllers.NumberReceiverRestController;
+import pl.lotto.infrastructure.numberreceiver.controllers.NumberReceiverRestController;
 import pl.lotto.timegenerator.ProgressingAdjustableClock;
 
 @SpringBootTest(classes = AppRunner.class)
