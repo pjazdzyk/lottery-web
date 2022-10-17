@@ -1,6 +1,6 @@
 spring:
   profiles:
-   active: integration
+   active: production
   data:
     mongodb:
       uuid-representation: standard
