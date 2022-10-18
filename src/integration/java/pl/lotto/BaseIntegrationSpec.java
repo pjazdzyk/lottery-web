@@ -15,14 +15,11 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import pl.lotto.infrastructure.resultsannouncer.controllers.ResultsAnnouncerRestController;
 import pl.lotto.infrastructure.numberreceiver.controllers.NumberReceiverRestController;
-import pl.lotto.timegenerator.ProgressingAdjustableClock;
 
 @SpringBootTest(classes = AppRunner.class)
 @Testcontainers
 @AutoConfigureMockMvc
 public class BaseIntegrationSpec {
-    @Autowired
-    protected ProgressingAdjustableClock adjustableClock;
     @Autowired
     protected NumberReceiverRestController numberReceiverRestController;
     @Autowired

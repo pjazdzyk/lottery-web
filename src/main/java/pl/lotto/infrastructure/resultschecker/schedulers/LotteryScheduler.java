@@ -4,22 +4,22 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pl.lotto.resultschecker.ResultsCheckerFacade;
 import pl.lotto.timegenerator.TimeGeneratorFacade;
-import pl.lotto.winningnumbergenerator.WinningNumberGeneratorFacade;
+import pl.lotto.infrastructure.winningnumberservice.WinningNumberGenerable;
 
 import java.time.LocalDateTime;
 
 @Service
 class LotteryScheduler {
 
-    private final WinningNumberGeneratorFacade winningNumberGeneratorFacade;
+    private final WinningNumberGenerable winningNumberGenerable;
     private final ResultsCheckerFacade resultsCheckerFacade;
     private final TimeGeneratorFacade timeGeneratorFacade;
     private LocalDateTime drawDate;
 
-    public LotteryScheduler(WinningNumberGeneratorFacade winningNumberGeneratorFacade, ResultsCheckerFacade resultsCheckerFacade,
+    public LotteryScheduler(WinningNumberGenerable winningNumberGenerable, ResultsCheckerFacade resultsCheckerFacade,
                             TimeGeneratorFacade timeGeneratorFacade) {
 
-        this.winningNumberGeneratorFacade = winningNumberGeneratorFacade;
+        this.winningNumberGenerable = winningNumberGenerable;
         this.resultsCheckerFacade = resultsCheckerFacade;
         this.timeGeneratorFacade = timeGeneratorFacade;
         this.drawDate = timeGeneratorFacade.getDrawDateAndTime();
@@ -27,7 +27,7 @@ class LotteryScheduler {
 
     @Scheduled(cron = "${lotto.winning.lotteryRunOccurrence}")
     void runLottery(){
-        winningNumberGeneratorFacade.generateWinningNumbers(drawDate);
+        winningNumberGenerable.generateWinningNumbers(drawDate);
         resultsCheckerFacade.generateLotteryResultsForDrawDate(drawDate);
         drawDate = timeGeneratorFacade.getDrawDateAndTime();
     }

@@ -10,6 +10,8 @@ class CheckerPropertyConfig implements CheckerConfigurable {
 
     private int matchedNumbersToWin;
 
+    private int lotteryRunOccurrence;
+
     public int getMatchedNumbersToWin() {
         return matchedNumbersToWin;
     }
@@ -18,10 +20,12 @@ class CheckerPropertyConfig implements CheckerConfigurable {
         this.matchedNumbersToWin = matchedNumbersToWin;
     }
 
-    @Override
-    public String toString() {
-        return "WinningPropertyConfig{" +
-                "matchedNumbersToWin=" + matchedNumbersToWin +
-                '}';
+    public int getLotteryRunOccurrence() {
+        return lotteryRunOccurrence;
     }
+
+    public void setLotteryRunOccurrence(int lotteryRunOccurrence) {
+        this.lotteryRunOccurrence = lotteryRunOccurrence;
+    }
+
 }

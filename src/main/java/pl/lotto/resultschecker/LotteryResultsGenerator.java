@@ -12,11 +12,11 @@ class LotteryResultsGenerator {
         this.resultsChecker = resultsChecker;
     }
 
-    List<LotteryResults> getListOfLotteryResults(List<ReceiverResponseDto> couponSubListForDrawDate, List<Integer> winningNumbers) {
-        return couponSubListForDrawDate.stream().map(coupon -> createLotteryResult(coupon, winningNumbers)).toList();
+    List<LotteryResults> generateLotteryResultsList(List<ReceiverResponseDto> couponsForThisDrawDate, List<Integer> winningNumbersForThisDrawDate) {
+        return couponsForThisDrawDate.stream().map(coupon -> createSingleLotteryResult(coupon, winningNumbersForThisDrawDate)).toList();
     }
 
-    private LotteryResults createLotteryResult(ReceiverResponseDto receiverResponseDto, List<Integer> winningNumbers) {
+    private LotteryResults createSingleLotteryResult(ReceiverResponseDto receiverResponseDto, List<Integer> winningNumbers) {
         List<Integer> userTypedNumbers = receiverResponseDto.typedNumbers();
         List<Integer> matchedNumbers = resultsChecker.getMatchedNumbers(userTypedNumbers, winningNumbers);
         boolean isWinner = resultsChecker.checkIfIsWinner(matchedNumbers);

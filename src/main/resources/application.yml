@@ -22,11 +22,7 @@ lotto:
     drawSeconds: 0
     drawTime: "${lotto.time.drawHour}:${lotto.time.drawMinutes}:${lotto.time.drawSeconds}"
     expirationInDays: 930
-  winning:
-    minWinNumber: ${lotto.input.minNumber}
-    maxWinNumber: ${lotto.input.maxNumber}
-    winNumberCount: ${lotto.input.numberCount}
+  checker:
     #lotteryRunOccurrence: "${lotto.time.drawSeconds} ${lotto.time.drawMinutes} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
     lotteryRunOccurrence: "*/2 * * * * *"
-  checker:
     matchedNumbersToWin: 3

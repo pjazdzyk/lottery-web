@@ -1,42 +1,40 @@
 package pl.lotto.resultschecker;
 
+import pl.lotto.infrastructure.winningnumberservice.dto.WinningNumberStatus;
+import pl.lotto.infrastructure.winningnumberservice.dto.WinningNumbersResponseDto;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 import pl.lotto.resultschecker.dto.CheckerDto;
 import pl.lotto.resultschecker.dto.CheckerStatus;
-import pl.lotto.winningnumbergenerator.WinningNumberGeneratorFacade;
-import pl.lotto.winningnumbergenerator.dto.WinNumberStatus;
-import pl.lotto.winningnumbergenerator.dto.WinningNumbersDto;
+import pl.lotto.infrastructure.winningnumberservice.WinningNumberGenerable;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class ResultsCheckerFacade {
     private final NumberReceiverFacade numberReceiverFacade;
-    private final WinningNumberGeneratorFacade winningNumbersFacade;
+    private final WinningNumberGenerable winningNumbersService;
     private final LotteryResultsGenerator lotteryResultsGenerator;
     private final ResultsCheckerRepository resultsCheckerRepository;
 
-    public ResultsCheckerFacade(NumberReceiverFacade numberReceiverFacade, WinningNumberGeneratorFacade winningNumbersFacade,
+    public ResultsCheckerFacade(NumberReceiverFacade numberReceiverFacade, WinningNumberGenerable winningNumbersService,
                                 LotteryResultsGenerator lotteryResultsGenerator, ResultsCheckerRepository resultsCheckerRepository) {
         this.numberReceiverFacade = numberReceiverFacade;
-        this.winningNumbersFacade = winningNumbersFacade;
+        this.winningNumbersService = winningNumbersService;
         this.lotteryResultsGenerator = lotteryResultsGenerator;
         this.resultsCheckerRepository = resultsCheckerRepository;
     }
 
     public int generateLotteryResultsForDrawDate(LocalDateTime drawDate) {
-        WinningNumbersDto winningNumbersDto = winningNumbersFacade.getWinningNumbersForDate(drawDate);
-        int generatedResultsCount = 0;
-        if (winningNumbersDto.status() != WinNumberStatus.SAVED) {
-            return generatedResultsCount;
+        WinningNumbersResponseDto winningNumbersResponseDto = winningNumbersService.retrieveWinningNumbersForDrawDate(drawDate);
+        if (winningNumbersResponseDto.status() == WinningNumberStatus.NOT_FOUND) {
+            return -1;
         }
-        List<ReceiverResponseDto> receiverResponseDtoForDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(drawDate);
-        List<LotteryResults> listOfLotteryResults = lotteryResultsGenerator.getListOfLotteryResults(receiverResponseDtoForDrawDate,
-                winningNumbersDto.winningNumbers());
-        resultsCheckerRepository.saveAll(listOfLotteryResults);
-        generatedResultsCount = listOfLotteryResults.size();
-        return generatedResultsCount;
+        List<Integer> winningNumbersForThisDrawDate = winningNumbersResponseDto.winningNumbers();
+        List<ReceiverResponseDto> couponsForThisDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(drawDate);
+        List<LotteryResults> lotteryResults = lotteryResultsGenerator.generateLotteryResultsList(couponsForThisDrawDate, winningNumbersForThisDrawDate);
+        resultsCheckerRepository.saveAll(lotteryResults);
+        return lotteryResults.size();
     }
 
     public CheckerDto getResultsForId(UUID uuid) {

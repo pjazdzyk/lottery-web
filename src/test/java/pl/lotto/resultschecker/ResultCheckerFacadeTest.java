@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.resultschecker.dto.CheckerStatus;
 import pl.lotto.resultschecker.dto.CheckerDto;
-import pl.lotto.winningnumbergenerator.WinningNumberGeneratorFacade;
+import pl.lotto.infrastructure.winningnumberservice.WinningNumberGenerable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,17 +14,17 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ResultCheckerFacadeTest implements MockedNumberReceiverFacade, MockedWinningNumberGeneratorFacade {
+class ResultCheckerFacadeTest implements MockedNumberReceiverFacade {
 
+    private final List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
     private final NumberReceiverFacade mockedNumberReceiverFacade = createMockedNumberReceiverFacade();
-    private final WinningNumberGeneratorFacade mockedWinningNumbersFacade = createWinningNumberFacade();
+    private final WinningNumberGenerable winningNumbersServiceStub = new WinningNumbersServiceStub(winningNumbers);
     private final ResultsCheckerConfiguration resultsCheckerConfig = new ResultsCheckerConfiguration();
     private ResultsCheckerRepository resultsCheckerRepository = new ResultsCheckerRepositoryInMemory();
     private final int minNumbersToWin = 3;
-
     private final CheckerConfigurable winningConfig = new CheckerPropertyConfigTest(minNumbersToWin);
     private final ResultsCheckerFacade resultsCheckerFacade = resultsCheckerConfig.createForTests(mockedNumberReceiverFacade,
-            mockedWinningNumbersFacade, resultsCheckerRepository, winningConfig);
+            winningNumbersServiceStub, resultsCheckerRepository, winningConfig);
 
     @BeforeEach
     void tearDown() {
@@ -55,7 +55,7 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade, MockedWinni
         // then
         assertThat(actualResultCheckDto.uuid()).isEqualTo(sampleUuid);
         assertThat(actualResultCheckDto.status()).isEqualTo(CheckerStatus.OK);
-        assertThat(actualResultCheckDto.matchedNumbers()).isEqualTo(sampleWinningNumbers);
+        assertThat(actualResultCheckDto.matchedNumbers()).isEqualTo(winningNumbers);
         assertThat(actualResultCheckDto.matchedNumbers().size()).isEqualTo(6);
     }
 
