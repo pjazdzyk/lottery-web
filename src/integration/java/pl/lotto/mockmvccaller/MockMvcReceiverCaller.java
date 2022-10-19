@@ -1,4 +1,4 @@
-package pl.lotto.testutils;
+package pl.lotto.mockmvccaller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
@@ -9,18 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static pl.lotto.testutils.JsonConverters.convertListOfNumbersToRequestDtoAsJson;
 
 @Component
-public class MockMvcReceiverCaller{
+public class MockMvcReceiverCaller {
 
     public static final String API_URL = "/api/v1/receiver";
     private final ObjectMapper objectMapper;
+    private final JsonConverters jsonConverters;
     private final MockMcvCaller mockMcvCaller;
 
 
-    public MockMvcReceiverCaller(ObjectMapper objectMapper, MockMcvCaller mockMcvCaller) {
+    public MockMvcReceiverCaller(ObjectMapper objectMapper, JsonConverters jsonConverters, MockMcvCaller mockMcvCaller) {
         this.objectMapper = objectMapper;
+        this.jsonConverters = jsonConverters;
         this.mockMcvCaller = mockMcvCaller;
     }
 
@@ -35,7 +36,7 @@ public class MockMvcReceiverCaller{
 
     public ReceiverResponseDto sendOneCouponToReceiverApi(List<Integer> typedNumbers) {
         try {
-            String jsonRequest = convertListOfNumbersToRequestDtoAsJson(typedNumbers);
+            String jsonRequest = jsonConverters.convertListOfNumbersToRequestDtoAsJson(typedNumbers);
             MvcResult mvcResult = mockMcvCaller.makePostControllerCall(API_URL, jsonRequest);
             String contentAsString = mvcResult.getResponse().getContentAsString();
             return objectMapper.readValue(contentAsString, ReceiverResponseDto.class);

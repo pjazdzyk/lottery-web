@@ -10,21 +10,25 @@ class CheckerPropertyConfig implements CheckerConfigurable {
 
     private int matchedNumbersToWin;
 
-    private int lotteryRunOccurrence;
+    private String lotteryRunOccurrence;
 
+    @Override
     public int getMatchedNumbersToWin() {
         return matchedNumbersToWin;
     }
 
+    @Override
     public void setMatchedNumbersToWin(int matchedNumbersToWin) {
         this.matchedNumbersToWin = matchedNumbersToWin;
     }
 
-    public int getLotteryRunOccurrence() {
+    @Override
+    public String getLotteryRunOccurrence() {
         return lotteryRunOccurrence;
     }
 
-    public void setLotteryRunOccurrence(int lotteryRunOccurrence) {
+    @Override
+    public void setLotteryRunOccurrence(String lotteryRunOccurrence) {
         this.lotteryRunOccurrence = lotteryRunOccurrence;
     }
 

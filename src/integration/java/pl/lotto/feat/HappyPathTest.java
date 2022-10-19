@@ -8,9 +8,9 @@ import pl.lotto.numberreceiver.dto.ReceiverResponseDto;
 import pl.lotto.resultsannouncer.dto.AnnouncerResponseDto;
 import pl.lotto.resultsannouncer.dto.AnnouncerStatus;
 import pl.lotto.resultschecker.ResultsCheckerFacade;
-import pl.lotto.testutils.MockMvcAnnouncerCaller;
-import pl.lotto.testutils.MockMvcReceiverCaller;
-import pl.lotto.testutils.TestConstants;
+import pl.lotto.mockmvccaller.MockMvcAnnouncerCaller;
+import pl.lotto.mockmvccaller.MockMvcReceiverCaller;
+import pl.lotto.TestConstants;
 
 import java.util.UUID;
 import java.util.concurrent.Callable;

@@ -1,4 +1,4 @@
-package pl.lotto.testutils;
+package pl.lotto;
 
 import java.time.LocalDateTime;
 import java.util.List;

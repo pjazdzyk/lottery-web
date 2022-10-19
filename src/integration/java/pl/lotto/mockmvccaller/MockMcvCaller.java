@@ -1,6 +1,5 @@
-package pl.lotto.testutils;
+package pl.lotto.mockmvccaller;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
@@ -14,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Component
-public class MockMcvCaller {
+class MockMcvCaller {
 
     protected final MockMvc mockMvc;
 

@@ -16,4 +16,14 @@ public class CheckerPropertyConfigTest implements CheckerConfigurable {
         this.matchedNumbersToWin = matchedNumbersToWin;
     }
 
+    @Override
+    public String getLotteryRunOccurrence() {
+        return null;
+    }
+
+    @Override
+    public void setLotteryRunOccurrence(String lotteryRunOccurrence) {
+
+    }
+
 }

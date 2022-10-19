@@ -1,23 +1,29 @@
-package pl.lotto.testutils;
+package pl.lotto.mockmvccaller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
 import pl.lotto.numberreceiver.dto.ReceiverRequestDto;
 import pl.lotto.resultsannouncer.dto.AnnouncerRequestDto;
 
 import java.util.List;
 import java.util.UUID;
 
-public class JsonConverters {
+@Service
+class JsonConverters {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
-   public static String convertListOfNumbersToRequestDtoAsJson(List<Integer> typedNumbers) throws JsonProcessingException {
+    public JsonConverters(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+    public String convertListOfNumbersToRequestDtoAsJson(List<Integer> typedNumbers) throws JsonProcessingException {
         ReceiverRequestDto receiverRequestDto = new ReceiverRequestDto(typedNumbers);
         return objectMapper.writeValueAsString(receiverRequestDto);
     }
 
-    public static String convertUuidToRequestDtoAsJson(UUID uuid) throws JsonProcessingException {
+    public String convertUuidToRequestDtoAsJson(UUID uuid) throws JsonProcessingException {
         AnnouncerRequestDto requestDto = new AnnouncerRequestDto(uuid);
         return objectMapper.writeValueAsString(requestDto);
     }
