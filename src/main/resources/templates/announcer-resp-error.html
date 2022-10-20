@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous">
+    </script>
+    <script>
+        $(function () {
+            $("#header").load("navbar-template.html");
+        });
+    </script>
+    <title>Lotto|Web - Error</title>
+</head>
+
+<body>
+<!-- Navbar-template injection -->
+<div id="header"></div>
+<!-- Navbar-template end -->
+
+<main class="container">
+    <div class="card">
+        <div class="card-header">
+            <h5>Thank you for playing. Below are the results for your coupon:</h5>
+        </div>
+        <div class="card-body">
+            <div class="card-text">
+                 <h5 class="text-danger">Your result has not been found, or invalid ID was provided. Make sure, that you check your ID after the draw date for your game.</h5>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="/index.html" class="anchor-as-button">HOME</a></div>
+    </div>
+
+</main>
+</body>
+
+</html>

@@ -26,3 +26,6 @@ lotto:
     #lotteryRunOccurrence: "${lotto.time.drawSeconds} ${lotto.time.drawMinutes} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
     lotteryRunOccurrence: "*/2 * * * * *"
     matchedNumbersToWin: 3
+
+server:
+  port: 8010

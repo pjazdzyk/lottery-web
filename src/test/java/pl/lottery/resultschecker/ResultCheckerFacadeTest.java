@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import pl.lottery.numberreceiver.NumberReceiverFacade;
 import pl.lottery.resultschecker.dto.CheckerStatus;
 import pl.lottery.resultschecker.dto.CheckerDto;
-import pl.lottery.infrastructure.winningnumberservice.WinningNumberGenerable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +17,7 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade {
 
     private final List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
     private final NumberReceiverFacade mockedNumberReceiverFacade = createMockedNumberReceiverFacade();
-    private final WinningNumberGenerable winningNumbersServiceStub = new WinningNumbersServiceStub(winningNumbers);
+    private final WinningNumberGeneratorPort winningNumbersServiceStub = new WinningNumbersServiceStub(winningNumbers);
     private final ResultsCheckerConfiguration resultsCheckerConfig = new ResultsCheckerConfiguration();
     private ResultsCheckerRepository resultsCheckerRepository = new ResultsCheckerRepositoryInMemory();
     private final int minNumbersToWin = 3;

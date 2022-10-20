@@ -3,12 +3,11 @@ package pl.lottery.resultschecker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.lottery.numberreceiver.NumberReceiverFacade;
-import pl.lottery.infrastructure.winningnumberservice.WinningNumberGenerable;
 
 @Configuration
 public class ResultsCheckerConfiguration {
 
-    public ResultsCheckerFacade createForTests(NumberReceiverFacade numberReceiverFacade, WinningNumberGenerable winningNumbersFacade,
+    public ResultsCheckerFacade createForTests(NumberReceiverFacade numberReceiverFacade, WinningNumberGeneratorPort winningNumbersFacade,
                                                ResultsCheckerRepository resultsCheckerRepository, CheckerConfigurable winningConfig) {
 
         ResultsChecker resultsChecker = new ResultsChecker(winningConfig);
@@ -17,7 +16,7 @@ public class ResultsCheckerConfiguration {
     }
 
     @Bean("resultsCheckerFacade")
-    public ResultsCheckerFacade createForProduction(NumberReceiverFacade numberReceiverFacade, WinningNumberGenerable winningNumbersService,
+    public ResultsCheckerFacade createForProduction(NumberReceiverFacade numberReceiverFacade, WinningNumberGeneratorPort winningNumbersService,
                                                     ResultsCheckerRepository resultsCheckerRepository, CheckerConfigurable winningConfig) {
 
         ResultsChecker resultsChecker = new ResultsChecker(winningConfig);

@@ -11,13 +11,13 @@ import org.springframework.web.client.RestTemplate;
 public class WinningNumbersServiceConfiguration {
 
     @Bean
-    public WinningNumbersGeneratorHttpService createForProduction(ObjectMapper objectMapper){
+    public WinningNumbersGeneratorPortHttpService createForProduction(ObjectMapper objectMapper){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         JsonMappers jsonMappers = new JsonMappers(objectMapper);
         HttpEntityGenerator httpEntityGenerator = new HttpEntityGenerator(headers,jsonMappers);
         RestTemplate restTemplate = new RestTemplate();
-        return new WinningNumbersGeneratorHttpService(restTemplate,httpEntityGenerator);
+        return new WinningNumbersGeneratorPortHttpService(restTemplate,httpEntityGenerator);
     }
 
 }

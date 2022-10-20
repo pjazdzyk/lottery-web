@@ -1,13 +1,12 @@
 package pl.lottery.resultschecker;
 
-import pl.lottery.infrastructure.winningnumberservice.WinningNumberGenerable;
 import pl.lottery.infrastructure.winningnumberservice.dto.WinningNumberStatus;
 import pl.lottery.infrastructure.winningnumberservice.dto.WinningNumbersResponseDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class WinningNumbersServiceStub implements WinningNumberGenerable {
+public class WinningNumbersServiceStub implements WinningNumberGeneratorPort {
 
     private final List<Integer> winningNumbers;
 

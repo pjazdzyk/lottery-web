@@ -6,18 +6,17 @@ import pl.lottery.numberreceiver.NumberReceiverFacade;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;
 import pl.lottery.resultschecker.dto.CheckerDto;
 import pl.lottery.resultschecker.dto.CheckerStatus;
-import pl.lottery.infrastructure.winningnumberservice.WinningNumberGenerable;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class ResultsCheckerFacade {
     private final NumberReceiverFacade numberReceiverFacade;
-    private final WinningNumberGenerable winningNumbersService;
+    private final WinningNumberGeneratorPort winningNumbersService;
     private final LotteryResultsGenerator lotteryResultsGenerator;
     private final ResultsCheckerRepository resultsCheckerRepository;
 
-    public ResultsCheckerFacade(NumberReceiverFacade numberReceiverFacade, WinningNumberGenerable winningNumbersService,
+    public ResultsCheckerFacade(NumberReceiverFacade numberReceiverFacade, WinningNumberGeneratorPort winningNumbersService,
                                 LotteryResultsGenerator lotteryResultsGenerator, ResultsCheckerRepository resultsCheckerRepository) {
         this.numberReceiverFacade = numberReceiverFacade;
         this.winningNumbersService = winningNumbersService;

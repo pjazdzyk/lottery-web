@@ -4,12 +4,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import pl.lottery.infrastructure.winningnumberservice.dto.WinningNumbersResponseDto;
+import pl.lottery.resultschecker.WinningNumberGeneratorPort;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 //TODO implement from HTTP service
-public class WinningNumbersGeneratorHttpService implements WinningNumberGenerable {
+public class WinningNumbersGeneratorPortHttpService implements WinningNumberGeneratorPort {
 
     private static final String SERVICE_URL = "http://ec2-35-158-119-20.eu-central-1.compute.amazonaws.com:8000/api/v1";
     private static final String GENERATE_URL = SERVICE_URL + "/generate";
@@ -20,7 +21,7 @@ public class WinningNumbersGeneratorHttpService implements WinningNumberGenerabl
     private final RestTemplate restTemplate;
     private final HttpEntityGenerator httpEntityGenerator;
 
-    public WinningNumbersGeneratorHttpService(RestTemplate restTemplate, HttpEntityGenerator httpEntityGenerator) {
+    public WinningNumbersGeneratorPortHttpService(RestTemplate restTemplate, HttpEntityGenerator httpEntityGenerator) {
         this.restTemplate = restTemplate;
         this.httpEntityGenerator = httpEntityGenerator;
     }

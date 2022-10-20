@@ -31,10 +31,10 @@ public class BaseIntegrationSpec {
     @Autowired
     protected MockMvc mockMvc;
     @Container
-    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
+    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo"));
 
     @Container
-    private static final GenericContainer<?> redis = new GenericContainer<>(DockerImageName.parse("redis:5.0.3-alpine")).withExposedPorts(6379);
+    private static final GenericContainer<?> redis = new GenericContainer<>(DockerImageName.parse("redis")).withExposedPorts(6379);
 
     @DynamicPropertySource
     private static void propertyOverride(DynamicPropertyRegistry registry) {

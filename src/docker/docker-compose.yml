@@ -4,7 +4,7 @@ version: '3.1'
 services:
   # actual database image
   mongo:
-    image: mongo:4.0.10
+    image: mongo
     restart: always
     ports:
       - "27017:27017"  # port forwarding
@@ -28,7 +28,7 @@ services:
 
  # Redis cache service
   redis:
-    image: redis:5.0.3-alpine
+    image: redis
     restart: always
     ports:
       - '6379:6379'

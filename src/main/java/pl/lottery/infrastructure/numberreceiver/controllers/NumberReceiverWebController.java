@@ -17,7 +17,7 @@ public class NumberReceiverWebController {
     }
 
     @PostMapping("/receiver")
-    public String getInputNumbersFromUser(ReceiverRequestDto receiverRequestDto, Model model) {
+    public String inputNumbers(ReceiverRequestDto receiverRequestDto, Model model) {
         ReceiverResponseDto receiverResponseDto = numberReceiverFacade.inputNumbers(receiverRequestDto.getTypedNumbers());
         model.addAttribute("receiverResponseDto", receiverResponseDto);
         return "receiver-resp-view";
