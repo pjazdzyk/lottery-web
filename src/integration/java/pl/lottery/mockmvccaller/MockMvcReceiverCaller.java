@@ -1,8 +1,8 @@
 package pl.lottery.mockmvccaller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MvcResult;
+import pl.lottery.numberreceiver.dto.ReceiverRequestDto;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;
 
 import java.util.ArrayList;
@@ -13,14 +13,12 @@ import java.util.UUID;
 @Component
 public class MockMvcReceiverCaller {
 
-    public static final String API_URL = "/api/v1/receiver";
-    private final ObjectMapper objectMapper;
+    public static final String RECEIVER_URL = "/api/v1/receiver";
     private final JsonConverters jsonConverters;
     private final MockMcvCaller mockMcvCaller;
 
 
-    public MockMvcReceiverCaller(ObjectMapper objectMapper, JsonConverters jsonConverters, MockMcvCaller mockMcvCaller) {
-        this.objectMapper = objectMapper;
+    public MockMvcReceiverCaller(JsonConverters jsonConverters, MockMcvCaller mockMcvCaller) {
         this.jsonConverters = jsonConverters;
         this.mockMcvCaller = mockMcvCaller;
     }
@@ -28,21 +26,21 @@ public class MockMvcReceiverCaller {
     public List<UUID> sendSomeCouponsToReceiverApi(int amount, List<Integer> numbers) {
         List<UUID> uuidList = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            ReceiverResponseDto receiverResponseDto = sendOneCouponToReceiverApi(numbers);
+            ReceiverResponseDto receiverResponseDto = makePostCallReceiverInputNumbers(numbers);
             uuidList.add(receiverResponseDto.uuid());
         }
         return uuidList;
     }
 
-    public ReceiverResponseDto sendOneCouponToReceiverApi(List<Integer> typedNumbers) {
+    public ReceiverResponseDto makePostCallReceiverInputNumbers(List<Integer> typedNumbers) {
         try {
-            String jsonRequest = jsonConverters.convertListOfNumbersToRequestDtoAsJson(typedNumbers);
-            MvcResult mvcResult = mockMcvCaller.makePostControllerCall(API_URL, jsonRequest);
-            String contentAsString = mvcResult.getResponse().getContentAsString();
-            return objectMapper.readValue(contentAsString, ReceiverResponseDto.class);
+            ReceiverRequestDto receiverRequestDto = new ReceiverRequestDto(typedNumbers);
+            String requestAsJson = jsonConverters.convertReceiverRequestDtoToJsonAsString(receiverRequestDto);
+            MvcResult receiverResponse = mockMcvCaller.makePostMockedCallWithJson(RECEIVER_URL, requestAsJson);
+            String contentJsonAsString = receiverResponse.getResponse().getContentAsString();
+            return jsonConverters.convertJsonResponseToReceiverResponseDto(contentJsonAsString);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
 }

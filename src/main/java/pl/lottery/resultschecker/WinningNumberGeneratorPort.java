@@ -8,9 +8,9 @@ import java.util.List;
 public interface WinningNumberGeneratorPort {
     WinningNumbersResponseDto generateWinningNumbers(LocalDateTime drawDate);
 
-    WinningNumbersResponseDto retrieveWinningNumbersForDrawDate(LocalDateTime drawDate);
+    WinningNumbersResponseDto retrieveWinningNumbers(LocalDateTime drawDate);
 
-    WinningNumbersResponseDto deleteWinningNumbersForDate(LocalDateTime drawDate);
+    WinningNumbersResponseDto deleteWinningNumbers(LocalDateTime drawDate);
 
     List<WinningNumbersResponseDto> getAllWinningNumbers();
 }

@@ -16,7 +16,7 @@ class HttpEntityGenerator {
         this.jsonMappers = jsonMappers;
     }
 
-    HttpEntity<String> createHttpEntityForDrawDate(LocalDateTime drawDate){
+    HttpEntity<String> createHttpEntityWithBodyForDrawDate(LocalDateTime drawDate){
         WinningNumbersRequestDto requestDto = new WinningNumbersRequestDto(drawDate);
         String jsonDate = jsonMappers.winningNumbersRequestDtoAsJson(requestDto);
         return new HttpEntity<>(jsonDate, headers);

@@ -1,4 +1,4 @@
-package pl.lottery.winningnumbergenerator;
+package pl.lottery.feat.winningnumbergenerator;
 
 import org.springframework.context.annotation.Bean;
 import pl.lottery.resultschecker.WinningNumberGeneratorPort;

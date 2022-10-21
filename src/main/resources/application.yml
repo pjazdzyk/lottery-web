@@ -1,3 +1,6 @@
+server:
+  port: 8010
+
 spring:
   profiles:
    active: production
@@ -27,5 +30,12 @@ lotto:
     lotteryRunOccurrence: "*/2 * * * * *"
     matchedNumbersToWin: 3
 
-server:
-  port: 8010
+winning-numbers-service:
+  protocol: http
+  serviceHost: ec2-3-69-165-151.eu-central-1.compute.amazonaws.com
+  servicePort: 8000
+  serviceApi: /api/v1
+  generateEndpoint: /generate
+  retrieveEndpoint: /numbers
+  deleteEndpoint: /delete
+  getAllEndpoint: /all

@@ -10,14 +10,17 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class WinningNumbersServiceConfiguration {
 
+    public static final String DRAW_DATE_PARAM_NAME = "drawDate";
+
     @Bean
-    public WinningNumbersGeneratorPortHttpService createForProduction(ObjectMapper objectMapper){
+    public WinningNumbersGeneratorPortHttpService createForProduction(ObjectMapper objectMapper, WinningServiceConfigurable winningServicePropertyConfig) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         JsonMappers jsonMappers = new JsonMappers(objectMapper);
-        HttpEntityGenerator httpEntityGenerator = new HttpEntityGenerator(headers,jsonMappers);
+        UrlGenerator urlGenerator = new UrlGenerator(DRAW_DATE_PARAM_NAME, winningServicePropertyConfig);
+        HttpEntityGenerator httpEntityGenerator = new HttpEntityGenerator(headers, jsonMappers);
         RestTemplate restTemplate = new RestTemplate();
-        return new WinningNumbersGeneratorPortHttpService(restTemplate,httpEntityGenerator);
+        return new WinningNumbersGeneratorPortHttpService(restTemplate, urlGenerator, httpEntityGenerator);
     }
 
 }

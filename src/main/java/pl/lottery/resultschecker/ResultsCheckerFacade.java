@@ -25,7 +25,7 @@ public class ResultsCheckerFacade {
     }
 
     public int generateLotteryResultsForDrawDate(LocalDateTime drawDate) {
-        WinningNumbersResponseDto winningNumbersResponseDto = winningNumbersService.retrieveWinningNumbersForDrawDate(drawDate);
+        WinningNumbersResponseDto winningNumbersResponseDto = winningNumbersService.retrieveWinningNumbers(drawDate);
         if (winningNumbersResponseDto.status() == WinningNumberStatus.NOT_FOUND) {
             return -1;
         }

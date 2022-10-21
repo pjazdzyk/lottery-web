@@ -20,12 +20,12 @@ public class WinningNumbersServiceStub implements WinningNumberGeneratorPort {
     }
 
     @Override
-    public WinningNumbersResponseDto retrieveWinningNumbersForDrawDate(LocalDateTime drawDate) {
+    public WinningNumbersResponseDto retrieveWinningNumbers(LocalDateTime drawDate) {
         return new WinningNumbersResponseDto(drawDate, winningNumbers, WinningNumberStatus.LOADED_FROM_DB);
     }
 
     @Override
-    public WinningNumbersResponseDto deleteWinningNumbersForDate(LocalDateTime drawDate) {
+    public WinningNumbersResponseDto deleteWinningNumbers(LocalDateTime drawDate) {
         return new WinningNumbersResponseDto(drawDate, null, WinningNumberStatus.DELETED);
     }
 
