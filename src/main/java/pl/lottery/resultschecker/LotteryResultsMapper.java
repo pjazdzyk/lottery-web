@@ -8,8 +8,15 @@ import java.util.List;
 class LotteryResultsMapper {
 
     public static CheckerDto toDto(LotteryResults lotteryResults, CheckerStatus status) {
-        return new CheckerDto(lotteryResults.uuid(), lotteryResults.drawDate(), lotteryResults.inputNumbers(),
-                lotteryResults.winningNumbers(), lotteryResults.matchedNumbers(), lotteryResults.isWinner(), status);
+        return CheckerDto.CheckerDtoBuilder
+                .newInstance(status)
+                .withUid(lotteryResults.uuid())
+                .withDrawDate(lotteryResults.drawDate())
+                .withTypedNumbers(lotteryResults.inputNumbers())
+                .withWinningNumbers(lotteryResults.winningNumbers())
+                .withMatchedNumbers(lotteryResults.matchedNumbers())
+                .withIsWinner(lotteryResults.isWinner())
+                .build();
     }
 
     static List<CheckerDto> toDtoList(List<LotteryResults> lotteryResult, CheckerStatus status) {

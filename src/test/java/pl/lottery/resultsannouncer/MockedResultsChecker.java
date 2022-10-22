@@ -19,20 +19,42 @@ interface MockedResultsChecker {
     List<Integer> sampleWinningNumbers = List.of(1, 2, 3, 4, 5, 6);
     CheckerStatus publishedStatus = CheckerStatus.OK;
     UUID nonExistingUUid = UUID.fromString("cb245bd4-bc47-40ed-87dc-caa9720186bd");
-    CheckerDto notFoundDto = new CheckerDto(null, null, null, null, null, false, CheckerStatus.NOT_FOUND);
 
     List<CheckerDto> sampleCheckerDtos = List.of(
             // Cached
-            new CheckerDto(sampleUuid, sampleDrawDateTime, List.of(1, 2, 3, 4, 5, 6), sampleWinningNumbers, List.of(1, 2, 3, 4, 5, 6), true, publishedStatus),
-            new CheckerDto(UUID.randomUUID(), sampleDrawDateTime, List.of(1, 2, 3, 4, 50, 60), sampleWinningNumbers, List.of(1, 2, 3, 4), true, publishedStatus),
-            new CheckerDto(UUID.randomUUID(), sampleDrawDateTime, List.of(1, 2, 3, 70, 80, 90), sampleWinningNumbers, List.of(1, 2, 3), true, publishedStatus)
+            CheckerDto.CheckerDtoBuilder.newInstance(publishedStatus)
+                    .withUid(sampleUuid)
+                    .withDrawDate(sampleDrawDateTime)
+                    .withTypedNumbers(List.of(1, 2, 3, 4, 5, 6))
+                    .withWinningNumbers(sampleWinningNumbers)
+                    .withMatchedNumbers(sampleWinningNumbers)
+                    .withIsWinner(true)
+                    .build(),
+
+            CheckerDto.CheckerDtoBuilder.newInstance(publishedStatus)
+                    .withUid(sampleUuid)
+                    .withDrawDate(sampleDrawDateTime)
+                    .withTypedNumbers(List.of(1, 2, 3, 4, 50, 60))
+                    .withWinningNumbers(sampleWinningNumbers)
+                    .withMatchedNumbers(List.of(1, 2, 3, 4))
+                    .withIsWinner(true)
+                    .build(),
+
+            CheckerDto.CheckerDtoBuilder.newInstance(publishedStatus)
+                    .withUid(sampleUuid)
+                    .withDrawDate(sampleDrawDateTime)
+                    .withTypedNumbers(List.of(1, 2, 3, 70, 80, 90))
+                    .withWinningNumbers(sampleWinningNumbers)
+                    .withMatchedNumbers(List.of(1, 2, 3))
+                    .withIsWinner(true)
+                    .build()
     );
 
     default ResultsCheckerFacade createMockedResultsCheckerFacade() {
         ResultsCheckerFacade mockedResultsCheckerFacade = mock(ResultsCheckerFacade.class);
         when(mockedResultsCheckerFacade.getResultsForId(sampleUuid)).thenReturn(sampleCheckerDtos.get(0));
-        when(mockedResultsCheckerFacade.getResultsForId(nonExistingUUid)).thenReturn(notFoundDto);
-        when(mockedResultsCheckerFacade.getResultsForId(isNull())).thenReturn(notFoundDto);
+        when(mockedResultsCheckerFacade.getResultsForId(nonExistingUUid)).thenReturn(CheckerDto.ofNotFoundDtoForUuid(nonExistingUUid));
+        when(mockedResultsCheckerFacade.getResultsForId(isNull())).thenReturn(CheckerDto.ofNotFoundDtoForUuid(nonExistingUUid));
         return mockedResultsCheckerFacade;
     }
 

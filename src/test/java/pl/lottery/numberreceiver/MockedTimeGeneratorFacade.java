@@ -15,7 +15,7 @@ public interface MockedTimeGeneratorFacade {
     default TimeGeneratorFacade createMockedTimeGeneratorFacade(LocalDateTime currentTime, LocalDateTime drawDate, LocalDateTime expirationDate) {
         TimeGeneratorFacade timeGeneratorFacade = mock(TimeGeneratorFacade.class);
         when(timeGeneratorFacade.getCurrentDateAndTime()).thenReturn(currentTime);
-        when(timeGeneratorFacade.getDrawDateAndTime()).thenReturn(drawDate);
+        when(timeGeneratorFacade.getNextDrawDateAndTime()).thenReturn(drawDate);
         when(timeGeneratorFacade.getExpirationDateAndTime()).thenReturn(expirationDate);
         return timeGeneratorFacade;
     }
@@ -26,7 +26,7 @@ public interface MockedTimeGeneratorFacade {
 
     default void resetTimeFacadeToDefaultDates(TimeGeneratorFacade mockedTimeGeneratorFacade) {
         when(mockedTimeGeneratorFacade.getCurrentDateAndTime()).thenReturn(sampleCurrentDateTime);
-        when(mockedTimeGeneratorFacade.getDrawDateAndTime()).thenReturn(sampleDrawDate);
+        when(mockedTimeGeneratorFacade.getNextDrawDateAndTime()).thenReturn(sampleDrawDate);
         when(mockedTimeGeneratorFacade.getExpirationDateAndTime()).thenReturn(sampleExpirationDate);
     }
 

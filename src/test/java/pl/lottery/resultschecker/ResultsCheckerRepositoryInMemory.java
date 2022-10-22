@@ -34,6 +34,11 @@ class ResultsCheckerRepositoryInMemory implements ResultsCheckerRepository {
     }
 
     @Override
+    public boolean existsByDrawDate(LocalDateTime drawDate) {
+        return false;
+    }
+
+    @Override
     public <S extends LotteryResults> S save(S entity) {
         databaseInMemory.put(entity.uuid(), entity);
         return entity;

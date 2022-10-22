@@ -124,7 +124,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         List<ReceiverResponseDto> initialCoupons = seedSomeCouponsToTestDB(numberReceiverFacade, 1);
         // Time has passed, new draw date is
         LocalDateTime laterDrawDate = sampleDrawDate.plusDays(7);
-        when(mockedTimeGeneratorFacade.getDrawDateAndTime()).thenReturn(laterDrawDate);
+        when(mockedTimeGeneratorFacade.getNextDrawDateAndTime()).thenReturn(laterDrawDate);
         seedSomeCouponsToTestDB(numberReceiverFacade, 1);
 
         // when

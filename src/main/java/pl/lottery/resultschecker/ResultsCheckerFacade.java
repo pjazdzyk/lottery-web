@@ -6,6 +6,7 @@ import pl.lottery.numberreceiver.NumberReceiverFacade;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;
 import pl.lottery.resultschecker.dto.CheckerDto;
 import pl.lottery.resultschecker.dto.CheckerStatus;
+import pl.lottery.resultschecker.exceptions.WinningNumbersServiceFailureException;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -25,21 +26,21 @@ public class ResultsCheckerFacade {
     }
 
     public int generateLotteryResultsForDrawDate(LocalDateTime drawDate) {
-        WinningNumbersResponseDto winningNumbersResponseDto = winningNumbersService.retrieveWinningNumbers(drawDate);
-        if (winningNumbersResponseDto.status() == WinningNumberStatus.NOT_FOUND) {
-            return -1;
+        boolean resultsExistsForThisDrawDate = containsResultsForDrawDate(drawDate);
+        if (resultsExistsForThisDrawDate) {
+            return 0;
         }
-        List<Integer> winningNumbersForThisDrawDate = winningNumbersResponseDto.winningNumbers();
+        List<Integer> winningNumbersForThisDrawDate = retrieveWinningNumbers(drawDate);
         List<ReceiverResponseDto> couponsForThisDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(drawDate);
-        List<LotteryResults> lotteryResults = lotteryResultsGenerator.generateLotteryResultsList(couponsForThisDrawDate, winningNumbersForThisDrawDate);
-        resultsCheckerRepository.saveAll(lotteryResults);
-        return lotteryResults.size();
+        List<LotteryResults> processedLotteryResults = lotteryResultsGenerator.generateLotteryResultsList(couponsForThisDrawDate, winningNumbersForThisDrawDate);
+        resultsCheckerRepository.saveAll(processedLotteryResults);
+        return processedLotteryResults.size();
     }
 
     public CheckerDto getResultsForId(UUID uuid) {
         Optional<LotteryResults> lotteryResultsOptional = resultsCheckerRepository.findById(uuid);
         if (lotteryResultsOptional.isEmpty()) {
-            return notFoundDto();
+            return CheckerDto.ofNotFoundDtoForUuid(uuid);
         }
         return LotteryResultsMapper.toDto(lotteryResultsOptional.get(), CheckerStatus.OK);
     }
@@ -47,7 +48,7 @@ public class ResultsCheckerFacade {
     public CheckerDto deleteLotteryResultsForUuid(UUID uuid) {
         Optional<LotteryResults> lotteryResultsOptional = resultsCheckerRepository.findById(uuid);
         if (lotteryResultsOptional.isEmpty()) {
-            return notFoundDto();
+            return CheckerDto.ofNotFoundDtoForUuid(uuid);
         }
         resultsCheckerRepository.deleteById(uuid);
         return LotteryResultsMapper.toDto(lotteryResultsOptional.get(), CheckerStatus.DELETED);
@@ -68,8 +69,23 @@ public class ResultsCheckerFacade {
         return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.OK);
     }
 
-    private CheckerDto notFoundDto() {
-        return new CheckerDto(null, null, null, null, null, false, CheckerStatus.NOT_FOUND);
+    public boolean containsResultsForDrawDate(LocalDateTime drawDate) {
+        return resultsCheckerRepository.existsByDrawDate(drawDate);
+    }
+
+    private List<Integer> retrieveWinningNumbers(LocalDateTime drawDate) {
+        WinningNumbersResponseDto winningNumbersResponseDto = winningNumbersService.retrieveWinningNumbers(drawDate);
+        if (winningNumbersResponseDto.status() == WinningNumberStatus.NOT_FOUND) {
+            winningNumbersService.generateWinningNumbers(drawDate);
+            winningNumbersResponseDto = winningNumbersService.retrieveWinningNumbers(drawDate);
+        }
+
+        List<Integer> winningNumbers = winningNumbersResponseDto.winningNumbers();
+        if (Objects.isNull(winningNumbers)) {
+            throw new WinningNumbersServiceFailureException("Results has not been processed. Numbers could not be retrieved.");
+        }
+
+        return winningNumbers;
     }
 
 }

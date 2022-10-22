@@ -43,7 +43,5 @@ public class BaseIntegrationSpec {
         registry.add("spring.redis.port", () -> redis.getMappedPort(6379).toString());
     }
 
-
-
 }
 

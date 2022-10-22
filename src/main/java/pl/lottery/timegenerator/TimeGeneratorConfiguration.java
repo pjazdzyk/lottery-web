@@ -2,6 +2,7 @@ package pl.lottery.timegenerator;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.time.*;
 
@@ -22,6 +23,7 @@ public class TimeGeneratorConfiguration {
     }
 
     @Bean
+    @Profile("production")
     public Clock productionClock() {
         return Clock.systemUTC();
     }

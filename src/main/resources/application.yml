@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-   active: production
+   active: integration
   data:
     mongodb:
       uuid-representation: standard
@@ -32,7 +32,7 @@ lotto:
 
 winning-numbers-service:
   protocol: http
-  serviceHost: ec2-3-69-165-151.eu-central-1.compute.amazonaws.com
+  serviceHost: ec2-3-73-82-148.eu-central-1.compute.amazonaws.com
   servicePort: 8000
   serviceApi: /api/v1
   generateEndpoint: /generate

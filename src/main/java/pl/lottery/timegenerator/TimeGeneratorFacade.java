@@ -9,7 +9,7 @@ public class TimeGeneratorFacade {
         this.timeGenerator = timeGenerator;
     }
 
-    public LocalDateTime getDrawDateAndTime() {
+    public LocalDateTime getNextDrawDateAndTime() {
         return timeGenerator.getDrawDateAndTime();
     }
 

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(prefix = "winning-numbers-service")
-public class WinningServicePropertyConfig implements WinningServiceConfigurable {
+class WinningServicePropertyConfig implements WinningServiceConfigurable {
 
     private String protocol;
     private String serviceHost;

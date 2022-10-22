@@ -5,18 +5,18 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
 
-public class UrlGenerator {
+class UrlGenerator {
 
     private final String drawDateParamName;
 
     private final WinningServiceConfigurable winningServiceProperties;
 
-    public UrlGenerator(String drawDateParamName, WinningServiceConfigurable winningServiceProperties) {
+    UrlGenerator(String drawDateParamName, WinningServiceConfigurable winningServiceProperties) {
         this.drawDateParamName = drawDateParamName;
         this.winningServiceProperties = winningServiceProperties;
     }
 
-    public String createUrlForRetrieveCall(LocalDateTime drawDate) {
+    String createUrlForRetrieveCall(LocalDateTime drawDate) {
         return UriComponentsBuilder.newInstance()
                 .uriComponents(createUriComponentForEndPointWithParams(
                         winningServiceProperties.getRetrieveEndpoint(),
@@ -26,7 +26,7 @@ public class UrlGenerator {
                 .toString();
     }
 
-    public String createUrlForGenerateCall() {
+    String createUrlForGenerateCall() {
         return UriComponentsBuilder.newInstance()
                 .uriComponents(createUriComponentForEndpoint(winningServiceProperties.getGenerateEndpoint()))
                 .build()
