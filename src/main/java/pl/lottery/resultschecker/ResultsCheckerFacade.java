@@ -6,7 +6,7 @@ import pl.lottery.numberreceiver.NumberReceiverFacade;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;
 import pl.lottery.resultschecker.dto.CheckerDto;
 import pl.lottery.resultschecker.dto.CheckerStatus;
-import pl.lottery.resultschecker.exceptions.WinningNumbersServiceFailureException;
+import pl.lottery.resultschecker.exceptions.ResultsGenerationException;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -26,8 +26,7 @@ public class ResultsCheckerFacade {
     }
 
     public int generateLotteryResultsForDrawDate(LocalDateTime drawDate) {
-        boolean resultsExistsForThisDrawDate = containsResultsForDrawDate(drawDate);
-        if (resultsExistsForThisDrawDate) {
+        if (containsResultsForDrawDate(drawDate)) {
             return 0;
         }
         List<Integer> winningNumbersForThisDrawDate = retrieveWinningNumbers(drawDate);
@@ -82,7 +81,7 @@ public class ResultsCheckerFacade {
 
         List<Integer> winningNumbers = winningNumbersResponseDto.winningNumbers();
         if (Objects.isNull(winningNumbers)) {
-            throw new WinningNumbersServiceFailureException("Results has not been processed. Numbers could not be retrieved.");
+            throw new ResultsGenerationException("Results has not been processed. Numbers could not be retrieved.");
         }
 
         return winningNumbers;

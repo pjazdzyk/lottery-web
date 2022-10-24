@@ -2,5 +2,6 @@ package pl.lottery.resultsannouncer.dto;
 
 public enum AnnouncerStatus {
     PUBLISHED,
-    NOT_FOUND
+    NOT_FOUND,
+    INVALID_ID
 }

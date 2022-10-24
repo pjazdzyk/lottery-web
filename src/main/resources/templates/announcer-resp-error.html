@@ -30,7 +30,9 @@
         </div>
         <div class="card-body">
             <div class="card-text">
-                 <h5 class="text-danger">Your result has not been found, or invalid ID was provided. Make sure, that you check your ID after the draw date for your game.</h5>
+                <h5 class="text-danger" th:text="${errorMsg}"></h5>
+                <h5 class="text-danger">Make sure, that you are checking your ID after the draw date provided on your
+                    coupon.</h5>
             </div>
         </div>
         <div class="card-footer">
