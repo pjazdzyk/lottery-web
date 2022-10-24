@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import pl.lottery.numberreceiver.dto.InputStatus;
+import pl.lottery.numberreceiver.dto.ReceiverStatus;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;
+import pl.lottery.numberreceiver.exceptions.InvalidInputNumbersException;
 
 public class NumberReceiverFacade {
 
@@ -23,13 +24,12 @@ public class NumberReceiverFacade {
     }
 
     public ReceiverResponseDto inputNumbers(List<Integer> numbersFromUser) {
-        InputStatus inputStatus = inputValidator.validateInput(numbersFromUser);
-        if (inputStatus == InputStatus.INVALID) {
-            return invalidDto(numbersFromUser, inputStatus);
+        if (numbersAreNotValid(numbersFromUser)) {
+            throw new InvalidInputNumbersException("Invalid input numbers, please check the number constraint rules.");
         }
         Coupon coupon = couponGenerator.generateUserCoupon(numbersFromUser);
         userCouponCouponRepository.save(coupon);
-        return CouponMapper.toDto(coupon, InputStatus.SAVED);
+        return CouponMapper.toDto(coupon, ReceiverStatus.SAVED);
     }
 
     public ReceiverResponseDto getUserCouponByUUID(UUID uuid) {
@@ -37,12 +37,12 @@ public class NumberReceiverFacade {
         if (couponOptional.isEmpty()) {
             return notFoundDto();
         }
-        return CouponMapper.toDto(couponOptional.get(), InputStatus.SAVED);
+        return CouponMapper.toDto(couponOptional.get(), ReceiverStatus.SAVED);
     }
 
     public List<ReceiverResponseDto> getUserCouponListForDrawDate(LocalDateTime drawDate) {
         List<Coupon> coupons = userCouponCouponRepository.findByDrawDate(drawDate);
-        return CouponMapper.toDtoList(coupons, InputStatus.SAVED);
+        return CouponMapper.toDtoList(coupons, ReceiverStatus.SAVED);
     }
 
     public ReceiverResponseDto deleteUserCouponByUUID(UUID uuid) {
@@ -51,20 +51,20 @@ public class NumberReceiverFacade {
             return notFoundDto();
         }
         userCouponCouponRepository.deleteById(uuid);
-        return CouponMapper.toDto(couponOptional.get(), InputStatus.DELETED);
+        return CouponMapper.toDto(couponOptional.get(), ReceiverStatus.DELETED);
     }
 
     public List<ReceiverResponseDto> getAllCoupons() {
         List<Coupon> coupons = userCouponCouponRepository.findAll();
-        return CouponMapper.toDtoList(coupons, InputStatus.SAVED);
+        return CouponMapper.toDtoList(coupons, ReceiverStatus.SAVED);
     }
 
-    private ReceiverResponseDto invalidDto(List<Integer> numbersFromUser, InputStatus status) {
-        return new ReceiverResponseDto(null, null, null, null, numbersFromUser, status);
+    public boolean numbersAreNotValid(List<Integer> numbersFromUser) {
+        return !inputValidator.isValidInput(numbersFromUser);
     }
 
     private ReceiverResponseDto notFoundDto() {
-        return new ReceiverResponseDto(null, null, null, null, null, InputStatus.NOT_FOUND);
+        return new ReceiverResponseDto(null, null, null, null, null, ReceiverStatus.NOT_FOUND);
     }
 }
 

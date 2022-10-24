@@ -2,7 +2,6 @@ package pl.lottery.infrastructure.winningnumberservice;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import pl.lottery.infrastructure.winningnumberservice.dto.WinningNumbersResponseDto;
 import pl.lottery.resultschecker.WinningNumberGeneratorPort;
@@ -10,7 +9,6 @@ import pl.lottery.resultschecker.WinningNumberGeneratorPort;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//TODO implement from HTTP service
 public class WinningNumbersGeneratorPortHttpService implements WinningNumberGeneratorPort {
 
     private final RestTemplate restTemplate;

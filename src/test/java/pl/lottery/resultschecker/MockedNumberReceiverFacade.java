@@ -1,7 +1,7 @@
 package pl.lottery.resultschecker;
 
 import pl.lottery.numberreceiver.NumberReceiverFacade;
-import pl.lottery.numberreceiver.dto.InputStatus;
+import pl.lottery.numberreceiver.dto.ReceiverStatus;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;
 
 import java.time.LocalDateTime;
@@ -18,7 +18,7 @@ interface MockedNumberReceiverFacade extends SampleDrawDate{
     LocalDateTime sampleCreationTime = LocalDateTime.of(2021, 8, 8, 12, 0, 0);
     LocalDateTime expirationDateTime = sampleDrawDateTime.plusYears(2);
 
-    InputStatus saved = InputStatus.SAVED;
+    ReceiverStatus saved = ReceiverStatus.SAVED;
 
     List<ReceiverResponseDto> sampleCouponList = List.of(
             // Winners

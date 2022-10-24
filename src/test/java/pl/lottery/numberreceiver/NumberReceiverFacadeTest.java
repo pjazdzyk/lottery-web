@@ -3,8 +3,9 @@ package pl.lottery.numberreceiver;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pl.lottery.numberreceiver.dto.InputStatus;
+import pl.lottery.numberreceiver.dto.ReceiverStatus;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;
+import pl.lottery.numberreceiver.exceptions.InvalidInputNumbersException;
 import pl.lottery.timegenerator.TimeGeneratorFacade;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGeneratorFacade {
@@ -22,7 +24,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
     private CouponRepository receiverCouponRepository = new NumberReceiverRepositoryInMemory();
     private final TimeGeneratorFacade mockedTimeGeneratorFacade = createMockedTimeGeneratorFacadeWithDefaultDates();
     final private NumberReceiverConfiguration numberReceiverConfig = new NumberReceiverConfiguration();
-    final private InputConfigurable inputConfig = new InputPropertyConfigTest(1,99,6);
+    final private InputConfigurable inputConfig = new InputPropertyConfigTest(1, 99, 6);
     private NumberReceiverFacade numberReceiverFacade = numberReceiverConfig.createForTests(receiverUuidGenerator, receiverCouponRepository, mockedTimeGeneratorFacade, inputConfig);
 
     @AfterEach
@@ -33,73 +35,65 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
     }
 
     @Test
-    @DisplayName("should return dto with invalid status when input numbers are not provided (null), numbers are not saved")
-    void inputNumbers_givenInputNumbersAsNull_returnDtoWithInvalidStatus() {
+    @DisplayName("should throw an exception when input numbers are not provided (null), numbers are not saved")
+    void inputNumbers_givenInputNumbersAsNull_throwsException() {
         // given
-        List<Integer> inputNumbers = null;
-
         // when
-        ReceiverResponseDto actualDto = numberReceiverFacade.inputNumbers(inputNumbers);
-        List<ReceiverResponseDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
-
         // then
-        assertThat(actualDto.status()).isEqualTo(InputStatus.INVALID);
-        assertThat(actualRepositoryItems).isEmpty();
+        assertThatThrownBy(() -> numberReceiverFacade.inputNumbers(null)).isInstanceOf(InvalidInputNumbersException.class);
     }
 
     @Test
-    @DisplayName("should return dto with invalid status when input number list have incorrect size, numbers are not saved")
-    void inputNumbers_givenInputNumbersWithIncorrectSize_returnsDtoWithInvalidStatus() {
+    @DisplayName("should throw an exception when input number list contains to small amount of typed numbers, numbers are not saved")
+    void inputNumbers_givenNotEnoughNumbers_throwsException() {
         // given
         List<Integer> notEnoughNumbers = List.of(1, 2, 3, 4, 5);
-        List<Integer> toManyNumbers = List.of(1, 2, 3, 4, 5, 6, 7);
-
-        // when
-        ReceiverResponseDto actualNotEnough = numberReceiverFacade.inputNumbers(notEnoughNumbers);
-        ReceiverResponseDto actualToMany = numberReceiverFacade.inputNumbers(toManyNumbers);
-        List<ReceiverResponseDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
 
         // then
-        assertThat(actualNotEnough.uuid()).isNull();
-        assertThat(actualNotEnough.status()).isEqualTo(InputStatus.INVALID);
-        assertThat(actualToMany.uuid()).isNull();
-        assertThat(actualToMany.status()).isEqualTo(InputStatus.INVALID);
-        assertThat(actualRepositoryItems).isEmpty();
+        assertThatThrownBy(() -> numberReceiverFacade.inputNumbers(notEnoughNumbers)).isInstanceOf(InvalidInputNumbersException.class);
     }
 
     @Test
-    @DisplayName("should return dto with invalid status when input number list contains negative number")
-    void inputNumbers_givenInputNumbersContainsNegativeValue_returnDtoWithInvalidStatus() {
+    @DisplayName("should throw an exception when input number list have to many numbers, numbers are not saved")
+    void inputNumbers_givenInputNumbersWithIncorrectSize_throwsException() {
         // given
-        List<Integer> inputNumbers = List.of(1, 2, -3, 4, 5, 6);
-
+        List<Integer> toManyNumbers = List.of(1, 2, 3, 4, 5, 6, 7);
         // when
-        ReceiverResponseDto actualDto = numberReceiverFacade.inputNumbers(inputNumbers);
-        List<ReceiverResponseDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
-
         // then
-        assertThat(actualDto.status()).isEqualTo(InputStatus.INVALID);
-        assertThat(actualRepositoryItems).isEmpty();
+        assertThatThrownBy(() -> numberReceiverFacade.inputNumbers(toManyNumbers)).isInstanceOf(InvalidInputNumbersException.class);
     }
 
     @Test
-    @DisplayName("should return dto with invalid status when input number contains numbers outside game rules boundary")
-    void inputNumbers_givenInputNumbersWithNumbersOutsideBoundary_returnsDtoWithInvalidStatus() {
+    @DisplayName("should throw an exception when input number list contains negative number")
+    void inputNumbers_givenInputNumbersContainsNegativeValue_throwsException() {
+        // given
+        List<Integer> numbersWithNegativeValue = List.of(1, 2, -3, 4, 5, 6);
+
+        // when
+        // then
+        assertThatThrownBy(() -> numberReceiverFacade.inputNumbers(numbersWithNegativeValue)).isInstanceOf(InvalidInputNumbersException.class);
+    }
+
+
+    @Test
+    @DisplayName("should throw an exception when input number contains numbers number lower than game min constraint")
+    void inputNumbers_givenInputNumbersWithNumberLowerThanMinConstraint_throwsException() {
         // given
         List<Integer> withNumberBelowLimit = List.of(0, 2, 3, 4, 5, 6);
-        List<Integer> withNumberAboveLimit = List.of(1, 2, 3, 4, 100, 6);
-
         // when
-        ReceiverResponseDto actualBelowLimitDto = numberReceiverFacade.inputNumbers(withNumberBelowLimit);
-        ReceiverResponseDto actualAboveLimitDto = numberReceiverFacade.inputNumbers(withNumberAboveLimit);
-        List<ReceiverResponseDto> actualRepositoryItems = numberReceiverFacade.getAllCoupons();
+        // then
+        assertThatThrownBy(() -> numberReceiverFacade.inputNumbers(withNumberBelowLimit)).isInstanceOf(InvalidInputNumbersException.class);
+    }
+
+    @Test
+    @DisplayName("should throw an exception when input number contains numbers number larger than game max constraint")
+    void inputNumbers_givenInputNumbersWithNumbersLargerThanMaxConstraint_throwsException() {
+        // given
+        List<Integer> withNumberAboveLimit = List.of(1, 2, 3, 4, 100, 6);
+        // when
 
         // then
-        assertThat(actualBelowLimitDto.uuid()).isNull();
-        assertThat(actualBelowLimitDto.status()).isEqualTo(InputStatus.INVALID);
-        assertThat(actualAboveLimitDto.uuid()).isNull();
-        assertThat(actualAboveLimitDto.status()).isEqualTo(InputStatus.INVALID);
-        assertThat(actualRepositoryItems).isEmpty();
+        assertThatThrownBy(() -> numberReceiverFacade.inputNumbers(withNumberAboveLimit)).isInstanceOf(InvalidInputNumbersException.class);
     }
 
     @Test
@@ -114,7 +108,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         // then
         ReceiverResponseDto expectedReceiverResponseDto = numberReceiverFacade.getUserCouponByUUID(actualCoupon.uuid());
         assertThat(actualCoupon).isEqualTo(expectedReceiverResponseDto);
-        assertThat(actualCoupon.status()).isEqualTo(InputStatus.SAVED);
+        assertThat(actualCoupon.status()).isEqualTo(ReceiverStatus.SAVED);
     }
 
     @Test
@@ -133,7 +127,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         // then
         assertThat(actualCouponsForSpecifiedDrawDate).doesNotContainAnyElementsOf(initialCoupons);
         assertThat(actualCouponsForSpecifiedDrawDate).hasSize(1);
-        assertThat(actualCouponsForSpecifiedDrawDate.get(0).status()).isEqualTo(InputStatus.SAVED);
+        assertThat(actualCouponsForSpecifiedDrawDate.get(0).status()).isEqualTo(ReceiverStatus.SAVED);
 
     }
 
@@ -149,7 +143,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
 
         // then
         assertThat(actualReceiverResponseDto.uuid()).isEqualTo(uuidForMocks);
-        assertThat(actualReceiverResponseDto.status()).isEqualTo(InputStatus.SAVED);
+        assertThat(actualReceiverResponseDto.status()).isEqualTo(ReceiverStatus.SAVED);
     }
 
     @Test
@@ -164,7 +158,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
 
         // then
         assertThat(actualDeletedReceiverResponseDto.uuid()).isEqualTo(uuidForMocks);
-        assertThat(actualDeletedReceiverResponseDto.status()).isEqualTo(InputStatus.DELETED);
+        assertThat(actualDeletedReceiverResponseDto.status()).isEqualTo(ReceiverStatus.DELETED);
     }
 
     private List<ReceiverResponseDto> seedSomeCouponsToTestDB(NumberReceiverFacade numberReceiverFacade, int amount) {

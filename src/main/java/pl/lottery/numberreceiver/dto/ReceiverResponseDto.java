@@ -9,5 +9,5 @@ public record ReceiverResponseDto(UUID uuid,
                                   LocalDateTime drawDateTime,
                                   LocalDateTime expirationDateTime,
                                   List<Integer> typedNumbers,
-                                  InputStatus status) {
+                                  ReceiverStatus status) {
 }

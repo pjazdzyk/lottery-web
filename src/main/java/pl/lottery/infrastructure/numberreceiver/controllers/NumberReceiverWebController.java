@@ -7,6 +7,8 @@ import pl.lottery.numberreceiver.NumberReceiverFacade;
 import pl.lottery.numberreceiver.dto.ReceiverRequestDto;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;
 
+import java.util.List;
+
 @Controller
 public class NumberReceiverWebController {
 
@@ -18,7 +20,12 @@ public class NumberReceiverWebController {
 
     @PostMapping("/receiver")
     public String inputNumbers(ReceiverRequestDto receiverRequestDto, Model model) {
-        ReceiverResponseDto receiverResponseDto = numberReceiverFacade.inputNumbers(receiverRequestDto.getTypedNumbers());
+        List<Integer> typedNumbers = receiverRequestDto.getTypedNumbers();
+        if(numberReceiverFacade.numbersAreNotValid(typedNumbers)){
+            model.addAttribute("typedNumbers", typedNumbers);
+            return "receiver-resp-error";
+        }
+        ReceiverResponseDto receiverResponseDto = numberReceiverFacade.inputNumbers(typedNumbers);
         model.addAttribute("receiverResponseDto", receiverResponseDto);
         return "receiver-resp-view";
     }

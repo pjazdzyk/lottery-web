@@ -1,24 +1,16 @@
 package pl.lottery.numberreceiver;
 
-import pl.lottery.numberreceiver.dto.InputStatus;
-
 import java.util.List;
 import java.util.Objects;
 
-class InputValidator {
+record InputValidator(InputConfigurable inputPropertyConfig) {
 
-    public final InputConfigurable inputPropertyConfig;
-
-    InputValidator(InputConfigurable inputPropertyConfig) {
-        this.inputPropertyConfig = inputPropertyConfig;
-    }
-
-    InputStatus validateInput(List<Integer> inputNumbers) {
+    boolean isValidInput(List<Integer> inputNumbers) {
         if (Objects.isNull(inputNumbers) || doesNotMeetSizeRules(inputNumbers.size())
                 || doesNotMeetNumberBoundary(inputNumbers) || containsRepeatedNumbers(inputNumbers)) {
-            return InputStatus.INVALID;
+            return false;
         }
-        return InputStatus.VALIDATED;
+        return true;
     }
 
     private boolean doesNotMeetNumberBoundary(List<Integer> inputNumbers) {

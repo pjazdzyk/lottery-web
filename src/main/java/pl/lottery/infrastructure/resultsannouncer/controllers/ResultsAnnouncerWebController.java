@@ -3,7 +3,6 @@ package pl.lottery.infrastructure.resultsannouncer.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.lottery.infrastructure.validators.UuidValidator;
 import pl.lottery.resultsannouncer.ResultsAnnouncerFacade;
 import pl.lottery.resultsannouncer.dto.AnnouncerResponseDto;
 import pl.lottery.resultsannouncer.dto.AnnouncerStatus;
@@ -24,7 +23,7 @@ public class ResultsAnnouncerWebController {
 
     @GetMapping("/results")
     public String getResultsForUuid(@RequestParam String requestUuid, Model model) {
-        if (UuidValidator.isNotValidUUID(requestUuid)) {
+        if (resultsAnnouncerFacade.isInvalidUuid(requestUuid)) {
             model.addAttribute("errorMsg", String.format(INVALID_UUID_MSG, requestUuid));
             return "announcer-resp-error";
         }

@@ -5,8 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.lottery.infrastructure.exception.ApiInvalidUuidRequestException;
-import pl.lottery.infrastructure.validators.UuidValidator;
+import pl.lottery.infrastructure.resultsannouncer.exceptions.ApiInvalidUuidRequestException;
 import pl.lottery.resultsannouncer.ResultsAnnouncerFacade;
 import pl.lottery.resultsannouncer.dto.AnnouncerResponseDto;
 
@@ -23,7 +22,7 @@ public class ResultsAnnouncerRestController {
 
     @GetMapping(value = "/api/v1/results")
     public ResponseEntity<AnnouncerResponseDto> getResultsForUuid(@RequestParam String requestUuid) {
-        if(UuidValidator.isNotValidUUID(requestUuid)){
+        if(resultsAnnouncerFacade.isInvalidUuid(requestUuid)){
             throw new ApiInvalidUuidRequestException("Invalid Id. Please try again.");
         }
         UUID userRequestedUuid = UUID.fromString(requestUuid);

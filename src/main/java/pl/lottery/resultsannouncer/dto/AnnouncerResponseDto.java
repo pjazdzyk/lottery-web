@@ -12,4 +12,9 @@ public record AnnouncerResponseDto(UUID uuid,
                                    List<Integer> matchedNumbers,
                                    boolean isWinner,
                                    AnnouncerStatus status) implements Serializable {
+
+    public static AnnouncerResponseDto notFoundDto() {
+        return new AnnouncerResponseDto(null, null, null, null, null, false, AnnouncerStatus.NOT_FOUND);
+    }
+
 }

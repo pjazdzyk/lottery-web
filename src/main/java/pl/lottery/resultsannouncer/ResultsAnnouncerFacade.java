@@ -21,20 +21,20 @@ public class ResultsAnnouncerFacade {
     @Cacheable("publishedResultsDtoCache")
     public AnnouncerResponseDto getResultsForId(UUID uuid) {
         if (Objects.isNull(uuid)) {
-            return notFoundDto();
+            return AnnouncerResponseDto.notFoundDto();
         }
 
         CheckerDto resultsForId = resultsCheckerFacade.getResultsForId(uuid);
 
         if (resultsForId.status() == CheckerStatus.NOT_FOUND) {
-            return notFoundDto();
+            return AnnouncerResponseDto.notFoundDto();
         }
 
         return PublishedResultsMapper.checkerDtoToPublishedDto(resultsForId, AnnouncerStatus.PUBLISHED);
     }
 
-    private AnnouncerResponseDto notFoundDto() {
-        return new AnnouncerResponseDto(null, null, null, null, null, false, AnnouncerStatus.NOT_FOUND);
+    public boolean isInvalidUuid(String uuid){
+        return !UuidValidator.isValidUUID(uuid);
     }
 
 }
