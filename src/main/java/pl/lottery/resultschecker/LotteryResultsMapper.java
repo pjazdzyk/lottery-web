@@ -12,9 +12,9 @@ class LotteryResultsMapper {
                 .newInstance(status)
                 .withUid(lotteryResults.uuid())
                 .withDrawDate(lotteryResults.drawDate())
-                .withTypedNumbers(lotteryResults.inputNumbers())
-                .withWinningNumbers(lotteryResults.winningNumbers())
-                .withMatchedNumbers(lotteryResults.matchedNumbers())
+                .withTypedNumbers(List.copyOf(lotteryResults.inputNumbers()))
+                .withWinningNumbers(List.copyOf(lotteryResults.winningNumbers()))
+                .withMatchedNumbers(List.copyOf(lotteryResults.matchedNumbers()))
                 .withIsWinner(lotteryResults.isWinner())
                 .build();
     }

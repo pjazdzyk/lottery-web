@@ -4,11 +4,11 @@ import java.util.List;
 public class ReceiverRequestDto {
     private List<Integer> typedNumbers;
 
-    public ReceiverRequestDto(List<Integer> typedNumbers) {
-        this.typedNumbers = typedNumbers;
+    public ReceiverRequestDto() {
     }
 
-    public ReceiverRequestDto() {
+    public ReceiverRequestDto(List<Integer> typedNumbers) {
+        this.typedNumbers = typedNumbers;
     }
 
     public List<Integer> getTypedNumbers() {

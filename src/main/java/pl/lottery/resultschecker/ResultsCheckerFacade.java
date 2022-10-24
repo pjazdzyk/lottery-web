@@ -41,7 +41,7 @@ public class ResultsCheckerFacade {
         if (lotteryResultsOptional.isEmpty()) {
             return CheckerDto.ofNotFoundDtoForUuid(uuid);
         }
-        return LotteryResultsMapper.toDto(lotteryResultsOptional.get(), CheckerStatus.OK);
+        return LotteryResultsMapper.toDto(lotteryResultsOptional.get(), CheckerStatus.PROCESSED);
     }
 
     public CheckerDto deleteLotteryResultsForUuid(UUID uuid) {
@@ -55,17 +55,17 @@ public class ResultsCheckerFacade {
 
     public List<CheckerDto> getLotteryResultsForDrawDate(LocalDateTime drawDate) {
         List<LotteryResults> lotteryResults = resultsCheckerRepository.findByDrawDate(drawDate);
-        return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.OK);
+        return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.PROCESSED);
     }
 
     public List<CheckerDto> getLotteryResultsDrawDateWinnersOnly(LocalDateTime drawDate) {
         List<LotteryResults> lotteryResults = resultsCheckerRepository.findByDrawDateAndIsWinner(drawDate, true);
-        return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.OK);
+        return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.PROCESSED);
     }
 
     public List<CheckerDto> getAllLotteryResults() {
         List<LotteryResults> lotteryResults = resultsCheckerRepository.findAll();
-        return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.OK);
+        return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.PROCESSED);
     }
 
     public boolean containsResultsForDrawDate(LocalDateTime drawDate) {

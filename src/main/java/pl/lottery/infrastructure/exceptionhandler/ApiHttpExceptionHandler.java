@@ -1,4 +1,4 @@
-package pl.lottery.infrastructure.exception;
+package pl.lottery.infrastructure.exceptionhandler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

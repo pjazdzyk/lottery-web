@@ -1,4 +1,4 @@
-package pl.lottery.infrastructure.objectMapper;
+package pl.lottery.infrastructure.objectmapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;

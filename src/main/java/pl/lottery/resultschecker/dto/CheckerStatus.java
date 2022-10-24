@@ -1,7 +1,7 @@
 package pl.lottery.resultschecker.dto;
 
 public enum CheckerStatus {
-    OK,
+    PROCESSED,
     DELETED,
     NOT_FOUND
 }

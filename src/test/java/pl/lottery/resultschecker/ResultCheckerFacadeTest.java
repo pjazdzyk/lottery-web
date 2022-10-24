@@ -53,7 +53,7 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade {
 
         // then
         assertThat(actualResultCheckDto.uuid()).isEqualTo(sampleUuid);
-        assertThat(actualResultCheckDto.status()).isEqualTo(CheckerStatus.OK);
+        assertThat(actualResultCheckDto.status()).isEqualTo(CheckerStatus.PROCESSED);
         assertThat(actualResultCheckDto.matchedNumbers()).isEqualTo(winningNumbers);
         assertThat(actualResultCheckDto.matchedNumbers().size()).isEqualTo(6);
     }
@@ -130,7 +130,7 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade {
         int expectedSize = 3;
         assertThat(lotteryResultsWinners).hasSize(expectedSize);
         assertThat(lotteryResultsWinners).allMatch(CheckerDto::isWinner);
-        assertThat(lotteryResultsWinners).allMatch(dto -> dto.status() == CheckerStatus.OK);
+        assertThat(lotteryResultsWinners).allMatch(dto -> dto.status() == CheckerStatus.PROCESSED);
         assertThat(lotteryResultsWinners).map(CheckerDto::uuid).contains(sampleUuid);
     }
 

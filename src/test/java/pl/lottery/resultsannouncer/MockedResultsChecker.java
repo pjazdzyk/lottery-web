@@ -17,7 +17,7 @@ interface MockedResultsChecker {
     LocalDateTime sampleDrawDateTime = LocalDateTime.of(2021, 8, 12, 20, 0);
     UUID sampleUuid = UUID.fromString("ef241277-64a2-457a-beea-a4c589803a26");
     List<Integer> sampleWinningNumbers = List.of(1, 2, 3, 4, 5, 6);
-    CheckerStatus publishedStatus = CheckerStatus.OK;
+    CheckerStatus publishedStatus = CheckerStatus.PROCESSED;
     UUID nonExistingUUid = UUID.fromString("cb245bd4-bc47-40ed-87dc-caa9720186bd");
 
     List<CheckerDto> sampleCheckerDtos = List.of(
