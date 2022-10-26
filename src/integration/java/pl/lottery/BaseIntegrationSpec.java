@@ -29,14 +29,14 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 public class BaseIntegrationSpec implements IntegrationTestConstants {
 
 
-    private static final int ORIGINAL_REDIS_PORT = 6379;
-    private static final String WIREMOCK_SERVER_HOST = "localhost";
-    private static final String WINNING_NUMBERS_GENERATE_API = "/api/v1/generate";
-    private static final String WINNING_NUMBERS_RETRIEVE_API = "/api/v1/numbers?drawDate=%s";
+    protected static final int ORIGINAL_REDIS_PORT = 6379;
+    protected static final String WIREMOCK_SERVER_HOST = "localhost";
+    protected static final String WINNING_NUMBERS_GENERATE_API = "/api/v1/generate";
+    protected static final String WINNING_NUMBERS_RETRIEVE_API = "/api/v1/numbers?drawDate=%s";
     @Container
-    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
+    protected static MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
 
-    private static final GenericContainer<?> redis;
+    protected static GenericContainer<?> redis;
 
     static {
         redis = new GenericContainer<>(DockerImageName.parse("redis:5.0.3-alpine")).withExposedPorts(ORIGINAL_REDIS_PORT);
@@ -68,7 +68,7 @@ public class BaseIntegrationSpec implements IntegrationTestConstants {
 
     @AfterEach
     void afterEach() {
-        wireMockServer.resetAll();
+       wireMockServer.resetAll();
     }
 
     protected static void stubGetCallToRetrieveEndpointWithParam(String responseForGenerateBodyAsJson, String drawDate) {
