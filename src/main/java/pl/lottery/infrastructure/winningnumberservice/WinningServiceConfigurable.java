@@ -6,7 +6,6 @@ public interface WinningServiceConfigurable {
 
     void setProtocol(String protocol);
 
-
     String getServiceHost();
 
     void setServiceHost(String serviceHost);

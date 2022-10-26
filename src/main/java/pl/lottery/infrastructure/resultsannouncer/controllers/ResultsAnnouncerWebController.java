@@ -12,9 +12,8 @@ import java.util.UUID;
 @Controller
 public class ResultsAnnouncerWebController {
 
-    public static String INVALID_UUID_MSG = "You have provided invalid coupon ID as: [%s].Please check your coupon ID and paste it again.";
+    public static String INVALID_UUID_MSG = "You have provided invalid coupon ID as: [%s]. Please check your coupon ID and paste it again.";
     public static String NOT_FOUND_MSG = "You have provided ID: [%s]. Your coupon has not been processed yet or it does not exist in lottery results archive.";
-
     private final ResultsAnnouncerFacade resultsAnnouncerFacade;
 
     public ResultsAnnouncerWebController(ResultsAnnouncerFacade resultsAnnouncerFacade) {

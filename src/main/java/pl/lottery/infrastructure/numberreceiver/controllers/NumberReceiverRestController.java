@@ -15,14 +15,14 @@ import java.util.List;
 @RestController
 public class NumberReceiverRestController {
 
-    private final NumberReceiverFacade numberReceiverFacade;
     private static final String INVALID_NUMBERS_MSG = "Invalid numbers. Please check number constraint rules and try again.";
+    private final NumberReceiverFacade numberReceiverFacade;
 
     public NumberReceiverRestController(NumberReceiverFacade numberReceiverFacade) {
         this.numberReceiverFacade = numberReceiverFacade;
     }
 
-    @PostMapping(value = "/api/v1/receiver")
+    @PostMapping(value = ReceiverEndpointNames.RECEIVER_URL)
     public ResponseEntity<ReceiverResponseDto> inputNumbers(@RequestBody ReceiverRequestDto receiverRequestDto) {
         List<Integer> typedNumbers = receiverRequestDto.getTypedNumbers();
         if (numberReceiverFacade.numbersAreNotValid(typedNumbers)) {

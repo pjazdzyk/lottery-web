@@ -20,7 +20,7 @@ public class ResultsAnnouncerRestController {
         this.resultsAnnouncerFacade = resultsAnnouncerFacade;
     }
 
-    @GetMapping(value = "/api/v1/results")
+    @GetMapping(value =AnnouncerEndpointNames.ANNOUNCER_URL)
     public ResponseEntity<AnnouncerResponseDto> getResultsForUuid(@RequestParam String requestUuid) {
         if(resultsAnnouncerFacade.isInvalidUuid(requestUuid)){
             throw new ApiInvalidUuidRequestException("Invalid Id. Please try again.");

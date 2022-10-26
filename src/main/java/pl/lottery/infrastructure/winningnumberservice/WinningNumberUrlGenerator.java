@@ -5,13 +5,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
 
-class UrlGenerator {
+ class WinningNumberUrlGenerator {
 
     private final String drawDateParamName;
 
     private final WinningServiceConfigurable winningServiceProperties;
 
-    UrlGenerator(String drawDateParamName, WinningServiceConfigurable winningServiceProperties) {
+    WinningNumberUrlGenerator(String drawDateParamName, WinningServiceConfigurable winningServiceProperties) {
         this.drawDateParamName = drawDateParamName;
         this.winningServiceProperties = winningServiceProperties;
     }
@@ -32,7 +32,6 @@ class UrlGenerator {
                 .build()
                 .toString();
     }
-
 
     private UriComponents createUriComponentForEndPointWithParams(String endPoint, String name, Object... values) {
         return UriComponentsBuilder.newInstance()

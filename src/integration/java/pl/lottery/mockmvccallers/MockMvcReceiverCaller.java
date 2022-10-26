@@ -1,7 +1,9 @@
-package pl.lottery.mockmvccaller;
+package pl.lottery.mockmvccallers;
 
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MvcResult;
+import pl.lottery.infrastructure.numberreceiver.controllers.ReceiverEndpointNames;
+import pl.lottery.infrastructure.objectmappers.JsonConverters;
 import pl.lottery.numberreceiver.dto.ReceiverRequestDto;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;
 
@@ -9,17 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 @Component
 public class MockMvcReceiverCaller {
 
-    public static final String RECEIVER_URL = "/api/v1/receiver";
-    private final JsonConverters jsonConverters;
     private final MockMcvCaller mockMcvCaller;
 
-
-    public MockMvcReceiverCaller(JsonConverters jsonConverters, MockMcvCaller mockMcvCaller) {
-        this.jsonConverters = jsonConverters;
+    public MockMvcReceiverCaller(MockMcvCaller mockMcvCaller) {
         this.mockMcvCaller = mockMcvCaller;
     }
 
@@ -35,10 +32,10 @@ public class MockMvcReceiverCaller {
     public ReceiverResponseDto makePostCallReceiverInputNumbers(List<Integer> typedNumbers) {
         try {
             ReceiverRequestDto receiverRequestDto = new ReceiverRequestDto(typedNumbers);
-            String requestAsJson = jsonConverters.convertReceiverRequestDtoToJsonAsString(receiverRequestDto);
-            MvcResult receiverResponse = mockMcvCaller.makePostMockedCallWithJson(RECEIVER_URL, requestAsJson);
+            String requestAsJson = JsonConverters.writeObjectAsJsonString(receiverRequestDto);
+            MvcResult receiverResponse = mockMcvCaller.makePostMockedCallWithJson(ReceiverEndpointNames.RECEIVER_URL, requestAsJson);
             String contentJsonAsString = receiverResponse.getResponse().getContentAsString();
-            return jsonConverters.convertJsonResponseToReceiverResponseDto(contentJsonAsString);
+            return JsonConverters.convertJsonResponseToTargetObject(contentJsonAsString, ReceiverResponseDto.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

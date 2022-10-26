@@ -12,18 +12,18 @@ import java.util.List;
 public class WinningNumbersGeneratorPortHttpService implements WinningNumberGeneratorPort {
 
     private final RestTemplate restTemplate;
-    private final UrlGenerator urlGenerator;
+    private final WinningNumberUrlGenerator winningNumberUrlGenerator;
     private final HttpEntityGenerator httpEntityGenerator;
 
-    public WinningNumbersGeneratorPortHttpService(RestTemplate restTemplate, UrlGenerator urlGenerator, HttpEntityGenerator httpEntityGenerator) {
+    public WinningNumbersGeneratorPortHttpService(RestTemplate restTemplate, WinningNumberUrlGenerator winningNumberUrlGenerator, HttpEntityGenerator httpEntityGenerator) {
         this.restTemplate = restTemplate;
-        this.urlGenerator = urlGenerator;
+        this.winningNumberUrlGenerator = winningNumberUrlGenerator;
         this.httpEntityGenerator = httpEntityGenerator;
     }
 
     @Override
     public WinningNumbersResponseDto generateWinningNumbers(LocalDateTime drawDate) {
-        String urlForGenerateCall = urlGenerator.createUrlForGenerateCall();
+        String urlForGenerateCall = winningNumberUrlGenerator.createUrlForGenerateCall();
         HttpEntity<String> requestWithDrawDate = httpEntityGenerator.createHttpEntityWithBodyForDrawDate(drawDate);
         ResponseEntity<WinningNumbersResponseDto> responseEntity = restTemplate.postForEntity(urlForGenerateCall, requestWithDrawDate, WinningNumbersResponseDto.class);
         return responseEntity.getBody();
@@ -32,7 +32,7 @@ public class WinningNumbersGeneratorPortHttpService implements WinningNumberGene
     @Override
 
     public WinningNumbersResponseDto retrieveWinningNumbers(LocalDateTime drawDate) {
-        String urlForRetrieveCall = urlGenerator.createUrlForRetrieveCall(drawDate);
+        String urlForRetrieveCall = winningNumberUrlGenerator.createUrlForRetrieveCall(drawDate);
         ResponseEntity<WinningNumbersResponseDto> responseEntity = restTemplate.getForEntity(urlForRetrieveCall, WinningNumbersResponseDto.class, drawDate.toString());
         return responseEntity.getBody();
     }

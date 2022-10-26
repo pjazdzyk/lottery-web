@@ -3,12 +3,14 @@ server:
 
 spring:
   profiles:
-   active: production
+    active: integration
   data:
     mongodb:
       uuid-representation: standard
       uri: mongodb://admin:admin@localhost:27017/lotto-web   # mongodb://[username:password@]host1[:port1]/[database-name]
-      host: localhost
+  redis:
+    host: localhost
+    port: 6379
   cache:
     redis:
       time-to-live: 60  # minutes of ttl for cached item

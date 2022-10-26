@@ -3,23 +3,17 @@ package pl.lottery.timegenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import pl.lottery.IntegrationTestConstants;
 
 import java.time.Clock;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
 
 @Configuration
 @Profile("integration")
-public class TimeGeneratorConfigurationIntegration {
-
-    private final LocalDate initialDate = LocalDate.of(2022, 8, 8);
-    private final LocalTime initialTime = LocalTime.of(15, 15);
-    private final ZoneId zoneId = ZoneId.systemDefault();
+public class TimeGeneratorConfigurationIntegration implements IntegrationTestConstants {
 
     @Bean("adjustableClock")
     public Clock createProgressingAdjustableClock() {
-        return ProgressingAdjustableClock.ofLocalDateAndLocalTime(initialDate, initialTime, zoneId);
+        return ProgressingAdjustableClock.ofLocalDateAndLocalTime(INITIAL_DATE, INITIAL_TIME, ZONE_ID);
     }
 
 }
