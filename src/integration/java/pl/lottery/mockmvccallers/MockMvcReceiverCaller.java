@@ -2,7 +2,7 @@ package pl.lottery.mockmvccallers;
 
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MvcResult;
-import pl.lottery.infrastructure.numberreceiver.controllers.ReceiverEndpointNames;
+import pl.lottery.infrastructure.controllers.numberreceiver.ReceiverEndpointVersions;
 import pl.lottery.infrastructure.objectmappers.JsonConverters;
 import pl.lottery.numberreceiver.dto.ReceiverRequestDto;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;
@@ -33,7 +33,7 @@ public class MockMvcReceiverCaller {
         try {
             ReceiverRequestDto receiverRequestDto = new ReceiverRequestDto(typedNumbers);
             String requestAsJson = JsonConverters.writeObjectAsJsonString(receiverRequestDto);
-            MvcResult receiverResponse = mockMcvCaller.makePostMockedCallWithJson(ReceiverEndpointNames.RECEIVER_URL, requestAsJson);
+            MvcResult receiverResponse = mockMcvCaller.makePostMockedCallWithJson(ReceiverEndpointVersions.API_VERSION_V1 +"/receiver", requestAsJson);
             String contentJsonAsString = receiverResponse.getResponse().getContentAsString();
             return JsonConverters.convertJsonResponseToTargetObject(contentJsonAsString, ReceiverResponseDto.class);
         } catch (Exception e) {

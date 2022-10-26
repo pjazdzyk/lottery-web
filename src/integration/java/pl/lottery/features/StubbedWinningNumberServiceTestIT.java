@@ -9,7 +9,7 @@ import pl.lottery.infrastructure.winningnumberservice.dto.WinningNumbersResponse
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StubbedWinningNumberServiceTestIT extends BaseIntegrationSpec {
+ class StubbedWinningNumberServiceTestIT extends BaseIntegrationSpec {
 
     @Test
     @DisplayName("stubbed winning numbers service returns expected response bodies when http call is made")

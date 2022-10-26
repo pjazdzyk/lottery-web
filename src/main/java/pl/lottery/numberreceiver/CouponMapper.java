@@ -15,7 +15,7 @@ class CouponMapper {
 
     static List<ReceiverResponseDto> toDtoList(List<Coupon> coupon, ReceiverStatus status) {
         return coupon.stream()
-                .map(tempCoupon -> toDto(tempCoupon,status))
+                .map(tempCoupon -> toDto(tempCoupon, status))
                 .collect(Collectors.toList());
     }
 

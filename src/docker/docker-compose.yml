@@ -20,7 +20,7 @@ services:
     image: mongo-express
     restart: always  #restart the container regardless of the exit status
     ports:
-      - "8081:8081"  # port forwarding
+      - "8081:8081"  # port mapping: [external : inside docker environment]
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example

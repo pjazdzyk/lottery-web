@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 interface CouponRepository extends MongoRepository<Coupon, UUID> {
 
-  List<Coupon> findByDrawDate(LocalDateTime drawDate);
+    List<Coupon> findByDrawDate(LocalDateTime drawDate);
 
 }
 

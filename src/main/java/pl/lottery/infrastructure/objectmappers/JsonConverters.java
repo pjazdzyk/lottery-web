@@ -2,7 +2,7 @@ package pl.lottery.infrastructure.objectmappers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import pl.lottery.infrastructure.objectmappers.exceptions.JsonProcessingFailureException;
+import pl.lottery.infrastructure.exceptions.objectmappers.JsonProcessingFailureException;
 
 public class JsonConverters {
 

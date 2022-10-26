@@ -29,7 +29,7 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationSpec {
         stubGetCallToRetrieveEndpointWithParam(DefaultJsonBodies.winningNumsDefaultRetrieveResponse, DRAW_DATE.toString());
 
         // when
-        await().atMost(3, TimeUnit.SECONDS)
+        await().atMost(10, TimeUnit.SECONDS)
                .until(checkIfResultsCheckerRepositoryContainsWinners(winnersCount));
         AnnouncerResponseDto announcerResponseDto = mockMvcAnnouncerCaller.makeGetCallToRetrieveResultsByUuid(winnerUuid);
 

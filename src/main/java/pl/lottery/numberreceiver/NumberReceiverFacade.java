@@ -23,6 +23,7 @@ public class NumberReceiverFacade {
         this.inputValidator = inputValidator;
     }
 
+
     public ReceiverResponseDto inputNumbers(List<Integer> numbersFromUser) {
         if (numbersAreNotValid(numbersFromUser)) {
             throw new InvalidInputNumbersException("Invalid input numbers, please check the number constraint rules.");

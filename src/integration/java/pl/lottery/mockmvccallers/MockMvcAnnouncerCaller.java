@@ -3,7 +3,7 @@ package pl.lottery.mockmvccallers;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.lottery.infrastructure.objectmappers.JsonConverters;
-import pl.lottery.infrastructure.resultsannouncer.controllers.AnnouncerEndpointNames;
+import pl.lottery.infrastructure.controllers.resultsannouncer.AnnouncerEndpointVersions;
 import pl.lottery.resultsannouncer.dto.AnnouncerResponseDto;
 
 import java.util.UUID;
@@ -21,7 +21,7 @@ public class MockMvcAnnouncerCaller {
     public AnnouncerResponseDto makeGetCallToRetrieveResultsByUuid(UUID uuid) {
         String uuidAsString = uuid.toString();
         try {
-            MvcResult announcerResponse = mockMcvCaller.makeGetMockedCallWithParam(AnnouncerEndpointNames.ANNOUNCER_URL, QUERY_PARAM_NAME, uuidAsString);
+            MvcResult announcerResponse = mockMcvCaller.makeGetMockedCallWithParam(AnnouncerEndpointVersions.API_VERSION_V1 + "/results", QUERY_PARAM_NAME, uuidAsString);
             String contentJsonAsString = announcerResponse.getResponse().getContentAsString();
             return JsonConverters.convertJsonResponseToTargetObject(contentJsonAsString, AnnouncerResponseDto.class);
         } catch (Exception e) {
