@@ -1,7 +1,8 @@
-package pl.lottery.infrastructure.winningnumberservice;
+package pl.lottery.infrastructure.propertyconfigs.winningnumberservice;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import pl.lottery.infrastructure.winningnumberservice.WinningServiceConfigurable;
 
 @Configuration
 @ConfigurationProperties(prefix = "winning-numbers-service")

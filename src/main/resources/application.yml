@@ -3,13 +3,13 @@ server:
 
 spring:
   profiles:
-    active: integration
+    active: production
   data:
     mongodb:
       uuid-representation: standard
-      uri: mongodb://admin:admin@localhost:27017/lotto-web   # mongodb://[username:password@]host1[:port1]/[database-name]
+      uri: mongodb://admin:admin@mongo_db/lotto-web    # mongodb://[username:password@]host1[:port1]/[database-name]
   redis:
-    host: localhost
+    host: redis
     port: 6379
   cache:
     redis:
@@ -28,14 +28,13 @@ lotto:
     drawTime: "${lotto.time.drawHour}:${lotto.time.drawMinutes}:${lotto.time.drawSeconds}"
     expirationInDays: 930
   checker:
-    #lotteryRunOccurrence: "${lotto.time.drawSeconds} ${lotto.time.drawMinutes} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
-    lotteryRunOccurrence: "*/2 * * * * *"
+    lotteryRunOccurrence: "${lotto.time.drawSeconds} ${lotto.time.drawMinutes} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
     matchedNumbersToWin: 3
 
 winning-numbers-service:
   protocol: http
-  serviceHost: ec2-3-73-82-148.eu-central-1.compute.amazonaws.com
-  servicePort: 8000
+  serviceHost: winning-numbers
+  servicePort: 8001
   serviceApi: /api/v1
   generateEndpoint: /generate
   retrieveEndpoint: /numbers

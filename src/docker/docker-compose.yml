@@ -5,47 +5,82 @@ services:
   # actual database image
   mongo:
     image: mongo
+    container_name: mongo_db
     restart: always
     ports:
-      - "27017:27017"  # port forwarding
+      - '27017:27017'  # port forwarding
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
       MONGO_INITDB_DATABASE: lotto-web
     volumes:
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - lotto-net
 
   # web access point service, for created mongo db
   mongo-express:
     image: mongo-express
+    container_name: mongo_express
     restart: always  #restart the container regardless of the exit status
     ports:
-      - "8081:8081"  # port mapping: [external : inside docker environment]
+      - '8081:8081'  # port mapping: [external : inside docker environment]
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/  # mongodb://{mongo-image-username}:{mongo-image-password}@{mongo-image-name}:{port}
+    networks:
+      - lotto-net
 
- # Redis cache service
+  # Redis cache service
   redis:
     image: redis
+    container_name: redis
     restart: always
     ports:
       - '6379:6379'
     command: redis-server --save 60 1 --loglevel warning   #save every 60 seconds for at least 1 operation
     volumes:
       - redis:/data
+    networks:
+      - lotto-net
 
   redis-commander:
+    image: rediscommander/redis-commander:latest
     container_name: redis-commander
     hostname: redis-commander
-    image: rediscommander/redis-commander:latest
     restart: always
     environment:
       - REDIS_HOSTS=local:redis:6379
     ports:
       - "8082:8081"
+    networks:
+      - lotto-net
+
+  # Build winning generator-service from hub
+  winning-numbers:
+    image: pjazdzyk/winning-numbers:latest
+    container_name: winning-numbers
+    restart: always
+    ports:
+      - '8001:8001'
+    networks:
+      - lotto-net
+
+  # Build lottery-web
+  lottery-web:
+    container_name: lottery-web
+    build: C:\1_DEV\1_IDE_SRC\IntelijJ\JavaMentoring\lotteryweb
+    restart: always
+    ports:
+      - '8000:8000'
+    networks:
+      - lotto-net
 
 volumes:
   redis:
     driver: local
+
+networks:
+  lotto-net:
+    driver: bridge
