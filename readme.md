@@ -102,7 +102,9 @@ GNU GENERAL PUBLIC LICENSE V3
 
 ## Acknowledgments
 
-I am really grateful for all wonderful people who supported me during development of this project
+I am grateful for all the wonderful people who supported me during the development of this project.
+Almost every tech I used here is available for free. Practically every tutorial or know-how can be found on the internet. 
+So many great people are sharing knowledge with others out of pure passion. Thanks to all of you!
 
 * [Shields.io](https://img.shields.io)
 * [Badges 4 README.md](https://github.com/alexandresanlim/Badges4-README.md-Profile)
