@@ -53,7 +53,7 @@ Deployed on:<br>
 The C3 diagram blow presents main application components and module dependencies. <br>
 Click on image below to review it more readable size.
 
-<a href="https://raw.githubusercontent.com/pjazdzyk/lottery-web/master/architecture/C3_Architecture.png"><img src="architecture/C3_Architecture.png" width="730"/><br></a>
+<a href="https://raw.githubusercontent.com/pjazdzyk/lottery-web/master/architecture/C3_Architecture.png"><img src="architecture/C3_Architecture.png" width="850"/><br></a>
 
 ## Installation and run
 
