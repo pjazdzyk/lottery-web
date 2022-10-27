@@ -57,7 +57,7 @@ services:
     networks:
       - lotto-net
 
-  # Build winning generator-service from hub
+  # Build winning generator-service from docker hub
   winning-numbers:
     image: pjazdzyk/winning-numbers:latest
     container_name: winning-numbers
@@ -67,10 +67,10 @@ services:
     networks:
       - lotto-net
 
-  # Build lottery-web
+  # Build lottery-web from docker hub
   lottery-web:
+    image: pjazdzyk/lottery-web:latest
     container_name: lottery-web
-    build: C:\1_DEV\1_IDE_SRC\IntelijJ\JavaMentoring\lotteryweb
     restart: always
     ports:
       - '8000:8000'
