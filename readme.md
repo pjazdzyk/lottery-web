@@ -16,7 +16,7 @@ Users can retrieve lottery results anytime using their unique coupon identifier.
 - facade design pattern,
 - noSQL databases (MongoDB) for coupon and results repositories,
 - Good coverage with unit tests, including "happy path" integration tests,
-- controllers tested via mockMvs, winning numbers service was stubbed using WireMock,
+- controllers tested via mockMvc, winning numbers service was stubbed using WireMock,
 - Scheduled lottery run and results processing,
 - Redis cache for optimized results queries,
 - Docker is used for module containerization,
@@ -58,9 +58,9 @@ Click on image below to review it more readable size.
 ## Installation and run
 
 Lotto|Web requires [Docker](https://www.docker.com/products/docker-desktop/) to run.
-Both Winning Numbers microservice and main application (Lottery|Web) are pushed into the Docker Hub.
-To deploy and run application, just copy anywhere **docker-compose** file and **inint-mongo.js**. Both files
-must be in the same folder. After that, just run following command:
+Both Winning Numbers microservice and main application (Lottery|Web) are pushed as an images into the Docker Hub.
+To deploy and run application, just copy anywhere **docker-compose** and **inint-mongo.js** files. Both files
+must be in the same folder. After that, just run following command, and wait for containers to be pulled up and started.
 
 ``
 docker-compose up
