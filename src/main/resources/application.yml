@@ -13,7 +13,7 @@ spring:
     port: 6379
   cache:
     redis:
-      time-to-live: 60  # minutes of ttl for cached item
+      time-to-live: 15  # minutes of ttl for cached item
 
 lotto:
   input:
