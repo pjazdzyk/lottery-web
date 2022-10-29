@@ -29,8 +29,11 @@ public class ResultsCheckerFacade {
         if (containsResultsForDrawDate(drawDate)) {
             return 0;
         }
-        List<Integer> winningNumbersForThisDrawDate = retrieveWinningNumbers(drawDate);
         List<ReceiverResponseDto> couponsForThisDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(drawDate);
+        if(couponsForThisDrawDate.isEmpty()){
+            return 0;
+        }
+        List<Integer> winningNumbersForThisDrawDate = retrieveWinningNumbers(drawDate);
         List<LotteryResults> processedLotteryResults = lotteryResultsGenerator.generateLotteryResultsList(couponsForThisDrawDate, winningNumbersForThisDrawDate);
         resultsCheckerRepository.saveAll(processedLotteryResults);
         return processedLotteryResults.size();
@@ -75,10 +78,8 @@ public class ResultsCheckerFacade {
     private List<Integer> retrieveWinningNumbers(LocalDateTime drawDate) {
         WinningNumbersResponseDto winningNumbersResponseDto = winningNumbersService.retrieveWinningNumbers(drawDate);
         if (winningNumbersResponseDto.status() == WinningNumberStatus.NOT_FOUND) {
-            winningNumbersService.generateWinningNumbers(drawDate);
-            winningNumbersResponseDto = winningNumbersService.retrieveWinningNumbers(drawDate);
+            winningNumbersResponseDto = winningNumbersService.generateWinningNumbers(drawDate);
         }
-
         List<Integer> winningNumbers = winningNumbersResponseDto.winningNumbers();
         if (Objects.isNull(winningNumbers)) {
             throw new ResultsGenerationException("Results has not been processed. Numbers could not be retrieved.");
