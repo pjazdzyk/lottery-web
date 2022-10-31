@@ -15,22 +15,22 @@ class ExceptionGlobalHandler {
 
     @ExceptionHandler(ApiInvalidUuidRequestException.class)
     private ResponseEntity<ExceptionResponsePayload> handleIncorrectUuid(ApiInvalidUuidRequestException apiException) {
-        return createBadRequestResponse(apiException.getMessage(), HttpStatus.BAD_REQUEST);
+        return createErrorResponse(HttpStatus.BAD_REQUEST, apiException);
     }
 
     @ExceptionHandler(ApiInvalidNumbersException.class)
     private ResponseEntity<ExceptionResponsePayload> handleIncorrectNumberInput(ApiInvalidNumbersException apiException) {
-        return createBadRequestResponse(apiException.getMessage(), HttpStatus.BAD_REQUEST);
+        return createErrorResponse(HttpStatus.BAD_REQUEST, apiException);
     }
 
     @ExceptionHandler(JsonProcessingFailureException.class)
     private ResponseEntity<ExceptionResponsePayload> handleIncorrectNumberInput(JsonProcessingFailureException jsonException) {
-        return createBadRequestResponse(jsonException.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, jsonException);
     }
 
-    private static ResponseEntity<ExceptionResponsePayload> createBadRequestResponse(String exceptionMsg, HttpStatus status) {
+    private static ResponseEntity<ExceptionResponsePayload> createErrorResponse(HttpStatus status, RuntimeException ex) {
         String timestamp = LocalDateTime.now().toString();
-        ExceptionResponsePayload payload = new ExceptionResponsePayload(exceptionMsg, status, timestamp);
+        ExceptionResponsePayload payload = new ExceptionResponsePayload(status, timestamp, ex.getMessage(), ex.getClass());
         return ResponseEntity.status(status).body(payload);
     }
 
