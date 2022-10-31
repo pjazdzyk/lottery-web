@@ -12,7 +12,7 @@ animal shelters!
 
 The main purpose of this project is to learn, learn and learn. Learning by doing. I have explored a couple of different technologies and incorporated them into this project.
 For a better presentation and my understanding of how the frontend works with the backend, I have created a very simple static landing page, which you can use for playing.
-This project uses modular monolithic application architecture and microservice architecture - a winning numbers generator has been deployed as an independent microservice.
+This project uses modular monolithic application architecture with elements of hexagonal and microservice architecture. The winning numbers generator has been deployed as an independent microservice.
 The application is stored in Docker Hub, all modules are containerized - the only thing you need to deploy and run this app by yourself is the docker-compose file and associated MongoDB config js file.
 For presentation purposes, Lottery|Web has been deployed on the AWS EC2 Linux server. I have hooked my company domain (synerset.com) to mask long and unpleasant AWS DNS addresses,
 and it should be available at: http://lottery.synerset.com:8000.
