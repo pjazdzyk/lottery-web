@@ -93,10 +93,10 @@ Application provides two endpoints: for input numbers and results checking. Plea
 
 Service url: http://lottery.synerset.com:8000
 
-|    ENDPOINT     | METHOD |         REQUEST          | RESPONSE |             FUNCTION              |
-|:---------------:|:------:|:------------------------:|:--------:|:---------------------------------:|
-| api/v1/receiver |  POST  | JSON BODY (typedNumbers) |   JSON   | receives 6 distinct input numbers |
-| api/v1/results  |  GET   |   PARAM (requestUuid)    |   JSON   | retrieves lottery results for ID  |
+|    ENDPOINT     | METHOD |         REQUEST          | RESPONSE |             FUNCTION             |
+|:---------------:|:------:|:------------------------:|:--------:|:--------------------------------:|
+| api/v1/receiver |  POST  | JSON BODY (typedNumbers) |   JSON   | inputs 6 distinct typed numbers  |
+| api/v1/results  |  GET   |   PARAM (requestUuid)    |   JSON   | retrieves lottery results for ID |
 
 
 POSTMAN CURL's:<br>
