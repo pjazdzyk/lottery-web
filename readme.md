@@ -106,7 +106,7 @@ POSTMAN CURL's:<br>
 curl --location --request POST 'http://lottery.synerset.com:8000/api/v1/receiver' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-"typedNumbers" : [1,2,3,4,5,6]
+"typedNumbers" : [11,22,33,44,55,66]
 }'
 ```
 
