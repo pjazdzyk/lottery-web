@@ -112,7 +112,7 @@ curl --location --request POST 'http://lottery.synerset.com:8000/api/v1/receiver
 
 **/results**<br>
 ```
-curl --location --request GET 'http://lottery.synerset.com:8000/api/v1/results?requestUuid=a0d7bf38-6463-49a7-a397-d8161dd5bf15'
+curl --location --request GET 'http://lottery.synerset.com:8000/api/v1/results?requestUuid=0046308c-408f-4fca-9668-6e5941e846f9'
 ```
 
 ## License
