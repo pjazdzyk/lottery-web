@@ -1,5 +1,5 @@
 # Lottery|Web
-## _Number lottery game - Spring Boot application_
+## _Number lottery game - Spring Boot application (backend project)_
 
 Lotto|Web is a web port of the well-known number lottery game. The user provides 6 distinct numbers from 1 to 99 and receives a unique coupon identifier.
 Winning numbers are drawn once per week and all coupons are processed to determine winners. To become a winner user must score at least 3 matched numbers in the lottery.
