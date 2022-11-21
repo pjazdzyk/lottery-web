@@ -21,7 +21,7 @@ public class MockMvcAnnouncerCaller {
     public AnnouncerResponseDto makeGetCallToRetrieveResultsByUuid(UUID uuid) {
         String uuidAsString = uuid.toString();
         try {
-            MvcResult announcerResponse = mockMcvCaller.makeGetMockedCallWithParam(AnnouncerEndpointVersions.API_VERSION_V1 + "/results", QUERY_PARAM_NAME, uuidAsString);
+            MvcResult announcerResponse = mockMcvCaller.makeGetMockedCallWithPathVariable(AnnouncerEndpointVersions.API_VERSION_V1 + "/results", uuidAsString);
             String contentJsonAsString = announcerResponse.getResponse().getContentAsString();
             return JsonConverters.convertJsonResponseToTargetObject(contentJsonAsString, AnnouncerResponseDto.class);
         } catch (Exception e) {

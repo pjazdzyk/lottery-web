@@ -18,7 +18,7 @@ class MockMcvCaller {
         this.mockMvc = mockMvc;
     }
 
-    MvcResult makePostMockedCallWithJson(String controllerUrl, String callContentAsJson) throws Exception {
+    MvcResult makePostMockedCallWithJsonBody(String controllerUrl, String callContentAsJson) throws Exception {
         return mockMvc.perform(post(controllerUrl)
                         .content(callContentAsJson)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -26,9 +26,8 @@ class MockMcvCaller {
                 .andReturn();
     }
 
-    MvcResult makeGetMockedCallWithParam(String controllerUrl, String paramName, String paramValue) throws Exception {
-        return mockMvc.perform(get(controllerUrl)
-                        .param(paramName, paramValue))
+    MvcResult makeGetMockedCallWithPathVariable(String controllerUrl, String pathVariable) throws Exception {
+        return mockMvc.perform(get(controllerUrl + "/{pathVariable}", pathVariable))
                 .andExpect(status().isOk())
                 .andReturn();
     }
