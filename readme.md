@@ -93,17 +93,17 @@ Application provides two endpoints: for input numbers and results checking. Plea
 
 Service url: http://lottery.synerset.com:8000
 
-|    ENDPOINT     | METHOD |         REQUEST          | RESPONSE |             FUNCTION             |
-|:---------------:|:------:|:------------------------:|:--------:|:--------------------------------:|
-| api/v1/receiver |  POST  | JSON BODY (typedNumbers) |   JSON   | inputs 6 distinct typed numbers  |
-| api/v1/results  |  GET   |   PARAM (requestUuid)    |   JSON   | retrieves lottery results for ID |
+|       ENDPOINT        | METHOD |         REQUEST          | RESPONSE |             FUNCTION             |
+|:---------------------:|:------:|:------------------------:|:--------:|:--------------------------------:|
+|    api/v1/numbers     |  POST  | JSON BODY (typedNumbers) |   JSON   | inputs 6 distinct typed numbers  |
+| api/v1/results/{uuid} |  GET   |   PATH VARIABLE (uuid)   |   JSON   | retrieves lottery results for ID |
 
 
 POSTMAN CURL's:<br>
 
 **/receiver**<br>
 ```
-curl --location --request POST 'http://lottery.synerset.com:8000/api/v1/receiver' \
+curl --location --request POST 'http://lottery.synerset.com:8000/api/v1/numbers' \
 --header 'Content-Type: application/json' \
 --data-raw '{
 "typedNumbers" : [11,22,33,44,55,66]
@@ -112,7 +112,7 @@ curl --location --request POST 'http://lottery.synerset.com:8000/api/v1/receiver
 
 **/results**<br>
 ```
-curl --location --request GET 'http://lottery.synerset.com:8000/api/v1/results?requestUuid=0046308c-408f-4fca-9668-6e5941e846f9'
+curl --location --request GET 'http://lottery.synerset.com:8000/api/v1/results/0046308c-408f-4fca-9668-6e5941e846f9'
 ```
 
 ## License
