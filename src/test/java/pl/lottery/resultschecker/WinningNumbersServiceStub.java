@@ -24,13 +24,4 @@ public class WinningNumbersServiceStub implements WinningNumberGeneratorPort {
         return new WinningNumbersResponseDto(drawDate, winningNumbers, WinningNumberStatus.LOADED_FROM_DB);
     }
 
-    @Override
-    public WinningNumbersResponseDto deleteWinningNumbers(LocalDateTime drawDate) {
-        return new WinningNumbersResponseDto(drawDate, null, WinningNumberStatus.DELETED);
-    }
-
-    @Override
-    public List<WinningNumbersResponseDto> getAllWinningNumbers() {
-        return null;
-    }
 }

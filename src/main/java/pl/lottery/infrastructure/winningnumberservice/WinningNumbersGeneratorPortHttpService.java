@@ -7,7 +7,6 @@ import pl.lottery.infrastructure.winningnumberservice.dto.WinningNumbersResponse
 import pl.lottery.resultschecker.WinningNumberGeneratorPort;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class WinningNumbersGeneratorPortHttpService implements WinningNumberGeneratorPort {
 
@@ -35,16 +34,6 @@ public class WinningNumbersGeneratorPortHttpService implements WinningNumberGene
         String urlForRetrieveCall = winningNumberUrlGenerator.createUrlForRetrieveCall(drawDate);
         ResponseEntity<WinningNumbersResponseDto> responseEntity = restTemplate.getForEntity(urlForRetrieveCall, WinningNumbersResponseDto.class, drawDate.toString());
         return responseEntity.getBody();
-    }
-
-    @Override
-    public WinningNumbersResponseDto deleteWinningNumbers(LocalDateTime drawDate) {
-        return null;
-    }
-
-    @Override
-    public List<WinningNumbersResponseDto> getAllWinningNumbers() {
-        return null;
     }
 
 }

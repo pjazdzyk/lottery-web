@@ -10,7 +10,4 @@ public interface WinningNumberGeneratorPort {
 
     WinningNumbersResponseDto retrieveWinningNumbers(LocalDateTime drawDate);
 
-    WinningNumbersResponseDto deleteWinningNumbers(LocalDateTime drawDate);
-
-    List<WinningNumbersResponseDto> getAllWinningNumbers();
 }
