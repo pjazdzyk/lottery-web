@@ -33,7 +33,7 @@ public class MockMvcReceiverCaller {
         try {
             ReceiverRequestDto receiverRequestDto = new ReceiverRequestDto(typedNumbers);
             String requestAsJson = JsonConverters.writeObjectAsJsonString(receiverRequestDto);
-            MvcResult receiverResponse = mockMcvCaller.makePostMockedCallWithJsonBody(ReceiverEndpointVersions.API_VERSION_V1 +"/receiver", requestAsJson);
+            MvcResult receiverResponse = mockMcvCaller.makePostMockedCallWithJsonBody(ReceiverEndpointVersions.API_VERSION_V1 +"/numbers", requestAsJson);
             String contentJsonAsString = receiverResponse.getResponse().getContentAsString();
             return JsonConverters.convertJsonResponseToTargetObject(contentJsonAsString, ReceiverResponseDto.class);
         } catch (Exception e) {

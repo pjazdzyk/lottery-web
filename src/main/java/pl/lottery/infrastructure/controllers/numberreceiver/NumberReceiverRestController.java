@@ -22,7 +22,7 @@ public class NumberReceiverRestController {
         this.numberReceiverFacade = numberReceiverFacade;
     }
 
-    @PostMapping(value = ReceiverEndpointVersions.API_VERSION_V1 + "/receiver")
+    @PostMapping(value = ReceiverEndpointVersions.API_VERSION_V1 + "/numbers")
     public ResponseEntity<ReceiverResponseDto> inputNumbers(@RequestBody ReceiverRequestDto receiverRequestDto) {
         List<Integer> typedNumbers = receiverRequestDto.getTypedNumbers();
         if (numberReceiverFacade.numbersAreNotValid(typedNumbers)) {
