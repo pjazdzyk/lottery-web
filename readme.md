@@ -76,8 +76,9 @@ Click on image below to review it more readable size.
 
 Lotto|Web requires [Docker](https://www.docker.com/products/docker-desktop/) to run.
 Both Winning Numbers microservice and main application (Lottery|Web) are pushed as an images into the Docker Hub.
-To deploy and run application, just copy anywhere **docker-compose** and **inint-mongo.js** files. Both files
-must be in the same folder. After that, just run following command, and wait for containers to be pulled up and started.
+To deploy and run application, just copy anywhere **[docker-compose](https://github.com/pjazdzyk/lottery-web/tree/master/src/docker)** 
+and **[init-mongo.js](https://github.com/pjazdzyk/lottery-web/tree/master/src/docker)** files. Both files must be in the same folder. After that, just run following command, and wait for 
+containers to be pulled up and started.
 
 ``
 docker-compose up
@@ -101,7 +102,7 @@ Service url: http://lottery.synerset.com:8000
 
 POSTMAN CURL's:<br>
 
-**/receiver**<br>
+**/numbers**<br>
 ```
 curl --location --request POST 'http://lottery.synerset.com:8000/api/v1/numbers' \
 --header 'Content-Type: application/json' \
