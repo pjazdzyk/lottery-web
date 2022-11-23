@@ -33,8 +33,8 @@ interface MockedNumberReceiverFacade extends SampleDrawDate{
 
     default NumberReceiverFacade createMockedNumberReceiverFacade() {
         NumberReceiverFacade mockedNumberReceiverFacade = mock(NumberReceiverFacade.class);
-        when(mockedNumberReceiverFacade.getUserCouponByUUID(any(UUID.class))).thenReturn(sampleCouponList.get(0));
-        when(mockedNumberReceiverFacade.getUserCouponListForDrawDate(any(LocalDateTime.class))).thenReturn(sampleCouponList);
+        when(mockedNumberReceiverFacade.findUserCouponByUUID(any(UUID.class))).thenReturn(sampleCouponList.get(0));
+        when(mockedNumberReceiverFacade.findUserCouponListForDrawDate(any(LocalDateTime.class))).thenReturn(sampleCouponList);
         return mockedNumberReceiverFacade;
     }
 

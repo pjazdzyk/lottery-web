@@ -52,9 +52,9 @@ interface MockedResultsChecker {
 
     default ResultsCheckerFacade createMockedResultsCheckerFacade() {
         ResultsCheckerFacade mockedResultsCheckerFacade = mock(ResultsCheckerFacade.class);
-        when(mockedResultsCheckerFacade.getResultsForId(sampleUuid)).thenReturn(sampleCheckerDtos.get(0));
-        when(mockedResultsCheckerFacade.getResultsForId(nonExistingUUid)).thenReturn(CheckerDto.ofNotFoundDtoForUuid(nonExistingUUid));
-        when(mockedResultsCheckerFacade.getResultsForId(isNull())).thenReturn(CheckerDto.ofNotFoundDtoForUuid(nonExistingUUid));
+        when(mockedResultsCheckerFacade.findResultsForId(sampleUuid)).thenReturn(sampleCheckerDtos.get(0));
+        when(mockedResultsCheckerFacade.findResultsForId(nonExistingUUid)).thenReturn(CheckerDto.ofNotFoundDtoForUuid(nonExistingUUid));
+        when(mockedResultsCheckerFacade.findResultsForId(isNull())).thenReturn(CheckerDto.ofNotFoundDtoForUuid(nonExistingUUid));
         return mockedResultsCheckerFacade;
     }
 

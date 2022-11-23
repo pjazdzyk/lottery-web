@@ -106,7 +106,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         ReceiverResponseDto actualCoupon = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         // then
-        ReceiverResponseDto expectedReceiverResponseDto = numberReceiverFacade.getUserCouponByUUID(actualCoupon.uuid());
+        ReceiverResponseDto expectedReceiverResponseDto = numberReceiverFacade.findUserCouponByUUID(actualCoupon.uuid());
         assertThat(actualCoupon).isEqualTo(expectedReceiverResponseDto);
         assertThat(actualCoupon.status()).isEqualTo(ReceiverStatus.SAVED);
     }
@@ -118,11 +118,11 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         List<ReceiverResponseDto> initialCoupons = seedSomeCouponsToTestDB(numberReceiverFacade, 1);
         // Time has passed, new draw date is
         LocalDateTime laterDrawDate = sampleDrawDate.plusDays(7);
-        when(mockedTimeGeneratorFacade.getNextDrawDateAndTime()).thenReturn(laterDrawDate);
+        when(mockedTimeGeneratorFacade.retrieveNextDrawDateAndTime()).thenReturn(laterDrawDate);
         seedSomeCouponsToTestDB(numberReceiverFacade, 1);
 
         // when
-        List<ReceiverResponseDto> actualCouponsForSpecifiedDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(laterDrawDate);
+        List<ReceiverResponseDto> actualCouponsForSpecifiedDrawDate = numberReceiverFacade.findUserCouponListForDrawDate(laterDrawDate);
 
         // then
         assertThat(actualCouponsForSpecifiedDrawDate).doesNotContainAnyElementsOf(initialCoupons);
@@ -139,7 +139,7 @@ class NumberReceiverFacadeTest implements MockedUUIDGenerator, MockedTimeGenerat
         numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
 
         // when
-        ReceiverResponseDto actualReceiverResponseDto = numberReceiverFacade.getUserCouponByUUID(uuidForMocks);
+        ReceiverResponseDto actualReceiverResponseDto = numberReceiverFacade.findUserCouponByUUID(uuidForMocks);
 
         // then
         assertThat(actualReceiverResponseDto.uuid()).isEqualTo(uuidForMocks);

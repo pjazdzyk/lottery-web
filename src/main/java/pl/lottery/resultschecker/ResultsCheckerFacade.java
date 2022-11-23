@@ -29,7 +29,7 @@ public class ResultsCheckerFacade {
         if (containsResultsForDrawDate(drawDate)) {
             return 0;
         }
-        List<ReceiverResponseDto> couponsForThisDrawDate = numberReceiverFacade.getUserCouponListForDrawDate(drawDate);
+        List<ReceiverResponseDto> couponsForThisDrawDate = numberReceiverFacade.findUserCouponListForDrawDate(drawDate);
         if(couponsForThisDrawDate.isEmpty()){
             return 0;
         }
@@ -39,7 +39,7 @@ public class ResultsCheckerFacade {
         return processedLotteryResults.size();
     }
 
-    public CheckerDto getResultsForId(UUID uuid) {
+    public CheckerDto findResultsForId(UUID uuid) {
         Optional<LotteryResults> lotteryResultsOptional = resultsCheckerRepository.findById(uuid);
         if (lotteryResultsOptional.isEmpty()) {
             return CheckerDto.ofNotFoundDtoForUuid(uuid);
@@ -56,17 +56,17 @@ public class ResultsCheckerFacade {
         return LotteryResultsMapper.toDto(lotteryResultsOptional.get(), CheckerStatus.DELETED);
     }
 
-    public List<CheckerDto> getLotteryResultsForDrawDate(LocalDateTime drawDate) {
+    public List<CheckerDto> findLotteryResultsForDrawDate(LocalDateTime drawDate) {
         List<LotteryResults> lotteryResults = resultsCheckerRepository.findByDrawDate(drawDate);
         return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.PROCESSED);
     }
 
-    public List<CheckerDto> getLotteryResultsDrawDateWinnersOnly(LocalDateTime drawDate) {
+    public List<CheckerDto> findLotteryResultsDrawDateWinnersOnly(LocalDateTime drawDate) {
         List<LotteryResults> lotteryResults = resultsCheckerRepository.findByDrawDateAndIsWinner(drawDate, true);
         return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.PROCESSED);
     }
 
-    public List<CheckerDto> getAllLotteryResults() {
+    public List<CheckerDto> findAllLotteryResults() {
         List<LotteryResults> lotteryResults = resultsCheckerRepository.findAll();
         return LotteryResultsMapper.toDtoList(lotteryResults, CheckerStatus.PROCESSED);
     }

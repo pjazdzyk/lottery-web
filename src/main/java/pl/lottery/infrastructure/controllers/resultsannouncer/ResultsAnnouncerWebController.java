@@ -27,7 +27,7 @@ public class ResultsAnnouncerWebController {
             return "announcer-resp-error";
         }
         UUID userRequestedUuid = UUID.fromString(requestUuid);
-        AnnouncerResponseDto announcerResponseDto = resultsAnnouncerFacade.getResultsForId(userRequestedUuid);
+        AnnouncerResponseDto announcerResponseDto = resultsAnnouncerFacade.findResultsForId(userRequestedUuid);
         if (announcerResponseDto.status() != AnnouncerStatus.PUBLISHED) {
             model.addAttribute("errorMsg", String.format(NOT_FOUND_MSG, requestUuid));
             return "announcer-resp-error";

@@ -49,7 +49,7 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade {
         resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // when
-        CheckerDto actualResultCheckDto = resultsCheckerFacade.getResultsForId(sampleUuid);
+        CheckerDto actualResultCheckDto = resultsCheckerFacade.findResultsForId(sampleUuid);
 
         // then
         assertThat(actualResultCheckDto.uuid()).isEqualTo(sampleUuid);
@@ -66,7 +66,7 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade {
         UUID invalidUUid = UUID.fromString("7bc27e59-52f4-4bd8-974b-c3a62e8c4f92");
 
         // when
-        CheckerDto actualResultCheckDto = resultsCheckerFacade.getResultsForId(invalidUUid);
+        CheckerDto actualResultCheckDto = resultsCheckerFacade.findResultsForId(invalidUUid);
 
         // then
         assertThat(actualResultCheckDto).isNotNull();
@@ -85,7 +85,7 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade {
         // then
         assertThat(deletedCheckerResultDTo.uuid()).isEqualTo(sampleUuid);
         assertThat(deletedCheckerResultDTo.status()).isEqualTo(CheckerStatus.DELETED);
-        assertThat(resultsCheckerFacade.getResultsForId(sampleUuid).status()).isEqualTo(CheckerStatus.NOT_FOUND);
+        assertThat(resultsCheckerFacade.findResultsForId(sampleUuid).status()).isEqualTo(CheckerStatus.NOT_FOUND);
     }
 
     @Test
@@ -95,7 +95,7 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade {
         resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // when
-        List<CheckerDto> lotteryResults = resultsCheckerFacade.getLotteryResultsForDrawDate(sampleDrawDateTime);
+        List<CheckerDto> lotteryResults = resultsCheckerFacade.findLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // then
         int expectedSize = 6;
@@ -110,7 +110,7 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade {
         resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // when
-        List<CheckerDto> lotteryResults = resultsCheckerFacade.getLotteryResultsForDrawDate(LocalDateTime.of(2050, 1, 1, 1, 1, 1));
+        List<CheckerDto> lotteryResults = resultsCheckerFacade.findLotteryResultsForDrawDate(LocalDateTime.of(2050, 1, 1, 1, 1, 1));
 
         // then
         assertThat(lotteryResults).isNotNull();
@@ -124,7 +124,7 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade {
         resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // when
-        List<CheckerDto> lotteryResultsWinners = resultsCheckerFacade.getLotteryResultsDrawDateWinnersOnly(sampleDrawDateTime);
+        List<CheckerDto> lotteryResultsWinners = resultsCheckerFacade.findLotteryResultsDrawDateWinnersOnly(sampleDrawDateTime);
 
         // then
         int expectedSize = 3;
@@ -141,7 +141,7 @@ class ResultCheckerFacadeTest implements MockedNumberReceiverFacade {
         resultsCheckerFacade.generateLotteryResultsForDrawDate(sampleDrawDateTime);
 
         // when
-        List<CheckerDto> actualAllLotteryResults = resultsCheckerFacade.getAllLotteryResults();
+        List<CheckerDto> actualAllLotteryResults = resultsCheckerFacade.findAllLotteryResults();
 
         // then
         int expectedDeletedListSize = 6;

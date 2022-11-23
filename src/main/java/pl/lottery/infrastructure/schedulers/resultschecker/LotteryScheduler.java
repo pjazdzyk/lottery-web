@@ -17,13 +17,13 @@ class LotteryScheduler {
     public LotteryScheduler(ResultsCheckerFacade resultsCheckerFacade, TimeGeneratorFacade timeGeneratorFacade) {
         this.resultsCheckerFacade = resultsCheckerFacade;
         this.timeGeneratorFacade = timeGeneratorFacade;
-        this.drawDate = timeGeneratorFacade.getNextDrawDateAndTime();
+        this.drawDate = timeGeneratorFacade.retrieveNextDrawDateAndTime();
     }
 
     @Scheduled(cron = "${lotto.checker.lotteryRunOccurrence}")
     void runLottery() {
         resultsCheckerFacade.generateLotteryResultsForDrawDate(drawDate);
-        this.drawDate = timeGeneratorFacade.getNextDrawDateAndTime();
+        this.drawDate = timeGeneratorFacade.retrieveNextDrawDateAndTime();
     }
 
 }

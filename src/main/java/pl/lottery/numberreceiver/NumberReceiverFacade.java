@@ -33,7 +33,7 @@ public class NumberReceiverFacade {
         return CouponMapper.toDto(coupon, ReceiverStatus.SAVED);
     }
 
-    public ReceiverResponseDto getUserCouponByUUID(UUID uuid) {
+    public ReceiverResponseDto findUserCouponByUUID(UUID uuid) {
         Optional<Coupon> couponOptional = userCouponCouponRepository.findById(uuid);
         if (couponOptional.isEmpty()) {
             return notFoundDto();
@@ -41,7 +41,7 @@ public class NumberReceiverFacade {
         return CouponMapper.toDto(couponOptional.get(), ReceiverStatus.SAVED);
     }
 
-    public List<ReceiverResponseDto> getUserCouponListForDrawDate(LocalDateTime drawDate) {
+    public List<ReceiverResponseDto> findUserCouponListForDrawDate(LocalDateTime drawDate) {
         List<Coupon> coupons = userCouponCouponRepository.findByDrawDate(drawDate);
         return CouponMapper.toDtoList(coupons, ReceiverStatus.SAVED);
     }
@@ -55,7 +55,7 @@ public class NumberReceiverFacade {
         return CouponMapper.toDto(couponOptional.get(), ReceiverStatus.DELETED);
     }
 
-    public List<ReceiverResponseDto> getAllCoupons() {
+    public List<ReceiverResponseDto> findAllCoupons() {
         List<Coupon> coupons = userCouponCouponRepository.findAll();
         return CouponMapper.toDtoList(coupons, ReceiverStatus.SAVED);
     }

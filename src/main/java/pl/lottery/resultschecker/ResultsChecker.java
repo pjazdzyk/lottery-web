@@ -10,7 +10,7 @@ class ResultsChecker {
         this.winningPropertyConfig = winningPropertyConfig;
     }
 
-    List<Integer> getMatchedNumbers(List<Integer> userTypedNumbers, List<Integer> winningNumbers) {
+    List<Integer> findMatchedNumbers(List<Integer> userTypedNumbers, List<Integer> winningNumbers) {
         return userTypedNumbers.stream().filter(winningNumbers::contains).toList();
     }
 

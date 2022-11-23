@@ -9,16 +9,16 @@ public class TimeGeneratorFacade {
         this.timeGenerator = timeGenerator;
     }
 
-    public LocalDateTime getNextDrawDateAndTime() {
+    public LocalDateTime retrieveNextDrawDateAndTime() {
         return timeGenerator.getDrawDateAndTime();
     }
 
-    public LocalDateTime getCurrentDateAndTime() {
-        return timeGenerator.getCurrentDateAndTime();
+    public LocalDateTime retrieveCurrentDateAndTime() {
+        return timeGenerator.retrieveCurrentDateAndTime();
     }
 
-    public LocalDateTime getExpirationDateAndTime() {
-        return timeGenerator.getExpirationDateTime();
+    public LocalDateTime retrieveExpirationDateAndTime() {
+        return timeGenerator.retrieveExpirationDateTime();
     }
 }
 

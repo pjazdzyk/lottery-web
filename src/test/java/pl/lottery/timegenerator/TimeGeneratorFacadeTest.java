@@ -41,7 +41,7 @@ class TimeGeneratorFacadeTest {
         sampleClockForTests.setClockToLocalTime(sampleTime);
 
         // when
-        LocalDateTime actualCurrentTime = timeGeneratorFacade.getCurrentDateAndTime();
+        LocalDateTime actualCurrentTime = timeGeneratorFacade.retrieveCurrentDateAndTime();
 
         // then
         LocalDateTime expectedLocalDateTime = LocalDateTime.of(sampleDate, sampleTime);
@@ -68,7 +68,7 @@ class TimeGeneratorFacadeTest {
         sampleClockForTests.setClockToLocalDate(sampleDate);
 
         // when
-        LocalDateTime actualDrawDateTime = timeGeneratorFacade.getNextDrawDateAndTime();
+        LocalDateTime actualDrawDateTime = timeGeneratorFacade.retrieveNextDrawDateAndTime();
         LocalDate actualDrawDate = actualDrawDateTime.toLocalDate();
 
         // then
@@ -83,7 +83,7 @@ class TimeGeneratorFacadeTest {
         sampleClockForTests.setClockToLocalTime(drawTime.plusHours(1));
 
         // when
-        LocalDateTime actualDrawTime = timeGeneratorFacade.getNextDrawDateAndTime();
+        LocalDateTime actualDrawTime = timeGeneratorFacade.retrieveNextDrawDateAndTime();
 
         // then
         LocalDateTime expectedDrawDateTime = LocalDateTime.of(LocalDate.of(2022, 8, 19), LocalTime.of(12, 10));
@@ -96,10 +96,10 @@ class TimeGeneratorFacadeTest {
     void getExpirationDateAndTime_givenDrawDateAndExpiration_returnsExpirationDate() {
         // given
         // when
-        LocalDateTime actualExpirationDateTime = timeGeneratorFacade.getExpirationDateAndTime();
+        LocalDateTime actualExpirationDateTime = timeGeneratorFacade.retrieveExpirationDateAndTime();
 
         // then
-        LocalDateTime drawDateTime = timeGeneratorFacade.getNextDrawDateAndTime();
+        LocalDateTime drawDateTime = timeGeneratorFacade.retrieveNextDrawDateAndTime();
         LocalDateTime expectedExpirationDateTime = drawDateTime.plusDays(expirationInDays.toDays());
         assertThat(actualExpirationDateTime).isEqualTo(expectedExpirationDateTime);
 

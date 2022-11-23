@@ -16,7 +16,7 @@ class TimeGenerator {
         this.drawDate = drawDateTimeGenerator.generateDrawDate(currentDateTimeGenerator.getCurrentDateAndTime());
     }
 
-    LocalDateTime getCurrentDateAndTime() {
+    LocalDateTime retrieveCurrentDateAndTime() {
         return currentDateTimeGenerator.getCurrentDateAndTime();
     }
 
@@ -28,7 +28,7 @@ class TimeGenerator {
         return drawDate;
     }
 
-    LocalDateTime getExpirationDateTime() {
+    LocalDateTime retrieveExpirationDateTime() {
         return expirationDateTimeGenerator.generateExpirationDate(getDrawDateAndTime());
     }
 

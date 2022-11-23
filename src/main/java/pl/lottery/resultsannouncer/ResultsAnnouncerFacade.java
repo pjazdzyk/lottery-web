@@ -1,7 +1,6 @@
 package pl.lottery.resultsannouncer;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import pl.lottery.resultsannouncer.dto.AnnouncerStatus;
 import pl.lottery.resultsannouncer.dto.AnnouncerResponseDto;
 import pl.lottery.resultschecker.ResultsCheckerFacade;
@@ -20,12 +19,12 @@ public class ResultsAnnouncerFacade {
     }
 
     @Cacheable("AnnouncerResponseDtoCache")
-    public AnnouncerResponseDto getResultsForId(UUID uuid) {
+    public AnnouncerResponseDto findResultsForId(UUID uuid) {
         if (Objects.isNull(uuid)) {
             return AnnouncerResponseDto.notFoundDto();
         }
 
-        CheckerDto resultsForId = resultsCheckerFacade.getResultsForId(uuid);
+        CheckerDto resultsForId = resultsCheckerFacade.findResultsForId(uuid);
 
         if (resultsForId.status() == CheckerStatus.NOT_FOUND) {
             return AnnouncerResponseDto.notFoundDto();

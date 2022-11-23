@@ -18,9 +18,9 @@ class CouponGenerator {
 
     Coupon generateUserCoupon(List<Integer> userTypedNumbers) {
         UUID uuid = receiverUuidGenerator.generateRandomUUID();
-        LocalDateTime creationTime = timeGeneratorFacade.getCurrentDateAndTime();
-        LocalDateTime drawTime = timeGeneratorFacade.getNextDrawDateAndTime();
-        LocalDateTime expirationDate = timeGeneratorFacade.getExpirationDateAndTime();
+        LocalDateTime creationTime = timeGeneratorFacade.retrieveCurrentDateAndTime();
+        LocalDateTime drawTime = timeGeneratorFacade.retrieveNextDrawDateAndTime();
+        LocalDateTime expirationDate = timeGeneratorFacade.retrieveExpirationDateAndTime();
         return new Coupon(uuid, creationTime, drawTime, expirationDate, userTypedNumbers);
     }
 

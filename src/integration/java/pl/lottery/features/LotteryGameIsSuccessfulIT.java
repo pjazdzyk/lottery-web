@@ -42,7 +42,7 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationSpec {
     }
 
     private Callable<Boolean> checkIfResultsCheckerRepositoryContainsWinners(int winnersCount) {
-        return () -> resultsCheckerFacade.getLotteryResultsDrawDateWinnersOnly(DRAW_DATE).size() == winnersCount;
+        return () -> resultsCheckerFacade.findLotteryResultsDrawDateWinnersOnly(DRAW_DATE).size() == winnersCount;
     }
 
 }

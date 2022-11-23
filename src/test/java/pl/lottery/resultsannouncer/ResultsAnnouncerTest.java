@@ -19,7 +19,7 @@ class ResultsAnnouncerTest implements MockedResultsChecker{
     void getResultsForId_givenUuid_returnsAnnouncerDto() {
         // given
         // when
-        AnnouncerResponseDto actualAnnouncerDto = resultsAnnouncerFacade.getResultsForId(sampleUuid);
+        AnnouncerResponseDto actualAnnouncerDto = resultsAnnouncerFacade.findResultsForId(sampleUuid);
 
         // then
         assertThat(actualAnnouncerDto.uuid()).isEqualTo(sampleUuid);
@@ -31,7 +31,7 @@ class ResultsAnnouncerTest implements MockedResultsChecker{
     void getResultsForId_givenInvalidUuid_returnsNotFoundDto() {
         // given
         // when
-        AnnouncerResponseDto actualAnnouncerDto = resultsAnnouncerFacade.getResultsForId(nonExistingUUid);
+        AnnouncerResponseDto actualAnnouncerDto = resultsAnnouncerFacade.findResultsForId(nonExistingUUid);
 
         // then
         assertThat(actualAnnouncerDto.status()).isEqualTo(AnnouncerStatus.NOT_FOUND);
@@ -42,7 +42,7 @@ class ResultsAnnouncerTest implements MockedResultsChecker{
     void getResultsForId_givenNullAsUUid_returnsNotFoundDto() {
         // given
         // when
-        AnnouncerResponseDto actualAnnouncerDto = resultsAnnouncerFacade.getResultsForId(null);
+        AnnouncerResponseDto actualAnnouncerDto = resultsAnnouncerFacade.findResultsForId(null);
 
         // then
         assertThat(actualAnnouncerDto.status()).isEqualTo(AnnouncerStatus.NOT_FOUND);
