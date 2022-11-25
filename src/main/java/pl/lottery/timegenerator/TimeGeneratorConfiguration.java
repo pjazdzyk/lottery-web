@@ -23,7 +23,7 @@ public class TimeGeneratorConfiguration {
     }
 
     @Bean
-    @Profile("production")
+    @Profile({"production", "dev"})
     public Clock productionClock() {
         return Clock.systemUTC();
     }
