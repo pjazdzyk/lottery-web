@@ -18,20 +18,8 @@ public interface WinningServiceConfigurable {
 
     void setServiceApi(String serviceApi);
 
-    String getGenerateEndpoint();
+    String getEndPointPath();
 
-    void setGenerateEndpoint(String generateEndpoint);
-
-    String getRetrieveEndpoint();
-
-    void setRetrieveEndpoint(String retrieveEndpoint);
-
-    String getDeleteEndpoint();
-
-    void setDeleteEndpoint(String deleteEndpoint);
-
-    String getGetAllEndpoint();
-
-    void setGetAllEndpoint(String getAllEndpoint);
+    void setEndPointPath(String endPointPath);
 
 }

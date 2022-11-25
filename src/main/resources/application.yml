@@ -36,7 +36,4 @@ winning-numbers-service:
   serviceHost: winning-numbers
   servicePort: 8001
   serviceApi: /api/v1
-  generateEndpoint: /generate
-  retrieveEndpoint: /numbers
-  deleteEndpoint: /delete
-  getAllEndpoint: /all
+  endPointPath: /winning-numbers

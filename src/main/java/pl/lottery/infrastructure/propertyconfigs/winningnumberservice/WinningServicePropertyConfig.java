@@ -12,10 +12,7 @@ class WinningServicePropertyConfig implements WinningServiceConfigurable {
     private String serviceHost;
     private int servicePort;
     private String serviceApi;
-    private String generateEndpoint;
-    private String retrieveEndpoint;
-    private String deleteEndpoint;
-    private String getAllEndpoint;
+    private String endPoint;
 
     public String getProtocol() {
         return protocol;
@@ -49,35 +46,12 @@ class WinningServicePropertyConfig implements WinningServiceConfigurable {
         this.serviceApi = serviceApi;
     }
 
-    public String getGenerateEndpoint() {
-        return generateEndpoint;
+    public String getEndPointPath() {
+        return endPoint;
     }
 
-    public void setGenerateEndpoint(String generateEndpoint) {
-        this.generateEndpoint = generateEndpoint;
+    public void setEndPointPath(String endPointPath) {
+        this.endPoint = endPointPath;
     }
 
-    public String getRetrieveEndpoint() {
-        return retrieveEndpoint;
-    }
-
-    public void setRetrieveEndpoint(String retrieveEndpoint) {
-        this.retrieveEndpoint = retrieveEndpoint;
-    }
-
-    public String getDeleteEndpoint() {
-        return deleteEndpoint;
-    }
-
-    public void setDeleteEndpoint(String deleteEndpoint) {
-        this.deleteEndpoint = deleteEndpoint;
-    }
-
-    public String getGetAllEndpoint() {
-        return getAllEndpoint;
-    }
-
-    public void setGetAllEndpoint(String getAllEndpoint) {
-        this.getAllEndpoint = getAllEndpoint;
-    }
 }
