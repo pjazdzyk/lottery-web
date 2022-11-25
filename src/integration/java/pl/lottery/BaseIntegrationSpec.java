@@ -31,8 +31,8 @@ public class BaseIntegrationSpec implements IntegrationTestConstants {
 
     protected static final int ORIGINAL_REDIS_PORT = 6379;
     protected static final String WIREMOCK_SERVER_HOST = "localhost";
-    protected static final String WINNING_NUMBERS_GENERATE_API = "/api/v1/generate";
-    protected static final String WINNING_NUMBERS_RETRIEVE_API = "/api/v1/numbers?drawDate=%s";
+    protected static final String WINNING_NUMBERS_SERVICE_PATH = "/api/v1/winning-numbers/";
+
     @Container
     protected static MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
 
@@ -72,13 +72,14 @@ public class BaseIntegrationSpec implements IntegrationTestConstants {
     }
 
     protected static void stubGetCallToRetrieveEndpointWithParam(String responseForGenerateBodyAsJson, String drawDate) {
-        wireMockServer.stubFor(WireMock.get(String.format(WINNING_NUMBERS_RETRIEVE_API, drawDate))
+        String apiURL = WINNING_NUMBERS_SERVICE_PATH + drawDate;
+        wireMockServer.stubFor(WireMock.get(apiURL)
                 .willReturn(createResponseBuilderWithResponseBodyAsJson(responseForGenerateBodyAsJson)
                 ));
     }
 
     protected static void stubPostCallToGenerateEndpoint(String requestBodyAsJson, String responseForGenerateBodyAsJson) {
-        wireMockServer.stubFor(WireMock.post(WINNING_NUMBERS_GENERATE_API)
+        wireMockServer.stubFor(WireMock.post(WINNING_NUMBERS_SERVICE_PATH)
                 .withRequestBody(WireMock.equalTo(requestBodyAsJson))
                 .willReturn(createResponseBuilderWithResponseBodyAsJson(responseForGenerateBodyAsJson)
                 ));

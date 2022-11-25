@@ -29,7 +29,6 @@ public class WinningNumbersGeneratorPortHttpService implements WinningNumberGene
     }
 
     @Override
-
     public WinningNumbersResponseDto retrieveWinningNumbers(LocalDateTime drawDate) {
         String urlForRetrieveCall = winningNumberUrlGenerator.createUrlForRetrieveCall(drawDate);
         ResponseEntity<WinningNumbersResponseDto> responseEntity = restTemplate.getForEntity(urlForRetrieveCall, WinningNumbersResponseDto.class, drawDate.toString());

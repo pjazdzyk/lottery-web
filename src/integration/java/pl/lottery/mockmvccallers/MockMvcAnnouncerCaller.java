@@ -11,7 +11,6 @@ import java.util.UUID;
 @Component
 public class MockMvcAnnouncerCaller {
 
-    private static final String QUERY_PARAM_NAME = "requestUuid";
     private final MockMcvCaller mockMcvCaller;
 
     public MockMvcAnnouncerCaller(MockMcvCaller mockMcvCaller) {

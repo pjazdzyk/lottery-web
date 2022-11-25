@@ -5,47 +5,24 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
 
- class WinningNumberUrlGenerator {
-
-    private final String drawDateParamName;
+class WinningNumberUrlGenerator {
 
     private final WinningServiceConfigurable winningServiceProperties;
 
-    WinningNumberUrlGenerator(String drawDateParamName, WinningServiceConfigurable winningServiceProperties) {
-        this.drawDateParamName = drawDateParamName;
+    WinningNumberUrlGenerator(WinningServiceConfigurable winningServiceProperties) {
         this.winningServiceProperties = winningServiceProperties;
     }
 
     String createUrlForRetrieveCall(LocalDateTime drawDate) {
         return UriComponentsBuilder.newInstance()
-                .uriComponents(createUriComponentForEndPointWithParams(
-                        winningServiceProperties.getRetrieveEndpoint(),
-                        drawDateParamName,
-                        drawDate.toString()))
+                .uriComponents(createMainUrlComponent())
+                .path("/" + drawDate.toString())
                 .build()
                 .toString();
     }
 
     String createUrlForGenerateCall() {
-        return UriComponentsBuilder.newInstance()
-                .uriComponents(createUriComponentForEndpoint(winningServiceProperties.getGenerateEndpoint()))
-                .build()
-                .toString();
-    }
-
-    private UriComponents createUriComponentForEndPointWithParams(String endPoint, String name, Object... values) {
-        return UriComponentsBuilder.newInstance()
-                .uriComponents(createMainUrlComponent())
-                .path(endPoint)
-                .queryParam(name, values)
-                .build();
-    }
-
-    private UriComponents createUriComponentForEndpoint(String endPoint) {
-        return UriComponentsBuilder.newInstance()
-                .uriComponents(createMainUrlComponent())
-                .path(endPoint)
-                .build();
+        return createMainUrlComponent().toString();
     }
 
     private UriComponents createMainUrlComponent() {
@@ -54,8 +31,8 @@ import java.time.LocalDateTime;
                 .host(winningServiceProperties.getServiceHost())
                 .port(winningServiceProperties.getServicePort())
                 .path(winningServiceProperties.getServiceApi())
+                .path(winningServiceProperties.getEndPointPath())
                 .build();
     }
-
 
 }

@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 
 public class TimeGeneratorFacade {
 
-    TimeGenerator timeGenerator;
+    private final TimeGenerator timeGenerator;
 
     public TimeGeneratorFacade(TimeGenerator timeGenerator) {
         this.timeGenerator = timeGenerator;
