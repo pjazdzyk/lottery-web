@@ -1,27 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script
-          src="https://code.jquery.com/jquery-3.3.1.js"
-          integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-          crossorigin="anonymous">
-  </script>
-  <script>
-    $(function () {
-      $("#header").load("navbar-template.html");
-    });
-  </script>
-    <title>Lotto|Web - Online number lottery</title>
-</head>
-
-<body>
-<!-- Navbar-template injection -->
-<div id="header"></div>
-<!-- Navbar-template end -->
+<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
   <section class="container">
     <h3>Do not miss your lifetime opportunity to win a big reward! $$$</h3>
@@ -31,6 +9,8 @@
       to sell you more coupons!</p>
   </section>
 
+  <body>
+  <main layout:fragment="content">
   <section class="container">
 
     <div class="row">
@@ -51,7 +31,7 @@
                 </ul>
               </div>
             </div>
-            <div class="card-footer"><a href="receiver.html" class="anchor-as-button">I WANT TO PLAY!</a></div>
+            <div class="card-footer"><a href="/receiver" class="anchor-as-button">I WANT TO PLAY!</a></div>
           </div>
           <p class="d-flex gap"></p>
           <div class="card">
@@ -70,7 +50,7 @@
                 </ul>
               </div>
             </div>
-            <div class="card-footer"><a href="announcer.html" class="anchor-as-button">CHECK RESULTS</a></div>
+            <div class="card-footer"><a href="/announcer" class="anchor-as-button">CHECK RESULTS</a></div>
           </div>
         </div>
     </div>
@@ -120,7 +100,7 @@
           class="anchor-as-button">DONATE HERE</a></div>
     </div>
   </section>
-
+  </main>
 </body>
 
 </html>
