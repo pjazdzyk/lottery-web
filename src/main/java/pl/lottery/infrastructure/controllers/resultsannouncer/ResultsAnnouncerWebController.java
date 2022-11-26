@@ -20,7 +20,12 @@ public class ResultsAnnouncerWebController {
         this.resultsAnnouncerFacade = resultsAnnouncerFacade;
     }
 
-    @GetMapping("/results")
+    @GetMapping("/announcer")
+    public String showResultsView(){
+        return "announcer";
+    }
+
+    @GetMapping("/check-results")
     public String getResultsForUuid(@RequestParam String requestUuid, Model model) {
         if (resultsAnnouncerFacade.isInvalidUuid(requestUuid)) {
             model.addAttribute("errorMsg", String.format(INVALID_UUID_MSG, requestUuid));

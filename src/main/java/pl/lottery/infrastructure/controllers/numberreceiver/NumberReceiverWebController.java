@@ -2,6 +2,7 @@ package pl.lottery.infrastructure.controllers.numberreceiver;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.lottery.numberreceiver.NumberReceiverFacade;
 import pl.lottery.numberreceiver.dto.ReceiverRequestDto;
@@ -16,6 +17,11 @@ public class NumberReceiverWebController {
 
     public NumberReceiverWebController(NumberReceiverFacade numberReceiverFacade) {
         this.numberReceiverFacade = numberReceiverFacade;
+    }
+
+    @GetMapping("/receiver")
+    public String showReceiverView(){
+        return "receiver";
     }
 
     @PostMapping("/receiver")
