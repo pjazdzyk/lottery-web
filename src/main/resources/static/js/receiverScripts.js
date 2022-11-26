@@ -48,7 +48,6 @@ function clearAllFieldsAction() {
     }
 }
 
-
 // CONTEXT CALLS
 registerClickAction(fillRandomBtnId, fillInputFieldsWithRandomNumbersAction);
 registerClickAction(clearBtnId, clearAllFieldsAction);
