@@ -1,5 +1,5 @@
-let clearBtnId = "#anouncerClearBtn";
-let uuidFormId = "#requestUuidForm";
+let clearBtnId = "#announcerClearBtn";
+let uuidFormId = "#uuidForm";
 
 import {
     clearField,
