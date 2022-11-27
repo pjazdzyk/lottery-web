@@ -10,11 +10,26 @@ import java.time.*;
 public class TimeGeneratorConfiguration {
 
     public TimeGeneratorFacade createForTest(Clock clockForTest, TimeConfigurable timeSpec) {
-        return createForProduction(clockForTest, timeSpec);
+        return createTimeGeneratorFacade(clockForTest, timeSpec);
     }
 
-    @Bean("timeGeneratorFacade")
-    public TimeGeneratorFacade createForProduction(Clock clock, TimeConfigurable timeSpec) {
+    @Bean
+    @Profile("dev")
+    public TimeGeneratorFacade createTimeFacadeForDevelopment(TimeConfigurable timeSpec) {
+        timeSpec.setDrawDayOfWeek(LocalDateTime.now().getDayOfWeek());
+        timeSpec.setDrawTime(LocalTime.now().plusSeconds(20));
+        Clock developmentClock = Clock.systemUTC();
+        return createTimeGeneratorFacade(developmentClock, timeSpec);
+    }
+
+    @Bean
+    @Profile("production")
+    public TimeGeneratorFacade createTimeFacadeForProduction(TimeConfigurable timeSpec) {
+        Clock productionClock = Clock.systemUTC();
+        return createTimeGeneratorFacade(productionClock, timeSpec);
+    }
+
+    public TimeGeneratorFacade createTimeGeneratorFacade(Clock clock, TimeConfigurable timeSpec) {
         ExpirationDateTimeGenerator expirationDateTimeGenerator = new ExpirationDateTimeGenerator(timeSpec.getExpirationInDays());
         CurrentDateTimeGenerator currentDateTimeGenerator = new CurrentDateTimeGenerator(clock);
         DrawDateTimeGenerator drawDateTimeGenerator = new DrawDateTimeGenerator(timeSpec.getDrawDayOfWeek(), timeSpec.getDrawTime());
@@ -22,10 +37,5 @@ public class TimeGeneratorConfiguration {
         return new TimeGeneratorFacade(timeGenerator);
     }
 
-    @Bean
-    @Profile({"production", "dev"})
-    public Clock productionClock() {
-        return Clock.systemUTC();
-    }
 
 }
