@@ -12,13 +12,12 @@ import java.util.UUID;
 
 public class ResultsAnnouncerFacade {
 
-    ResultsCheckerFacade resultsCheckerFacade;
+    private final ResultsCheckerFacade resultsCheckerFacade;
 
     public ResultsAnnouncerFacade(ResultsCheckerFacade resultsCheckerFacade) {
         this.resultsCheckerFacade = resultsCheckerFacade;
     }
-
-    @Cacheable("AnnouncerResponseDtoCache")
+    @Cacheable("resultsForUuid")
     public AnnouncerResponseDto findResultsForId(UUID uuid) {
         if (Objects.isNull(uuid)) {
             return AnnouncerResponseDto.notFoundDto();

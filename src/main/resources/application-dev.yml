@@ -7,7 +7,7 @@ spring:
 
 lotto:
   checker:
-    lotteryRunOccurrence: "*/2 * * * * *"
+    lotteryRunOccurrence: "0 * * * * *"
 
 winning-numbers-service:
   serviceHost: localhost

@@ -17,7 +17,7 @@ public class TimeGeneratorConfiguration {
     @Profile("dev")
     public TimeGeneratorFacade createTimeFacadeForDevelopment(TimeConfigurable timeSpec) {
         timeSpec.setDrawDayOfWeek(LocalDateTime.now().getDayOfWeek());
-        timeSpec.setDrawTime(LocalTime.now().plusSeconds(20));
+        timeSpec.setDrawTime(LocalTime.now().minusMinutes(2));
         Clock developmentClock = Clock.systemUTC();
         return createTimeGeneratorFacade(developmentClock, timeSpec);
     }
