@@ -15,10 +15,7 @@ For a better presentation and my understanding of how the frontend works with th
 This project uses modular monolithic application architecture with elements of hexagonal and microservice architecture. The winning numbers generator has been deployed as an independent microservice.
 The application is stored in Docker Hub, all modules are containerized - the only thing you need to deploy and run this app by yourself is the docker-compose file and associated MongoDB config js file.
 For presentation purposes, Lottery|Web has been deployed on the AWS EC2 Linux server. I have hooked my company domain (synerset.com) to mask long and unpleasant AWS DNS addresses,
-and it should be available at: http://lottery.synerset.com:8000.
-
-Here is the page, if you would like to test your luck:<br>
-<a href=http://lottery.synerset.com:8000>CLICK HERE TO PLAY THE GAME....</a>
+and it should be available at: [http://lottery.synerset.com](http://lottery.synerset.com:8000).
 
 If you like my project, please hit the star button, thank you!
 
