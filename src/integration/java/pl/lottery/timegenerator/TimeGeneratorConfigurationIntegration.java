@@ -9,11 +9,16 @@ import java.time.Clock;
 
 @Configuration
 @Profile("integration")
-public class TimeGeneratorConfigurationIntegration implements IntegrationTestConstants {
+class TimeGeneratorConfigurationIntegration implements IntegrationTestConstants {
 
-    @Bean("adjustableClock")
-    public Clock createProgressingAdjustableClock() {
-        return ProgressingAdjustableClock.ofLocalDateAndLocalTime(INITIAL_DATE, INITIAL_TIME, ZONE_ID);
+    @Bean
+    public TimeGeneratorFacade createForTest(TimeConfigurable timeSpec) {
+        Clock integrationClock = ProgressingAdjustableClock.ofLocalDateAndLocalTime(INITIAL_DATE, INITIAL_TIME, ZONE_ID);
+        ExpirationDateTimeGenerator expirationDateTimeGenerator = new ExpirationDateTimeGenerator(timeSpec.getExpirationInDays());
+        CurrentDateTimeGenerator currentDateTimeGenerator = new CurrentDateTimeGenerator(integrationClock);
+        DrawDateTimeGenerator drawDateTimeGenerator = new DrawDateTimeGenerator(timeSpec.getDrawDayOfWeek(), timeSpec.getDrawTime());
+        TimeGenerator timeGenerator = new TimeGenerator(currentDateTimeGenerator, drawDateTimeGenerator, expirationDateTimeGenerator);
+        return new TimeGeneratorFacadeImpl(timeGenerator);
     }
 
 }
