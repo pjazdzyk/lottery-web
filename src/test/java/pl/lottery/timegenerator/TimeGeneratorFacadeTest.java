@@ -24,7 +24,7 @@ class TimeGeneratorFacadeTest {
     private final LocalDateTime expectedCurrentTime = LocalDateTime.of(sampleDateTests, sampleTimeTests);
     private final AdjustableClock sampleClockForTests = AdjustableClock.ofLocalDateAndLocalTime(sampleDateTests, sampleTimeTests, zoneId);
     private final TimeGeneratorConfiguration timeGeneratorConfiguration = new TimeGeneratorConfiguration();
-    private final TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfiguration.createForTest(sampleClockForTests, timeConfigurator);
+    private final TimeGeneratorFacade timeGeneratorFacade = timeGeneratorConfiguration.createTimeFacadeForTests(sampleClockForTests, timeConfigurator);
 
     @AfterEach
     void tearDown() {
