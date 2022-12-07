@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Profile;
 import java.time.*;
 
 @Configuration
-public class TimeGeneratorConfiguration {
+class TimeGeneratorConfiguration {
 
-    public TimeGeneratorFacade createForTest(Clock clockForTest, TimeConfigurable timeSpec) {
+    public TimeGeneratorFacade createTimeFacadeForTests(Clock clockForTest, TimeConfigurable timeSpec) {
         return createTimeGeneratorFacade(clockForTest, timeSpec);
     }
 
@@ -34,7 +34,7 @@ public class TimeGeneratorConfiguration {
         CurrentDateTimeGenerator currentDateTimeGenerator = new CurrentDateTimeGenerator(clock);
         DrawDateTimeGenerator drawDateTimeGenerator = new DrawDateTimeGenerator(timeSpec.getDrawDayOfWeek(), timeSpec.getDrawTime());
         TimeGenerator timeGenerator = new TimeGenerator(currentDateTimeGenerator, drawDateTimeGenerator, expirationDateTimeGenerator);
-        return new TimeGeneratorFacade(timeGenerator);
+        return new TimeGeneratorFacadeImpl(timeGenerator);
     }
 
 

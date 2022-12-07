@@ -1,6 +1,7 @@
 package pl.lottery.resultschecker;
 
 import pl.lottery.numberreceiver.NumberReceiverFacade;
+import pl.lottery.numberreceiver.NumberReceiverFacadeImpl;
 import pl.lottery.numberreceiver.dto.ReceiverStatus;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;
 
@@ -32,7 +33,7 @@ interface MockedNumberReceiverFacade extends SampleDrawDate{
     );
 
     default NumberReceiverFacade createMockedNumberReceiverFacade() {
-        NumberReceiverFacade mockedNumberReceiverFacade = mock(NumberReceiverFacade.class);
+        NumberReceiverFacade mockedNumberReceiverFacade = mock(NumberReceiverFacadeImpl.class);
         when(mockedNumberReceiverFacade.findUserCouponByUUID(any(UUID.class))).thenReturn(sampleCouponList.get(0));
         when(mockedNumberReceiverFacade.findUserCouponListForDrawDate(any(LocalDateTime.class))).thenReturn(sampleCouponList);
         return mockedNumberReceiverFacade;

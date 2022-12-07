@@ -5,14 +5,14 @@ import org.springframework.context.annotation.Configuration;
 import pl.lottery.numberreceiver.NumberReceiverFacade;
 
 @Configuration
-public class ResultsCheckerConfiguration {
+class ResultsCheckerConfiguration {
 
     public ResultsCheckerFacade createForTests(NumberReceiverFacade numberReceiverFacade, WinningNumberGeneratorPort winningNumbersFacade,
                                                ResultsCheckerRepository resultsCheckerRepository, CheckerConfigurable winningConfig) {
 
         ResultsChecker resultsChecker = new ResultsChecker(winningConfig);
         LotteryResultsGenerator lotteryResultsGenerator = new LotteryResultsGenerator(resultsChecker);
-        return new ResultsCheckerFacade(numberReceiverFacade, winningNumbersFacade, lotteryResultsGenerator, resultsCheckerRepository);
+        return new ResultsCheckerFacadeImpl(numberReceiverFacade, winningNumbersFacade, lotteryResultsGenerator, resultsCheckerRepository);
     }
 
     @Bean("resultsCheckerFacade")
@@ -21,7 +21,7 @@ public class ResultsCheckerConfiguration {
 
         ResultsChecker resultsChecker = new ResultsChecker(winningConfig);
         LotteryResultsGenerator lotteryResultsGenerator = new LotteryResultsGenerator(resultsChecker);
-        return new ResultsCheckerFacade(numberReceiverFacade, winningNumbersService, lotteryResultsGenerator, resultsCheckerRepository);
+        return new ResultsCheckerFacadeImpl(numberReceiverFacade, winningNumbersService, lotteryResultsGenerator, resultsCheckerRepository);
     }
 
 }

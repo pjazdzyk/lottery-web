@@ -23,7 +23,7 @@ public class NumberReceiverConfiguration {
 
         InputValidator inputValidator = new InputValidator(inputPropertyConfig);
         CouponGenerator couponGenerator = new CouponGenerator(receiverUuidGenerator, timeGeneratorFacade);
-        return new NumberReceiverFacade(repositoryCouponRepository, couponGenerator, inputValidator);
+        return new NumberReceiverFacadeImpl(repositoryCouponRepository, couponGenerator, inputValidator);
     }
 
 

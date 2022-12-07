@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import pl.lottery.resultschecker.ResultsCheckerFacade;
 
 @Configuration
-public class ResultsAnnouncerConfiguration {
+class ResultsAnnouncerConfiguration {
 
     public ResultsAnnouncerFacade createForTests(ResultsCheckerFacade resultsCheckerFacade) {
         return crateForProduction(resultsCheckerFacade);
@@ -13,7 +13,7 @@ public class ResultsAnnouncerConfiguration {
 
     @Bean("resultsAnnouncerFacade")
     public ResultsAnnouncerFacade crateForProduction(ResultsCheckerFacade resultsCheckerFacade) {
-        return new ResultsAnnouncerFacade(resultsCheckerFacade);
+        return new ResultsAnnouncerFacadeImpl(resultsCheckerFacade);
     }
 
 }
