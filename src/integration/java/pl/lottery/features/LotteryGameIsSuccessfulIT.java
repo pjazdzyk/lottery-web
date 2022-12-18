@@ -2,6 +2,8 @@ package pl.lottery.features;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.lottery.BaseIntegrationSpec;
 import pl.lottery.DefaultJsonBodies;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;

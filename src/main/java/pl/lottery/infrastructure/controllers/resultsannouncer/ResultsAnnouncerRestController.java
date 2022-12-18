@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import pl.lottery.infrastructure.exceptions.resultsannouncer.ApiInvalidUuidRequestException;
+import pl.lottery.numberreceiver.dto.ReceiverStatus;
 import pl.lottery.resultsannouncer.ResultsAnnouncerFacade;
 import pl.lottery.resultsannouncer.dto.AnnouncerResponseDto;
+import pl.lottery.resultsannouncer.dto.AnnouncerStatus;
 
 import java.util.UUID;
 
@@ -27,7 +29,9 @@ public class ResultsAnnouncerRestController {
         }
         UUID userRequestedUuid = UUID.fromString(id);
         AnnouncerResponseDto resultsForId = resultsAnnouncerFacade.findResultsForId(userRequestedUuid);
-        return new ResponseEntity<>(resultsForId, HttpStatus.OK);
+        HttpStatus httpStatus = resultsForId.status() == AnnouncerStatus.NOT_FOUND
+                ? HttpStatus.NOT_FOUND
+                : HttpStatus.OK;
+        return new ResponseEntity<>(resultsForId, httpStatus);
     }
-
 }

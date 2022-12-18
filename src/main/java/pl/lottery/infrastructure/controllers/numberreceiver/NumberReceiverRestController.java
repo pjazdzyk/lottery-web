@@ -9,6 +9,7 @@ import pl.lottery.infrastructure.exceptions.numberreceiver.ApiInvalidNumbersExce
 import pl.lottery.numberreceiver.NumberReceiverFacade;
 import pl.lottery.numberreceiver.dto.ReceiverRequestDto;
 import pl.lottery.numberreceiver.dto.ReceiverResponseDto;
+import pl.lottery.numberreceiver.dto.ReceiverStatus;
 
 import java.util.List;
 
@@ -29,7 +30,9 @@ public class NumberReceiverRestController {
             throw new ApiInvalidNumbersException(INVALID_NUMBERS_MSG);
         }
         ReceiverResponseDto receiverResponseDto = numberReceiverFacade.inputNumbers(typedNumbers);
-        return new ResponseEntity<>(receiverResponseDto, HttpStatus.OK);
+        HttpStatus httpStatus = receiverResponseDto.status() == ReceiverStatus.NOT_FOUND
+                ? HttpStatus.NOT_FOUND
+                : HttpStatus.OK;
+        return new ResponseEntity<>(receiverResponseDto, httpStatus);
     }
-
 }
