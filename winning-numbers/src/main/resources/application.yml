@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    active: production
+  data:
+    mongodb:
+      uuid-representation: standard
+      authentication-database: admin
+      uri: mongodb://admin:admin@mongo_db/lotto-web
+  application:
+    name: winning-numbers
+
+lotto:
+  winning:
+    minWinNumber: 1
+    maxWinNumber: 99
+    winNumberCount: 6
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    preferIpAddress: true
+
+server:
+  port: 8001

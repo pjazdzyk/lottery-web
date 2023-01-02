@@ -1,0 +1,3 @@
+lotto:
+  checker:
+    lotteryRunOccurrence: "2 * * * * *"

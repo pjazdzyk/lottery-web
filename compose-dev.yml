@@ -1,0 +1,102 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  # MONGODB COMPONENTS
+  mongo:
+    image: mongo
+    container_name: mongo_db
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: lotto-web
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - lottery-net
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo_express
+    restart: always  #restart the container regardless of the exit status
+    ports:
+      - '8081:8081'  # port mapping: [external : inside docker environment]
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/  # mongodb://{mongo-image-username}:{mongo-image-password}@{mongo-image-name}:{port}
+    networks:
+      - lottery-net
+
+  # REDIS COMPONENTS
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 60 1 --loglevel warning   #save every 60 seconds for at least 1 operation
+    volumes:
+      - redis:/data
+    networks:
+      - lottery-net
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    hostname: redis-commander
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8082:8081"
+    networks:
+      - lottery-net
+
+  # PROJECT MICROSERVICES
+  eureka-server:
+    build: eureka-server
+    container_name: eureka-server
+    restart: always
+    ports:
+      - '8761:8761'
+    networks:
+      - lottery-net
+
+  winning-numbers-service:
+    build: winning-numbers
+    depends_on:
+      - mongo
+      - eureka-server
+    container_name: winning-numbers-service
+    restart: always
+    ports:
+      - '8001:8001'
+    networks:
+      - lottery-net
+
+  lottery-engine:
+    build: lottery-engine
+    depends_on:
+      - mongo
+      - eureka-server
+      - redis
+      - winning-numbers-service
+    container_name: lottery-engine
+    restart: always
+    ports:
+      - '8000:8000'
+    networks:
+      - lottery-net
+
+volumes:
+  redis:
+    driver: local
+
+networks:
+  lottery-net:
+    driver: bridge

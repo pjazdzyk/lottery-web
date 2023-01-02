@@ -1,0 +1,49 @@
+server:
+  port: 8000
+
+spring:
+  profiles:
+    active: dev
+  data:
+    mongodb:
+      uuid-representation: standard
+      uri: mongodb://admin:admin@mongo_db/lotto-web    # mongodb://[username:password@]host1[:port1]/[database-name]
+    redis:
+      host: redis
+      port: 6379
+  cache:
+    redis:
+      time-to-live: 15  # minutes of ttl for cached item
+  application:
+    name: lottery-engine
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    preferIpAddress: true
+
+lotto:
+  input:
+    minNumber: 1
+    maxNumber: 99
+    numberCount: 6
+  time:
+    drawDayOfWeek: 6
+    drawHour: 12
+    drawMinutes: 0
+    drawSeconds: 0
+    drawTime: "${lotto.time.drawHour}:${lotto.time.drawMinutes}:${lotto.time.drawSeconds}"
+    expirationInDays: 930
+  checker:
+    lotteryRunOccurrence: "${lotto.time.drawSeconds} ${lotto.time.drawMinutes} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
+    matchedNumbersToWin: 3
+
+winning-numbers-service:
+  protocol: http
+  baseUrl: WINNING-NUMBERS
+  serviceApi: /api/v1
+  endPointPath: /winning-numbers

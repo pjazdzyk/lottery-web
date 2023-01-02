@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://admin:admin@localhost/lotto-web
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}

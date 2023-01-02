@@ -1,0 +1,5 @@
+#LOTTERY-ENGINE SERVER DOCKERFILE
+FROM openjdk:17-jdk-slim-buster
+EXPOSE 8000
+COPY /target/lottery-engine-*.jar /lottery-engine.jar
+ENTRYPOINT ["java","-jar","/lottery-engine.jar"]
