@@ -77,7 +77,7 @@ Both Winning Numbers microservice and main application (Lottery|Web) are pushed 
 To deploy and run application, just copy anywhere following files:<br>
 a) Docker-compose file: **[compose-prod.yml](https://github.com/pjazdzyk/lottery-web/blob/master/compose-prod.yml)** <br>
 b) Mongo-db admin role initialization: **[init-mongo.js](https://github.com/pjazdzyk/lottery-web/blob/master/init-mongo.js)** <br>
-c) NGINX server configuration file: **[lottery.conf](https://github.com/pjazdzyk/lottery-web/blob/master/init-mongo.js)** <br>
+c) NGINX server configuration file: **[lottery.conf](https://github.com/pjazdzyk/lottery-web/blob/master/lottery.conf)** <br>
 
 All three files must be in the same folder. After that, just run following command, and wait for 
 containers to be pulled up and started.
