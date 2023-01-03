@@ -15,7 +15,7 @@ For a better presentation and my understanding of how the frontend works with th
 This project uses modular monolithic application architecture with elements of hexagonal and microservice architecture. The winning numbers generator has been deployed as an independent microservice.
 The application is stored in Docker Hub, all modules are containerized - the only thing you need to deploy and run this app by yourself is the docker-compose file and associated MongoDB config js file.
 For presentation purposes, Lottery|Web has been deployed on the AWS EC2 Linux server. I have hooked my company domain (synerset.com) to mask long and unpleasant AWS DNS addresses,
-and it should be available at: [http://lottery.synerset.com](http://lottery.synerset.com:8000).
+and it should be available at: [http://lottery.synerset.com](http://lottery.synerset.com).
 
 If you like my project, please hit the star button, thank you!
 
@@ -32,10 +32,11 @@ If you like my project, please hit the star button, thank you!
 - Good coverage with unit tests, including "happy path" integration tests
 - Controllers tested via mockMvc, winning numbers service was stubbed using WireMock
 - Scheduled lottery run and results processing
-- Redis cache for optimized results queries
-- Docker is used for module containerization
-- Basic static landing page provided for presentation purposes
+- Full containerization in DOCKER (all modules)
+- Basic landing page provided for presentation purposes
 - Application deployed on AWS Linux EC2 server
+- Netflix-Eureka server used as discovery service
+- NGINX Server used as reverse proxy
 
 ## Tech
 
@@ -89,7 +90,7 @@ each Saturday at 12:00.<br>
 
 Application provides two endpoints: for input numbers and results checking. Please follow the specification below:
 
-Service url: http://lottery.synerset.com:8000
+Service url: http://lottery.synerset.com
 
 |       ENDPOINT        | METHOD |         REQUEST          | RESPONSE |             FUNCTION             |
 |:---------------------:|:------:|:------------------------:|:--------:|:--------------------------------:|
@@ -101,7 +102,7 @@ POSTMAN CURL's:<br>
 
 **/numbers**<br>
 ```
-curl --location --request POST 'http://lottery.synerset.com:8000/api/v1/numbers' \
+curl --location --request POST 'http://lottery.synerset.com/api/v1/numbers' \
 --header 'Content-Type: application/json' \
 --data-raw '{
 "typedNumbers" : [11,22,33,44,55,66]
@@ -110,7 +111,7 @@ curl --location --request POST 'http://lottery.synerset.com:8000/api/v1/numbers'
 
 **/results**<br>
 ```
-curl --location --request GET 'http://lottery.synerset.com:8000/api/v1/results/0046308c-408f-4fca-9668-6e5941e846f9'
+curl --location --request GET 'http://lottery.synerset.com/api/v1/results/0046308c-408f-4fca-9668-6e5941e846f9'
 ```
 
 ## License
