@@ -19,7 +19,7 @@ and it should be available at: [http://lottery.synerset.com](http://lottery.syne
 
 If you like my project, please hit the star button, thank you!
 
-> VERSION: 1.0.0 <br>
+> VERSION: 1.1.0 <br>
 > AUTHOR: PIOTR JAŻDŻYK <br>
 > LINKEDIN: https://www.linkedin.com/in/pjazdzyk <br>
 
