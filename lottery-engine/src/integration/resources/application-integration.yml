@@ -1,3 +1,7 @@
 lotto:
   checker:
     lotteryRunOccurrence: "*/2 * * * * *"
+
+eureka:
+  client:
+    enabled: false
