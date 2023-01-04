@@ -121,7 +121,8 @@ curl --location --request GET 'http://lottery.synerset.com/api/v1/results/004630
 ## License
 
 GNU GENERAL PUBLIC LICENSE V3<br>
-<strong>Please do not copy-paste code or parts of my readme without my consent. Thank you.</strong>
+<strong>Please do not copy-paste my code or parts of my readme without my consent. 
+Or at put reference to my profile in your readme. Thank you.</strong>
 
 ## Acknowledgments
 
