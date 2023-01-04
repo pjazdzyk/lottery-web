@@ -87,7 +87,7 @@ docker-compose -f compose-prod.yml up
 ``
 
 After everything builds and ready, you can test the application using [Postman](https://www.postman.com/)
-or use a simple <a href="http://lottery.synerset.com:8000">landing page</a> I have prepared for testing. Please note, that lottery results are generated
+or use a simple <a href="http://lottery.synerset.com">landing page</a> I have prepared for testing. Please note, that lottery results are generated
 each Saturday at 12:00.<br>
 
 ## Rest-API Endpoints
@@ -121,6 +121,7 @@ curl --location --request GET 'http://lottery.synerset.com/api/v1/results/004630
 ## License
 
 GNU GENERAL PUBLIC LICENSE V3
+Please do not copy-paste code or parts of my readme without my consent. Thank you.
 
 ## Acknowledgments
 
