@@ -24,6 +24,9 @@ services:
     restart: always  #restart the container regardless of the exit status
     ports:
       - '8081:8081'  # port mapping: [external : inside docker environment]
+    depends_on:
+      - mongo
+      - lottery-engine
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
@@ -53,6 +56,9 @@ services:
       - REDIS_HOSTS=local:redis:6379
     ports:
       - "8082:8081"
+    depends_on:
+      - redis
+      - lottery-engine
     networks:
       - lottery-net
 
@@ -78,6 +84,8 @@ services:
     restart: always
     ports:
       - '8761:8761'
+    depends_on:
+      - mongo
     networks:
       - lottery-net
 

@@ -1,5 +1,5 @@
 #EUREKA SERVER DOCKERFILE
-FROM openjdk:17-jdk-slim-buster
+FROM eclipse-temurin:17-jre-alpine
 EXPOSE 8761
 COPY target/eureka-server-*.jar /eureka-server.jar
 ENTRYPOINT ["java","-jar","/eureka-server.jar"]
