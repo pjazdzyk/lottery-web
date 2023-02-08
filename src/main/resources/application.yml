@@ -4,7 +4,7 @@ spring:
   data:
     mongodb:
       uuid-representation: standard
-      uri: mongodb://admin:admin@localhost:27017/lotto-web   # mongodb://[username:password@]host1[:port1]/[database-name]
+      uri: mongodb://admin:admin@mongo_db/lotto-web   # mongodb://[username:password@]host1[:port1]/[database-name]
       host: localhost
   cache:
     redis:
@@ -30,3 +30,6 @@ lotto:
     lotteryRunOccurrence: "*/2 * * * * *"
   checker:
     matchedNumbersToWin: 3
+
+server:
+  port: 8000

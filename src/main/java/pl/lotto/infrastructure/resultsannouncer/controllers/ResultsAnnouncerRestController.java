@@ -19,7 +19,7 @@ public class ResultsAnnouncerRestController {
         this.resultsAnnouncerFacade = resultsAnnouncerFacade;
     }
 
-    @GetMapping(value = "/api/v1/results")
+    @PostMapping(value = "/api/v1/results")
     public ResponseEntity<AnnouncerResponseDto> getResultsForUuid(@RequestBody AnnouncerRequestDto announcerRequestDto) {
         AnnouncerResponseDto resultsForId = resultsAnnouncerFacade.getResultsForId(announcerRequestDto.getRequestUuid());
         return new ResponseEntity<>(resultsForId, HttpStatus.OK);

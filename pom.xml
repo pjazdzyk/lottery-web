@@ -18,6 +18,7 @@
         <mockito.version>4.8.0</mockito.version>
         <awaitility.version>4.2.0</awaitility.version>
         <testcontainers.version>1.17.4</testcontainers.version>
+        <spring.boot.maven.plugin.version>3.0.1</spring.boot.maven.plugin.version>
     </properties>
 
     <parent>

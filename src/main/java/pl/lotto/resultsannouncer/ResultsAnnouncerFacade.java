@@ -19,7 +19,6 @@ public class ResultsAnnouncerFacade {
         this.resultsCheckerFacade = resultsCheckerFacade;
     }
 
-    @Cacheable("publishedResultsDtoCache")
     public AnnouncerResponseDto getResultsForId(UUID uuid) {
         if (Objects.isNull(uuid)) {
             return notFoundDto();

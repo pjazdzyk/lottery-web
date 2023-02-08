@@ -4,6 +4,7 @@ version: '3.1'
 services:
   # actual database image
   mongo:
+    container_name: mongo_db
     image: mongo:4.0.10
     restart: always
     ports:
@@ -14,38 +15,34 @@ services:
       MONGO_INITDB_DATABASE: lotto-web
     volumes:
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - lotto-net
 
-  # web access point service, for created mongo db
-  mongo-express:
-    image: mongo-express
-    restart: always  #restart the container regardless of the exit status
-    ports:
-      - "8081:8081"  # port forwarding
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/  # mongodb://{mongo-image-username}:{mongo-image-password}@{mongo-image-name}:{port}
+# # Redis cache service
+#  redis:
+#    image: redis:5.0.3-alpine
+#    restart: always
+#    ports:
+#      - '6379:6379'
+#    command: redis-server --save 60 1 --loglevel warning   #save every 60 seconds for at least 1 operation
+#    volumes:
+#      - redis:/data
+#    networks:
+#      - lotto-net
 
- # Redis cache service
-  redis:
-    image: redis:5.0.3-alpine
+  lotto:
+    container_name: lotto
+    image: 054968576252.dkr.ecr.eu-central-1.amazonaws.com/lotto:latest
     restart: always
     ports:
-      - '6379:6379'
-    command: redis-server --save 60 1 --loglevel warning   #save every 60 seconds for at least 1 operation
-    volumes:
-      - redis:/data
-
-  redis-commander:
-    container_name: redis-commander
-    hostname: redis-commander
-    image: rediscommander/redis-commander:latest
-    restart: always
-    environment:
-      - REDIS_HOSTS=local:redis:6379
-    ports:
-      - "8082:8081"
+      - '8000:8000'
+    networks:
+      - lotto-net
 
 volumes:
   redis:
     driver: local
+
+networks:
+  lotto-net:
+    driver: bridge
