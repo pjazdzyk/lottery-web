@@ -18,26 +18,17 @@ services:
     networks:
       - lotto-net
 
-# # Redis cache service
-#  redis:
-#    image: redis:5.0.3-alpine
-#    restart: always
-#    ports:
-#      - '6379:6379'
-#    command: redis-server --save 60 1 --loglevel warning   #save every 60 seconds for at least 1 operation
-#    volumes:
-#      - redis:/data
-#    networks:
-#      - lotto-net
-
   lotto:
     container_name: lotto
-    image: 054968576252.dkr.ecr.eu-central-1.amazonaws.com/lotto:latest
+    build: .
+#    image: 054968576252.dkr.ecr.eu-central-1.amazonaws.com/lotto:latest
     restart: always
     ports:
       - '8000:8000'
     networks:
       - lotto-net
+    depends_on:
+      - mongo
 
 volumes:
   redis:
