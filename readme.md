@@ -15,7 +15,7 @@ For a better presentation and my understanding of how the frontend works with th
 This project uses modular monolithic application architecture with elements of hexagonal and microservice architecture. The winning numbers generator has been deployed as an independent microservice.
 The application is stored in Docker Hub, all modules are containerized - the only thing you need to deploy and run this app by yourself is the docker-compose file and associated MongoDB config js file.
 For presentation purposes, Lottery|Web has been deployed on the AWS EC2 Linux server. I have hooked my company domain (synerset.com) to mask long and unpleasant AWS DNS addresses,
-and it should be available at: [http://lottery.synerset.com](http://lottery.synerset.com).
+and it should be available at: [http://lottery.synerset.com](http://lottery.synerset.com). <br>**UPDATE: 07.04.2023** -> AWS server with landing page was shut down, and it is no longer available.
 
 If you like my project, please hit the star button, thank you!
 
@@ -94,29 +94,13 @@ each Saturday at 12:00.<br>
 
 Application provides two endpoints: for input numbers and results checking. Please follow the specification below:
 
-Service url: http://lottery.synerset.com
+Service url: [not available online]
 
 |       ENDPOINT        | METHOD |         REQUEST          | RESPONSE |             FUNCTION             |
 |:---------------------:|:------:|:------------------------:|:--------:|:--------------------------------:|
 |    api/v1/numbers     |  POST  | JSON BODY (typedNumbers) |   JSON   | inputs 6 distinct typed numbers  |
 | api/v1/results/{uuid} |  GET   |   PATH VARIABLE (uuid)   |   JSON   | retrieves lottery results for ID |
 
-
-POSTMAN CURL's:<br>
-
-**/numbers**<br>
-```
-curl --location --request POST 'http://lottery.synerset.com/api/v1/numbers' \
---header 'Content-Type: application/json' \
---data-raw '{
-"typedNumbers" : [11,22,33,44,55,66]
-}'
-```
-
-**/results**<br>
-```
-curl --location --request GET 'http://lottery.synerset.com/api/v1/results/0046308c-408f-4fca-9668-6e5941e846f9'
-```
 
 ## License
 
